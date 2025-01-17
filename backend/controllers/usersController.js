@@ -37,4 +37,4 @@ async function findUser(email) {
   }
 }
 
-module.exports = { getUsers, addUser, loginUser, logoutUser };
+module.exports = { getUsers, addUser, loginUser, logoutUser, findUser };
