@@ -6,7 +6,7 @@ const NextButton = styled.button`
   border: none;
   border-radius: 20px;
   padding: 10px 20px;
-  font-size: 16px;
+  font-size: 20px;
   cursor: pointer;
   family-font: "Libre Franklin", sans-serif;
   color: #ffffff;

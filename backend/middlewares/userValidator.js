@@ -54,12 +54,12 @@ const validatorLoginUser = async (req, res, next) => {
   }
 
   try {
-    const email = await findUser(email);
-    if (!email) {
+    const user = await findUser(email);
+    if (!user) {
       return res.status(400).json({ errors: "User not found" });
     }
 
-    if (email.password !== password) {
+    if (user.password !== password) {
       return res.status(400).json({ errors: "Invalid password" });
     }
     next();

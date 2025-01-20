@@ -5,6 +5,7 @@ import Input from "../components/input";
 import LogButton from "../components/logButton";
 import Title from "../components/title";
 import useLogin from "../hooks/useLogin";
+import { useAuth } from "../context/AuthContext";
 
 const LoginContainer = styled.div`
   display: flex;
@@ -14,7 +15,7 @@ const LoginContainer = styled.div`
   align-items: center;
   padding: 4rem;
   width: 50%;
-  family-font: "Libre Franklin", sans-serif;
+  font-family: "Libre Franklin", sans-serif;
   gap: 1rem;
   margin: 0 auto;
   margin-top: 5rem;
@@ -31,33 +32,41 @@ const LoginContainer = styled.div`
     gap: 1.5rem;
     padding: 1rem;
   }
-  h2 {
+  p {
     color: #fff;
     font-size: 1.5rem;
     padding: 1rem;
+    text-align: center;
   }
 `;
 
 function Login() {
-  const [user, setUser] = useState("");
+  const [email, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState({});
+  const { loginHome } = useAuth();
   const navigate = useNavigate();
-  const { login, email, logout } = useLogin();
+  const { login, user = null, logout } = useLogin();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     let errorFound = false;
 
     if (!email) {
-      setError((prev) => ({ ...prev, email: "Email is required" }));
+      setError((prev) => ({
+        ...prev,
+        email: "Por favor, introduzca el e-mail de la empresa",
+      }));
       errorFound = true;
     } else {
       setError((prev) => ({ ...prev, email: null }));
     }
 
     if (!password) {
-      setError((prev) => ({ ...prev, password: "Password is required" }));
+      setError((prev) => ({
+        ...prev,
+        password: "Por favor, introduzca su contraseña",
+      }));
       errorFound = true;
     } else {
       setError((prev) => ({ ...prev, password: null }));
@@ -68,9 +77,9 @@ function Login() {
     }
 
     try {
-      const userLogin = { user: email, password: password };
+      const userLogin = { email: email, password: password };
       const response = await fetch("http://localhost:3000/users/login", {
-        method: "POST",
+        method: "post",
         body: JSON.stringify(userLogin),
         headers: {
           "Content-Type": "application/json",
@@ -78,10 +87,12 @@ function Login() {
       });
       if (!response.ok) {
         const message = await response.json();
-        throw new Error(message.error || "Something went wrong!");
+        throw new Error(message.error || "Credenciales inválidas");
       }
-      login(user);
-      navigate("/");
+      console.log("Login successful with email: ", email);
+      login(email);
+      loginHome(email, password);
+      navigate("/home");
     } catch (err) {
       setError((prev) => ({ ...prev, form: err.message }));
 
@@ -95,10 +106,7 @@ function Login() {
     e.preventDefault();
     try {
       const response = await fetch("http://localhost:3000/users/logout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        method: "post",
       });
       if (!response.ok) {
         const message = await response.json();
@@ -115,7 +123,7 @@ function Login() {
 
   return (
     <LoginContainer>
-      {email !== "" && (
+      {user !== "" && (
         <Title className="logout">
           <h1>Para volver a ingresar, debes cerrar session</h1>
           <LogButton onClick={handleLogout}>Cerrar Sesion</LogButton>
@@ -129,7 +137,7 @@ function Login() {
         <Input
           type="text"
           name="email"
-          placeholder="Email"
+          placeholder="E-mail"
           onChange={(e) => setUser(e.target.value)}
         />
         {error.email && <p>{error.email}</p>}
@@ -143,10 +151,10 @@ function Login() {
         <LogButton type="submit">Ingresar</LogButton>
       </form>
 
-      <h2>
+      <p>
         Si es la primera vez que ingresas, presiona en{" "}
         <Link to="/register">Registrarse</Link>
-      </h2>
+      </p>
     </LoginContainer>
   );
 }

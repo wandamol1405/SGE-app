@@ -5,7 +5,9 @@ const session = require("express-session");
 const usersRouter = require("./routes/usersRoutes");
 const invoiceRouter = require("./routes/invoiceRoutes");
 const invoiceDetailRouter = require("./routes/invoiceDetailRoutes");
+const cors = require("cors");
 
+app.use(cors());
 app.use(
   session({
     secret: "mysecret",

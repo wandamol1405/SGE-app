@@ -6,13 +6,15 @@ const LogButton = styled.button`
   border: none;
   border-radius: 20px;
   padding: 10px 20px;
-  font-size: 16px;
+  font-size: 20px;
+  width: 20vw;
+  align-self: center;
   cursor: pointer;
-  family-font: "Libre Franklin", sans-serif;
+  font-family: "Libre Franklin", sans-serif;
   color: #525b44;
 
   @media (min-width: 1080px) {
-    width: 10vw;
+    width: 8vw;
     font-size: 20px;
     align-self: center;
   }

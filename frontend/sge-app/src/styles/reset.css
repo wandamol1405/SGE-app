@@ -89,12 +89,13 @@ video {
   border: 0;
   font-size: 100%;
   vertical-align: baseline;
+  box-sizing: border-box;
 }
 body {
   line-height: 1;
   background-color: #ffe2e2;
-  font-family: "Roboto Flex Normal";
-  height: 100vh;
+  font-family: "Roboto", sans-serif;
+  height: 100%;
 }
 ol,
 ul {
