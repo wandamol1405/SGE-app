@@ -33,6 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       buyer_address: DataTypes.STRING,
       buyer_IVA_condition: DataTypes.STRING,
       buyer_cuit: DataTypes.STRING,
+      sale_condition: DataTypes.STRING,
       subtotal: DataTypes.DECIMAL,
       IVA_total: DataTypes.DECIMAL,
       total: DataTypes.DECIMAL,

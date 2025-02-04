@@ -25,7 +25,7 @@ const StyledLink = styled(Link)`
 function Navbar() {
   return (
     <Nav>
-      <StyledLink to="/">Sistema de Gestión de Empresas</StyledLink>
+      <StyledLink to="/home">Sistema de Gestión de Empresas</StyledLink>
     </Nav>
   );
 }

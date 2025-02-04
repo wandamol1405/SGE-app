@@ -44,7 +44,7 @@ function Login() {
   const [email, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState({});
-  const { loginHome } = useAuth();
+  const { loginHome, logoutHome } = useAuth();
   const navigate = useNavigate();
   const { login, user = null, logout } = useLogin();
 
@@ -113,6 +113,7 @@ function Login() {
         throw new Error(message.error || "Something went wrong!");
       }
       logout();
+      logoutHome();
     } catch (error) {
       setError((prev) => ({ ...prev, form: error.message }));
       setTimeout(() => {
@@ -125,8 +126,8 @@ function Login() {
     <LoginContainer>
       {user !== "" && (
         <Title className="logout">
-          <h1>Para volver a ingresar, debes cerrar session</h1>
-          <LogButton onClick={handleLogout}>Cerrar Sesion</LogButton>
+          <p>Para volver a ingresar, debes cerrar sesión</p>
+          <LogButton onClick={handleLogout}>Cerrar sesión</LogButton>
         </Title>
       )}
       <div>

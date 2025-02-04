@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import useLogin from "../hooks/useLogin";
 import Input from "../components/input";
 import LogButton from "../components/logButton";
+import Select from "../components/select";
 
 const RegisterContainer = styled.div`
   display: flex;
@@ -37,31 +38,6 @@ const RegisterContainer = styled.div`
     font-size: 1.5rem;
     padding: 1rem;
     text-align: center;
-  }
-`;
-
-const RegisterSelect = styled.select`
-  background-color: #fffdec;
-  color: #5a6c57;
-  border: none;
-  width: 55vw;
-  border-radius: 10px;
-  padding: 10px 20px;
-  font-size: 20px;
-  cursor: pointer;
-  font-family: "Libre Franklin", sans-serif;
-  text-align: center;
-
-  &::option {
-    color: #5a6c57;
-    opacity: 0.6;
-    text-align: center;
-  }
-
-  @media (min-width: 1080px) {
-    width: 32vw;
-    padding: 10px 20px;
-    font-size: 20px;
   }
 `;
 
@@ -212,7 +188,7 @@ export default function Register() {
           onChange={(e) => setGross_revenue(e.target.value)}
         />
 
-        <RegisterSelect
+        <Select
           value={IVA_condition}
           onChange={(e) => setIVA_condition(e.target.value)}
         >
@@ -221,7 +197,7 @@ export default function Register() {
           </option>
           <option value="Responsable inscripto">Responsable inscripto</option>
           <option value="Monotributista">Monotributista</option>
-        </RegisterSelect>
+        </Select>
 
         <Input
           type="text"

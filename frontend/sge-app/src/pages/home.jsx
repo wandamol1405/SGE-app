@@ -69,10 +69,8 @@ function Home() {
 
   useEffect(() => {
     async function getUser() {
-      console.log(user);
       const result = await fetch("http://localhost:3000/users/find/" + user);
       const response = await result.json();
-      console.log(response);
       setCompanyName(response.user.company_name);
     }
     getUser();
@@ -84,7 +82,7 @@ function Home() {
         <h1>Bienvenido {company_name}</h1>
       </div>
       <ButtonsContainer>
-        <Link to="/createDoc">
+        <Link to="/createDocs">
           <HomeButton>Crear documento comercial</HomeButton>
         </Link>
         <Link to="/listDocs">

@@ -1,9 +1,29 @@
 import { create } from "zustand";
+import { useEffect } from "react";
 
 const useLogin = create((set) => ({
-  user: localStorage.getItem("email") || "",
-  login: (user) => set({ user: user }),
-  logout: () => set({ user: "" }),
+  user: "",
+  login: (user) => {
+    localStorage.setItem("email", user);
+    set({ user: user });
+  },
+  logout: () => {
+    localStorage.removeItem("email");
+    set({ user: "" });
+  },
 }));
 
-export default useLogin;
+const useLoginWithEffect = () => {
+  const loginStore = useLogin();
+
+  useEffect(() => {
+    const email = localStorage.getItem("email");
+    if (email) {
+      loginStore.login(email);
+    }
+  }, []);
+
+  return loginStore;
+};
+
+export default useLoginWithEffect;

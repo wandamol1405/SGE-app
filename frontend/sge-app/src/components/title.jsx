@@ -2,17 +2,19 @@ import styled from "styled-components";
 
 const Title = styled.div`
   padding: 1.5rem;
-  background-color: #ffffff;
+  background-color: rgb(236, 151, 151);
   margin: 1rem;
   border-radius: 10px;
-  width: 75vw;
+  width: 70%;
   text-align: center;
-  font-size: 1.7rem;
+  justify-content: center;
+  font-size: 1rem;
   display: flex;
   flex-direction: column;
+  color: black;
   gap: 1.5rem;
   @media (min-width: 1080px) {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 `;
 

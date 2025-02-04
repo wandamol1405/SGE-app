@@ -8,9 +8,26 @@ const getUsers = async (req, res) => {
 };
 
 const addUser = async (req, res) => {
-  const user = req.body;
-  await User.create(user);
-  res.json({ msg: "User created", user });
+  try {
+    const user = req.body;
+
+    // Crear el nuevo usuario
+    const createdUser = await User.create(user);
+
+    // Crear un registro en la tabla invoicecounters asociado al id_company del usuario
+    if (createdUser.id_company) {
+      await InvoiceCounter.create({
+        companyId: createdUser.id_company,
+        lastInvoiceNumber: 0,
+      });
+    }
+
+    // Responder con éxito
+    res.json({ msg: "User created", user: createdUser });
+  } catch (error) {
+    console.error("Error al crear el usuario:", error);
+    res.status(500).json({ error: "Error al crear el usuario." });
+  }
 };
 
 const loginUser = (req, res) => {

@@ -5,6 +5,8 @@ const session = require("express-session");
 const usersRouter = require("./routes/usersRoutes");
 const invoiceRouter = require("./routes/invoiceRoutes");
 const invoiceDetailRouter = require("./routes/invoiceDetailRoutes");
+const buyOrderRouter = require("./routes/buyOrderRoutes");
+const buyOrderDetailRouter = require("./routes/buyOrderDetailRoutes");
 const cors = require("cors");
 
 app.use(cors());
@@ -22,6 +24,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/users", usersRouter);
 app.use("/invoice", invoiceRouter);
 app.use("/invoiceDetail", invoiceDetailRouter);
+app.use("/buyOrder", buyOrderRouter);
+app.use("/buyOrderDetail", buyOrderDetailRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
