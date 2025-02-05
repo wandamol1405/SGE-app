@@ -17,6 +17,14 @@ import CreateOrderHeader from "./pages/createOrder-header";
 import CreateOrderSupplier from "./pages/createOrder-supplier";
 import CreateOrderDetails from "./pages/createOrder-details";
 import CheckOrder from "./pages/checkOrder";
+import CreateDebitNoteHeader from "./pages/createDebitNote-header";
+import CreateDebitNoteClient from "./pages/createDebitNote-client";
+import CreateDebitNoteDetail from "./pages/createDebitNote-details";
+import CheckDebitNote from "./pages/checkDebitNote";
+import CreateCreditNoteHeader from "./pages/createCreditNote-header";
+import CreateCreditNoteClient from "./pages/createCreditNote-client";
+import CreateCreditNoteDetail from "./pages/createCreditNote-details";
+import CheckCreditNote from "./pages/checkCreditNote";
 
 function App() {
   return (
@@ -112,6 +120,70 @@ function App() {
           element={
             <ProtectedRoute>
               <CheckOrder />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/createDebitNote-header"
+          element={
+            <ProtectedRoute>
+              <CreateDebitNoteHeader />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/createDebitNote-client"
+          element={
+            <ProtectedRoute>
+              <CreateDebitNoteClient />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/createDebitNote-details"
+          element={
+            <ProtectedRoute>
+              <CreateDebitNoteDetail />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/checkDebitNote"
+          element={
+            <ProtectedRoute>
+              <CheckDebitNote />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/createCreditNote-header"
+          element={
+            <ProtectedRoute>
+              <CreateCreditNoteHeader />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/createCreditNote-client"
+          element={
+            <ProtectedRoute>
+              <CreateCreditNoteClient />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/createCreditNote-details"
+          element={
+            <ProtectedRoute>
+              <CreateCreditNoteDetail />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/checkCreditNote"
+          element={
+            <ProtectedRoute>
+              <CheckCreditNote />
             </ProtectedRoute>
           }
         />

@@ -7,6 +7,10 @@ const invoiceRouter = require("./routes/invoiceRoutes");
 const invoiceDetailRouter = require("./routes/invoiceDetailRoutes");
 const buyOrderRouter = require("./routes/buyOrderRoutes");
 const buyOrderDetailRouter = require("./routes/buyOrderDetailRoutes");
+const creditNoteDetailRouter = require("./routes/creditNoteDetailRoutes");
+const creditNoteRouter = require("./routes/creditNoteRoutes");
+const debitNoteRouter = require("./routes/debitNoteRoutes");
+const debitNoteDetailRouter = require("./routes/debitNoteDetailRoutes");
 const cors = require("cors");
 
 app.use(cors());
@@ -26,6 +30,10 @@ app.use("/invoice", invoiceRouter);
 app.use("/invoiceDetail", invoiceDetailRouter);
 app.use("/buyOrder", buyOrderRouter);
 app.use("/buyOrderDetail", buyOrderDetailRouter);
+app.use("/creditNote", creditNoteRouter);
+app.use("/creditNoteDetail", creditNoteDetailRouter);
+app.use("/debitNote", debitNoteRouter);
+app.use("/debitNoteDetail", debitNoteDetailRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
