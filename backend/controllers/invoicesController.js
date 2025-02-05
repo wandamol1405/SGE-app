@@ -140,12 +140,14 @@ const generateInvoicePDF = async (req, res) => {
   doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
   doc.moveDown(0.5);
 
+  const currentY = doc.y;
+
   // Table header
   doc.fontSize(10).font("Helvetica-Bold");
-  doc.text("Descripción", 50, doc.y, { continued: true });
-  doc.text("Cantidad", 100, doc.y, { continued: true });
-  doc.text("Precio Unitario", 200, doc.y, { continued: true });
-  doc.text("Subtotal", 300, doc.y);
+  doc.text("Descripción", 50, currentY);
+  doc.text("Cantidad", 300, currentY);
+  doc.text("Precio Unitario", 400, currentY);
+  doc.text("Subtotal", 500, currentY);
   doc.moveDown(0.5);
 
   // Line separator
@@ -160,22 +162,17 @@ const generateInvoicePDF = async (req, res) => {
       ? detail.amount * detail.sale_price
       : detail.amount * detail.sale_price * 1.21;
 
+    const currentY = doc.y;
     // Definir posiciones centrales según un ancho de página estándar
     const productX = 50;
-    const amountX = 125;
-    const priceX = 250;
-    const subtotalX = 400;
+    const amountX = 300;
+    const priceX = 400;
+    const subtotalX = 500;
 
-    doc.text(detail.product, productX, doc.y, {
-      continued: true,
-    });
-    doc.text(detail.amount.toString(), amountX, doc.y, {
-      continued: true,
-    });
-    doc.text(`$${salePrice}`, priceX, doc.y, {
-      continued: true,
-    });
-    doc.text(`$${subtotal}`, subtotalX, doc.y);
+    doc.text(detail.product, productX, currentY);
+    doc.text(detail.amount.toString(), amountX, currentY);
+    doc.text(`$${salePrice}`, priceX, currentY);
+    doc.text(`$${subtotal}`, subtotalX, currentY);
 
     doc.moveDown(0.5);
   });
@@ -188,17 +185,34 @@ const generateInvoicePDF = async (req, res) => {
   doc.fontSize(12).font("Helvetica-Bold");
 
   if (showIVA) {
-    doc.text(`Subtotal: $${invoiceData.subtotal}`, { align: "right" });
-    doc.text(`IVA: $${invoiceData.IVA_total}`, { align: "right" });
-    doc.fontSize(14).text(`Total: $${invoiceData.total}`, { align: "right" });
+    doc.text(`Subtotal: $${debitNoteData.subtotal}`, 450, doc.y, {
+      align: "right",
+    });
+    doc.text(`IVA: $${debitNoteData.IVA_total}`, 450, doc.y, {
+      align: "right",
+    });
+    doc
+      .fontSize(14)
+      .text(`Total: $${debitNoteData.total}`, 450, doc.y, { align: "right" });
   } else {
-    doc.fontSize(14).text(`Total: $${invoiceData.total}`, { align: "right" });
+    doc
+      .fontSize(14)
+      .text(`Total: $${debitNoteData.total}`, 450, doc.y, { align: "right" });
     doc.moveDown(0.5);
     doc
       .fontSize(10)
       .font("Helvetica")
-      .text("Régimen de Transparencia Fiscal al Consumidor (Ley 27.743)");
-    doc.text(`IVA Contenido: $${invoiceData.IVA_total}`);
+      .text(
+        "Régimen de Transparencia Fiscal al Consumidor (Ley 27.743)",
+        50,
+        doc.y,
+        {
+          align: "left",
+        }
+      );
+    doc.text(`IVA Contenido: $${debitNoteData.IVA_total}`, 50, doc.y, {
+      align: "left",
+    });
   }
 
   // Footer

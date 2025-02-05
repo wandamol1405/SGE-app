@@ -72,7 +72,7 @@ function CreateDocs() {
         <DocsButton onClick={() => navigate("/createCreditNote-header")}>
           Nota de crédito
         </DocsButton>
-        <DocsButton onClick={() => navigate("/createDeliveryNote")}>
+        <DocsButton onClick={() => navigate("/createDeliveryNote-header")}>
           Remito
         </DocsButton>
         <DocsButton onClick={() => navigate("/createCheck")}>Cheque</DocsButton>

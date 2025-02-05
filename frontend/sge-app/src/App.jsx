@@ -25,6 +25,10 @@ import CreateCreditNoteHeader from "./pages/createCreditNote-header";
 import CreateCreditNoteClient from "./pages/createCreditNote-client";
 import CreateCreditNoteDetail from "./pages/createCreditNote-details";
 import CheckCreditNote from "./pages/checkCreditNote";
+import CreateDeliveryNoteHeader from "./pages/createDeliveryNote-header";
+import CreateDeliveryNoteClient from "./pages/createDeliveryNote-client";
+import CreateDeliveryNoteDetail from "./pages/createDeliveryNote-detail";
+import CheckDeliveryNote from "./pages/checkDeliveryNote";
 
 function App() {
   return (
@@ -184,6 +188,38 @@ function App() {
           element={
             <ProtectedRoute>
               <CheckCreditNote />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/createDeliveryNote-header"
+          element={
+            <ProtectedRoute>
+              <CreateDeliveryNoteHeader />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/createDeliveryNote-client"
+          element={
+            <ProtectedRoute>
+              <CreateDeliveryNoteClient />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/createDeliveryNote-details"
+          element={
+            <ProtectedRoute>
+              <CreateDeliveryNoteDetail />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/checkDeliveryNote"
+          element={
+            <ProtectedRoute>
+              <CheckDeliveryNote />
             </ProtectedRoute>
           }
         />

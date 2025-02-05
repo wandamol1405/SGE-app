@@ -17,8 +17,24 @@ const addUser = async (req, res) => {
     // Crear un registro en la tabla invoicecounters asociado al id_company del usuario
     if (createdUser.id_company) {
       await InvoiceCounter.create({
-        companyId: createdUser.id_company,
-        lastInvoiceNumber: 0,
+        company_id: createdUser.id_company,
+        last_invoice_numer: 0,
+      });
+      await BuyOrderCounter.create({
+        id_company: createdUser.id_company,
+        last_buy_order_number: 0,
+      });
+      await DeliveryNoteCounter.create({
+        id_company: createdUser.id_company,
+        last_delivery_note_number: 0,
+      });
+      await DebitNoteCounter.create({
+        id_company: createdUser.id_company,
+        last_debit_note_number: 0,
+      });
+      await CreditNoteCounter.create({
+        id_company: createdUser.id_company,
+        last_credit_note_number: 0,
       });
     }
 

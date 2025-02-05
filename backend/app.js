@@ -11,6 +11,8 @@ const creditNoteDetailRouter = require("./routes/creditNoteDetailRoutes");
 const creditNoteRouter = require("./routes/creditNoteRoutes");
 const debitNoteRouter = require("./routes/debitNoteRoutes");
 const debitNoteDetailRouter = require("./routes/debitNoteDetailRoutes");
+const deliveryNoteRouter = require("./routes/deliveryNoteRoutes");
+const deliveryNoteDetailRouter = require("./routes/deliveryNoteDetailRoutes");
 const cors = require("cors");
 
 app.use(cors());
@@ -34,6 +36,8 @@ app.use("/creditNote", creditNoteRouter);
 app.use("/creditNoteDetail", creditNoteDetailRouter);
 app.use("/debitNote", debitNoteRouter);
 app.use("/debitNoteDetail", debitNoteDetailRouter);
+app.use("/deliveryNote", deliveryNoteRouter);
+app.use("/deliveryNoteDetail", deliveryNoteDetailRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
