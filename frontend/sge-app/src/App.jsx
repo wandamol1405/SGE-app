@@ -29,6 +29,8 @@ import CreateDeliveryNoteHeader from "./pages/createDeliveryNote-header";
 import CreateDeliveryNoteClient from "./pages/createDeliveryNote-client";
 import CreateDeliveryNoteDetail from "./pages/createDeliveryNote-detail";
 import CheckDeliveryNote from "./pages/checkDeliveryNote";
+import CreateCheque from "./pages/createCheque";
+import CheckCheque from "./pages/checkCheque";
 
 function App() {
   return (
@@ -220,6 +222,22 @@ function App() {
           element={
             <ProtectedRoute>
               <CheckDeliveryNote />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/createCheque"
+          element={
+            <ProtectedRoute>
+              <CreateCheque />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/checkCheque"
+          element={
+            <ProtectedRoute>
+              <CheckCheque />
             </ProtectedRoute>
           }
         />

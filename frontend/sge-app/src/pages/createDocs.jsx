@@ -75,7 +75,9 @@ function CreateDocs() {
         <DocsButton onClick={() => navigate("/createDeliveryNote-header")}>
           Remito
         </DocsButton>
-        <DocsButton onClick={() => navigate("/createCheck")}>Cheque</DocsButton>
+        <DocsButton onClick={() => navigate("/createCheque")}>
+          Cheque
+        </DocsButton>
       </DocsButtonContainer>
     </CreateDocsContainer>
   );

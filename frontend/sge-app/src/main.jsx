@@ -8,6 +8,7 @@ import { BuyOrderProvider } from "./context/BuyOrderContext";
 import { DebitNoteProvider } from "./context/DebitNoteContext";
 import { CreditNoteProvider } from "./context/CreditNoteContext";
 import { DeliveryNoteProvider } from "./context/deliveryNoteContext";
+import { ChequeProvider } from "./context/ChequeContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
@@ -17,7 +18,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <DebitNoteProvider>
             <CreditNoteProvider>
               <DeliveryNoteProvider>
-                <App />
+                <ChequeProvider>
+                  <App />
+                </ChequeProvider>
               </DeliveryNoteProvider>
             </CreditNoteProvider>
           </DebitNoteProvider>
