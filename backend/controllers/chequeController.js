@@ -1,8 +1,8 @@
 const Cheque = require("../models").Cheque;
 const fs = require("fs");
 const path = require("path");
-const { PDFDocument, rgb } = require("pdf-lib");
-const numeroALetras = require("numero-a-letras");
+const { PDFDocument, rgb, StandardFonts } = require("pdf-lib");
+const { NumerosALetras } = require("numero-a-letras");
 
 const getCheques = async (req, res) => {
   const cheques = await Cheque.findAll();
@@ -35,95 +35,132 @@ const generateChequePDF = async (req, res) => {
   const filePath = path.join(__dirname, "cheque.pdf");
 
   const isDif = chequeData.cheque_type === "Diferido";
-  const isAlDia = chequeData.cheque_type === "A la orden";
+  const isAlDia = chequeData.emission_mode === "A la orden";
   const isCert = chequeData.certified === "Sí";
   const isCrossed = chequeData.crossed === "Sí";
-  const amountInWords = numeroALetras.NumerosALetras(chequeData.amount);
+  const amountInWords = NumerosALetras(chequeData.amount);
 
   const { width, height } = page.getSize();
   const fontSize = 12;
 
+  // Título "Cheque" en el centro
+  page.drawText("CHEQUE", {
+    x: width / 2 - 30,
+    y: height - 30,
+    size: fontSize + 4,
+    color: rgb(0, 0, 0),
+    font: await pdfDoc.embedFont(StandardFonts.HelveticaBold),
+  });
+
   // Banco y fecha
   page.drawText(`Banco: ${chequeData.bank_name}`, {
     x: 20,
-    y: height - 40,
-    size: fontSize,
-    color: rgb(0, 0, 0),
-  });
-  page.drawText(`Fecha: ${chequeData.issue_date}`, {
-    x: width - 150,
-    y: height - 40,
-    size: fontSize,
-    color: rgb(0, 0, 0),
-  });
-  page.drawText(`Lugar: ${chequeData.issue_place}`, {
-    x: width - 150,
     y: height - 60,
     size: fontSize,
     color: rgb(0, 0, 0),
+    font: await pdfDoc.embedFont(StandardFonts.HelveticaBold),
+  });
+  const issueDateWords = new Date(chequeData.issue_date).toLocaleDateString(
+    "es-AR",
+    {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }
+  );
+  page.drawText(`Fecha: ${issueDateWords}`, {
+    x: width - 200,
+    y: height - 60,
+    size: fontSize,
+    color: rgb(0, 0, 0),
+    font: await pdfDoc.embedFont(StandardFonts.HelveticaBold),
+  });
+  page.drawText(`Lugar: ${chequeData.issue_place}`, {
+    x: width - 200,
+    y: height - 80,
+    size: fontSize,
+    color: rgb(0, 0, 0),
+    font: await pdfDoc.embedFont(StandardFonts.HelveticaBold),
   });
   page.drawText(`Nº Cheque: ${chequeData.cheque_num}`, {
     x: 20,
-    y: height - 60,
+    y: height - 80,
     size: fontSize,
     color: rgb(0, 0, 0),
+    font: await pdfDoc.embedFont(StandardFonts.HelveticaBold),
   });
 
   // Línea divisoria
   page.drawLine({
-    start: { x: 20, y: height - 70 },
-    end: { x: width - 20, y: height - 70 },
+    start: { x: 20, y: height - 90 },
+    end: { x: width - 20, y: height - 90 },
     thickness: 1,
     color: rgb(0, 0, 0),
   });
 
   // Cheque diferido
   if (isDif) {
-    page.drawText(
-      `(Cheque Diferido - Fecha de pago: ${chequeData.collection_date})`,
-      { x: 20, y: height - 90, size: fontSize, color: rgb(1, 0, 0) }
-    );
+    const collectioDateWords = new Date(
+      chequeData.collection_date
+    ).toLocaleDateString("es-AR", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+    page.drawText(`(Cheque Diferido - Fecha de pago: ${collectioDateWords})`, {
+      x: 20,
+      y: height - 110,
+      size: fontSize,
+      color: rgb(1, 0, 0),
+    });
+    // Línea divisoria
+    page.drawLine({
+      start: { x: 20, y: height - 120 },
+      end: { x: width - 20, y: height - 120 },
+      thickness: 1,
+      color: rgb(0, 0, 0),
+    });
   }
 
   // Beneficiario
-  const textBenef = `Páguese ${isAlDia ? "a la orden de" : "únicamente a"}:`;
-  page.drawText(textBenef, {
+  page.drawText(`Páguese `, {
     x: 20,
-    y: height - 120,
+    y: height - 140,
     size: fontSize,
     color: rgb(0, 0, 0),
   });
-  page.drawText(chequeData.receiver_name, {
-    x: 200,
-    y: height - 120,
-    size: fontSize + 2,
-    color: rgb(0, 0, 0),
-  });
-
-  // Línea divisoria
-  page.drawLine({
-    start: { x: 20, y: height - 130 },
-    end: { x: width - 20, y: height - 130 },
-    thickness: 1,
-    color: rgb(0, 0, 0),
-  });
+  {
+    isAlDia
+      ? page.drawText(`a la orden de: ${chequeData.receiver_name}`, {
+          x: 70,
+          y: height - 140,
+          size: fontSize,
+          color: rgb(0, 0, 0),
+        })
+      : page.drawText(`al portador`, {
+          x: 70,
+          y: height - 140,
+          size: fontSize,
+          color: rgb(0, 0, 0),
+        });
+  }
 
   // Monto
-  page.drawText(`La suma de:`, {
+  page.drawText(`la suma de:`, {
     x: 20,
-    y: height - 150,
+    y: height - 170,
     size: fontSize,
     color: rgb(0, 0, 0),
   });
-  page.drawText(amountInWords, {
-    x: 120,
-    y: height - 150,
+  page.drawText(amountInWords.toUpperCase(), {
+    x: 90,
+    y: height - 170,
     size: fontSize,
     color: rgb(0, 0, 0),
   });
   page.drawText(`$${chequeData.amount}`, {
     x: width - 100,
-    y: height - 150,
+    y: height - 170,
     size: fontSize + 2,
     color: rgb(0, 0, 0),
   });
@@ -131,15 +168,16 @@ const generateChequePDF = async (req, res) => {
   // Cuenta
   page.drawText(`Cuenta Nº: ${chequeData.account_number}`, {
     x: 20,
-    y: height - 180,
-    size: fontSize,
+    y: height - 200,
+    size: fontSize - 1,
     color: rgb(0, 0, 0),
+    font: await pdfDoc.embedFont(StandardFonts.Helvetica),
   });
 
   // Línea divisoria
   page.drawLine({
-    start: { x: 20, y: height - 190 },
-    end: { x: width - 20, y: height - 190 },
+    start: { x: 20, y: height - 210 },
+    end: { x: width - 20, y: height - 210 },
     thickness: 1,
     color: rgb(0, 0, 0),
   });
@@ -147,16 +185,17 @@ const generateChequePDF = async (req, res) => {
   // Firma
   page.drawText(`Firma:`, {
     x: width - 150,
-    y: height - 220,
+    y: height - 240,
     size: fontSize,
     color: rgb(0, 0, 0),
+    font: await pdfDoc.embedFont(StandardFonts.HelveticaBold),
   });
 
   // Cheque certificado
   if (isCert) {
     page.drawText(`CERTIFICADO`, {
       x: width / 2 - 40,
-      y: height - 200,
+      y: height - 240,
       size: fontSize + 2,
       color: rgb(0, 0, 1),
     });
@@ -164,28 +203,46 @@ const generateChequePDF = async (req, res) => {
 
   // Cheque cruzado
   if (isCrossed) {
+    const lineMargin = 10;
+    const lineLength = 50;
+    const lineY = height - 20;
+    const lineX = 50; // Moved to the right
+    const angle = (3 * Math.PI) / 4; // 135 degrees in radians
+
     page.drawLine({
-      start: { x: 50, y: height - 80 },
-      end: { x: width - 50, y: height - 240 },
+      start: { x: lineX, y: lineY },
+      end: {
+        x: lineX + lineLength * Math.cos(angle),
+        y: lineY - lineLength * Math.sin(angle),
+      },
       thickness: 2,
       color: rgb(0, 0, 0),
     });
     page.drawLine({
-      start: { x: width - 50, y: height - 80 },
-      end: { x: 50, y: height - 240 },
+      start: { x: lineX, y: lineY - lineMargin },
+      end: {
+        x: lineX + lineLength * Math.cos(angle),
+        y: lineY - lineMargin - lineLength * Math.sin(angle),
+      },
       thickness: 2,
       color: rgb(0, 0, 0),
+    });
+    page.drawText(`CRUZADO`, {
+      x: width / 2 - 40,
+      y: height - 60,
+      size: fontSize + 2,
+      color: rgb(0, 0, 1),
     });
   }
 
   // Mensaje de footer
   page.drawText(
     "Documento de práctica - No válido para operaciones comerciales.",
-    { x: width / 3, y: height - 260, size: 10, color: rgb(0, 0, 0) }
+    { x: width / 3, y: height - 280, size: 10, color: rgb(0, 0, 0) }
   );
   page.drawText("Este cheque ha sido generado automáticamente.", {
     x: width / 4,
-    y: height - 270,
+    y: height - 290,
     size: 10,
     color: rgb(0, 0, 0),
   });

@@ -78,6 +78,9 @@ function CreateDocs() {
         <DocsButton onClick={() => navigate("/createCheque")}>
           Cheque
         </DocsButton>
+        <DocsButton onClick={() => navigate("/createPromissoryNote")}>
+          Pagaré
+        </DocsButton>
       </DocsButtonContainer>
     </CreateDocsContainer>
   );

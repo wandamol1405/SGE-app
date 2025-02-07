@@ -16,7 +16,7 @@ function CheckCheque() {
     async function getCompany() {
       const result = await fetch("http://localhost:3000/users/find/" + user);
       const response = await result.json();
-      setCompany(response);
+      setCompany(response.user);
     }
     getCompany();
   }, [user]);
@@ -91,17 +91,17 @@ function CheckCheque() {
       <h2>Tipo de cheque</h2>
       <section>
         <p>
-          <strong>Tipo de cheque:</strong> {cheque.data.type_cheque}
+          <strong>Tipo de cheque: </strong> {cheque.data.type_cheque}
         </p>
         <p>
-          <strong>Modalidad de emisión</strong> {cheque.data.emission_mode}
+          <strong>Modalidad de emisión: </strong> {cheque.data.emission_mode}
         </p>
         <p>
-          <strong>¿Está certificado?:</strong>{" "}
-          {cheque.data.certificated ? "Sí" : "No"}
+          <strong>¿Está certificado?: </strong>
+          {cheque.data.certificated}
         </p>
         <p>
-          <strong>¿Está cruzado?</strong> {cheque.data.crossed ? "Sí" : "No"}
+          <strong>¿Está cruzado?: </strong> {cheque.data.crossed}
         </p>
       </section>
 
@@ -125,7 +125,7 @@ function CheckCheque() {
           {cheque.data.receiver_name}
         </p>
         <p>
-          <strong>Fecha de cobro:</strong>
+          <strong>Fecha de cobro: </strong>
           {cheque.data.collection_date}
         </p>
       </section>

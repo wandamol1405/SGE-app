@@ -31,6 +31,8 @@ import CreateDeliveryNoteDetail from "./pages/createDeliveryNote-detail";
 import CheckDeliveryNote from "./pages/checkDeliveryNote";
 import CreateCheque from "./pages/createCheque";
 import CheckCheque from "./pages/checkCheque";
+import CreatePromissoryNote from "./pages/createPromissoryNote";
+import CheckPromissoryNote from "./pages/checkpromissoryNote";
 
 function App() {
   return (
@@ -238,6 +240,22 @@ function App() {
           element={
             <ProtectedRoute>
               <CheckCheque />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/createPromissoryNote"
+          element={
+            <ProtectedRoute>
+              <CreatePromissoryNote />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/checkPromissoryNote"
+          element={
+            <ProtectedRoute>
+              <CheckPromissoryNote />
             </ProtectedRoute>
           }
         />
