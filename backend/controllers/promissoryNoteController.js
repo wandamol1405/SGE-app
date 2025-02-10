@@ -9,6 +9,24 @@ const getPromissoryNotes = async (req, res) => {
   res.json({ msg: "Promissory notes list", promissoryNote });
 };
 
+const getPromissoryNotesByCompany = async (req, res) => {
+  try {
+    const companyId = req.params.id;
+    if (!companyId) {
+      return res
+        .status(400)
+        .json({ error: "No se proporcionó el id de la empresa." });
+    }
+    const promissoryNotes = await PromissoryNote.findAll({
+      where: { id_company: companyId },
+    });
+    res.json({ promissoryNotes });
+  } catch (error) {
+    console.error("Error al obtener los pagaré:", error);
+    res.status(500).json({ error: "Error al obtener los pagaré." });
+  }
+};
+
 const addPromissoryNote = async (req, res) => {
   try {
     const { manturity_type, ...promissoryNote } = req.body;
@@ -181,4 +199,5 @@ module.exports = {
   getPromissoryNotes,
   addPromissoryNote,
   generatePromissoryNotePDF,
+  getPromissoryNotesByCompany,
 };

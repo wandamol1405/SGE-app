@@ -10,6 +10,24 @@ const getDebitNote = async (req, res) => {
   res.json({ msg: "Debit note list", debitNotes });
 };
 
+const getDebitNoteByCompany = async (req, res) => {
+  try {
+    const companyId = req.params.id;
+    if (!companyId) {
+      return res
+        .status(400)
+        .json({ error: "No se proporcionó el id de la empresa." });
+    }
+    const debitNotes = await DebitNote.findAll({
+      where: { id_company: companyId },
+    });
+    res.json({ debitNotes });
+  } catch (error) {
+    console.error("Error al obtener las notas de débito:", error);
+    res.status(500).json({ error: "Error al obtener las notas de débito." });
+  }
+};
+
 const addDebitNote = async (req, res) => {
   try {
     let { details, ...debitNote } = req.body;
@@ -213,7 +231,7 @@ const generateDebitNotePDF = async (req, res) => {
   doc
     .fontSize(10)
     .font("Helvetica")
-    .text("Gracias por su compra.", { align: "center" });
+    .text("Gracias por su compra.", 50, doc.y, { align: "center" });
   doc.text("Esta nota de débito ha sido generada automáticamente.", {
     align: "center",
   });
@@ -243,4 +261,9 @@ const generateDebitNotePDF = async (req, res) => {
   });
 };
 
-module.exports = { getDebitNote, addDebitNote, generateDebitNotePDF };
+module.exports = {
+  getDebitNote,
+  addDebitNote,
+  generateDebitNotePDF,
+  getDebitNoteByCompany,
+};

@@ -5,10 +5,12 @@ const {
   getPromissoryNotes,
   addPromissoryNote,
   generatePromissoryNotePDF,
+  getPromissoryNotesByCompany,
 } = require("../controllers/promissoryNoteController");
 
 promissoryNoteRouter.get("/", getPromissoryNotes);
 promissoryNoteRouter.post("/", addPromissoryNote);
 promissoryNoteRouter.post("/generate-pdf", generatePromissoryNotePDF);
+promissoryNoteRouter.get("/find/:id", getPromissoryNotesByCompany);
 
 module.exports = promissoryNoteRouter;

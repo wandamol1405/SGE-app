@@ -5,10 +5,12 @@ const {
   getDeliveryNote,
   addDeliveryNote,
   generateDeliveryNotePDF,
+  getDeliveryNoteByCompany,
 } = require("../controllers/deliveryNoteController");
 
 deliveryNoteRouter.get("/", getDeliveryNote);
 deliveryNoteRouter.post("/", addDeliveryNote);
 deliveryNoteRouter.post("/generate-pdf", generateDeliveryNotePDF);
+deliveryNoteRouter.get("/find/:id", getDeliveryNoteByCompany);
 
 module.exports = deliveryNoteRouter;

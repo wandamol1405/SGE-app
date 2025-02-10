@@ -10,6 +10,14 @@ const getCreditNote = async (req, res) => {
   res.json({ msg: "Credit note list", creditNotes });
 };
 
+const getCreditNotesByCompany = async (req, res) => {
+  const companyId = req.params.id;
+  const creditNotes = await CreditNote.findAll({
+    where: { id_company: companyId },
+  });
+  res.json({ msg: "Credit note list", creditNotes });
+};
+
 const addCreditNote = async (req, res) => {
   try {
     let { details, ...creditNote } = req.body;
@@ -180,19 +188,19 @@ const generateCreditNotePDF = async (req, res) => {
   doc.fontSize(12).font("Helvetica-Bold");
 
   if (showIVA) {
-    doc.text(`Subtotal: $${debitNoteData.subtotal}`, 450, doc.y, {
+    doc.text(`Subtotal: $${creditNoteData.subtotal}`, 450, doc.y, {
       align: "right",
     });
-    doc.text(`IVA: $${debitNoteData.IVA_total}`, 450, doc.y, {
+    doc.text(`IVA: $${creditNoteData.IVA_total}`, 450, doc.y, {
       align: "right",
     });
     doc
       .fontSize(14)
-      .text(`Total: $${debitNoteData.total}`, 450, doc.y, { align: "right" });
+      .text(`Total: $${creditNoteData.total}`, 450, doc.y, { align: "right" });
   } else {
     doc
       .fontSize(14)
-      .text(`Total: $${debitNoteData.total}`, 450, doc.y, { align: "right" });
+      .text(`Total: $${creditNoteData.total}`, 450, doc.y, { align: "right" });
     doc.moveDown(0.5);
     doc
       .fontSize(10)
@@ -205,7 +213,7 @@ const generateCreditNotePDF = async (req, res) => {
           align: "left",
         }
       );
-    doc.text(`IVA Contenido: $${debitNoteData.IVA_total}`, 50, doc.y, {
+    doc.text(`IVA Contenido: $${creditNoteData.IVA_total}`, 50, doc.y, {
       align: "left",
     });
   }
@@ -245,4 +253,9 @@ const generateCreditNotePDF = async (req, res) => {
   });
 };
 
-module.exports = { getCreditNote, addCreditNote, generateCreditNotePDF };
+module.exports = {
+  getCreditNote,
+  addCreditNote,
+  generateCreditNotePDF,
+  getCreditNotesByCompany,
+};

@@ -54,6 +54,19 @@ const addBuyOrder = async (req, res) => {
   }
 };
 
+const getBuyOrdersbyCompany = async (req, res) => {
+  const companyId = req.params.id;
+  if (!companyId) {
+    return res
+      .status(400)
+      .json({ error: "No se proporcionó el id de la empresa." });
+  }
+  const buyOrders = await BuyOrder.findAll({
+    where: { id_company: companyId },
+  });
+  res.json({ buyOrders });
+};
+
 const generateBuyOrderPDF = async (req, res) => {
   const buyOrderData = req.body;
   const doc = new PDFDocument({ size: "A4", margin: 50 });
@@ -205,4 +218,5 @@ module.exports = {
   getBuyOrders,
   addBuyOrder,
   generateBuyOrderPDF,
+  getBuyOrdersbyCompany,
 };

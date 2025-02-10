@@ -6,8 +6,16 @@ const path = require("path");
 const PDFDocument = require("pdfkit");
 
 const getDeliveryNote = async (req, res) => {
-  const deliveryNote = await DeliveryNote.findAll();
-  res.json({ msg: "Delivey note list", deliveryNote });
+  const deliveryNotes = await DeliveryNote.findAll();
+  res.json({ msg: "Delivery note list", deliveryNotes });
+};
+
+const getDeliveryNoteByCompany = async (req, res) => {
+  const companyId = req.params.id;
+  const deliveryNotes = await DeliveryNote.findAll({
+    where: { id_company: companyId },
+  });
+  res.json({ msg: "Delivery note list", deliveryNotes });
 };
 
 const addDeliveryNote = async (req, res) => {
@@ -220,4 +228,9 @@ const generateDeliveryNotePDF = async (req, res) => {
   });
 };
 
-module.exports = { getDeliveryNote, addDeliveryNote, generateDeliveryNotePDF };
+module.exports = {
+  getDeliveryNote,
+  addDeliveryNote,
+  generateDeliveryNotePDF,
+  getDeliveryNoteByCompany,
+};

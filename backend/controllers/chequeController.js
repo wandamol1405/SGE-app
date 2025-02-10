@@ -9,6 +9,14 @@ const getCheques = async (req, res) => {
   res.json({ msg: "Cheques list", cheques });
 };
 
+const getChequesByCompany = async (req, res) => {
+  const companyId = req.params.id;
+  const cheques = await Cheque.findAll({
+    where: { id_company: companyId },
+  });
+  res.json({ msg: "Cheques list", cheques });
+};
+
 const addCheque = async (req, res) => {
   try {
     const cheque = req.body;
@@ -258,4 +266,9 @@ const generateChequePDF = async (req, res) => {
   });
 };
 
-module.exports = { getCheques, addCheque, generateChequePDF };
+module.exports = {
+  getCheques,
+  addCheque,
+  generateChequePDF,
+  getChequesByCompany,
+};

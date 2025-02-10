@@ -29,8 +29,6 @@ module.exports = (sequelize, DataTypes) => {
       supplier_address: DataTypes.STRING,
       supplier_cuit: DataTypes.STRING,
       supplier_condition: DataTypes.STRING,
-      subtotal: DataTypes.INTEGER,
-      IVA: DataTypes.INTEGER,
       total: DataTypes.INTEGER,
     },
     {

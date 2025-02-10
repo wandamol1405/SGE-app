@@ -10,10 +10,28 @@ const getInvoices = async (req, res) => {
   res.json({ msg: "Invoices list", invoices });
 };
 
+const getInvoicesByCompany = async (req, res) => {
+  try {
+    const companyId = req.params.id;
+    if (!companyId) {
+      return res
+        .status(400)
+        .json({ error: "No se proporcionó el id de la empresa." });
+    }
+    const invoices = await Invoice.findAll({
+      where: { id_company: companyId },
+    });
+    res.json({ invoices });
+  } catch (error) {
+    console.error("Error al obtener las facturas:", error);
+    res.status(500).json({ error: "Error al obtener las facturas." });
+  }
+};
 const addInvoice = async (req, res) => {
   try {
     let { details, ...invoice } = req.body; // Separar details del resto de los datos de la factura
     const companyId = invoice.id_company;
+    console.log(companyId);
 
     // Obtener el último número de factura para la compañía
     const invoiceCounter = await InvoiceCounter.findOne({
@@ -185,19 +203,19 @@ const generateInvoicePDF = async (req, res) => {
   doc.fontSize(12).font("Helvetica-Bold");
 
   if (showIVA) {
-    doc.text(`Subtotal: $${debitNoteData.subtotal}`, 450, doc.y, {
+    doc.text(`Subtotal: $${invoiceData.subtotal}`, 450, doc.y, {
       align: "right",
     });
-    doc.text(`IVA: $${debitNoteData.IVA_total}`, 450, doc.y, {
+    doc.text(`IVA: $${invoiceData.IVA_total}`, 450, doc.y, {
       align: "right",
     });
     doc
       .fontSize(14)
-      .text(`Total: $${debitNoteData.total}`, 450, doc.y, { align: "right" });
+      .text(`Total: $${invoiceData.total}`, 450, doc.y, { align: "right" });
   } else {
     doc
       .fontSize(14)
-      .text(`Total: $${debitNoteData.total}`, 450, doc.y, { align: "right" });
+      .text(`Total: $${invoiceData.total}`, 450, doc.y, { align: "right" });
     doc.moveDown(0.5);
     doc
       .fontSize(10)
@@ -210,7 +228,7 @@ const generateInvoicePDF = async (req, res) => {
           align: "left",
         }
       );
-    doc.text(`IVA Contenido: $${debitNoteData.IVA_total}`, 50, doc.y, {
+    doc.text(`IVA Contenido: $${invoiceData.IVA_total}`, 50, doc.y, {
       align: "left",
     });
   }
@@ -220,7 +238,7 @@ const generateInvoicePDF = async (req, res) => {
   doc
     .fontSize(10)
     .font("Helvetica")
-    .text("Gracias por su compra.", { align: "center" });
+    .text("Gracias por su compra.", 50, doc.y, { align: "center" });
   doc.text("Esta factura ha sido generada automáticamente.", {
     align: "center",
   });
@@ -250,4 +268,9 @@ const generateInvoicePDF = async (req, res) => {
   });
 };
 
-module.exports = { getInvoices, addInvoice, generateInvoicePDF };
+module.exports = {
+  getInvoices,
+  addInvoice,
+  generateInvoicePDF,
+  getInvoicesByCompany,
+};
