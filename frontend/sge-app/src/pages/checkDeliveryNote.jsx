@@ -86,6 +86,7 @@ function CheckDeliveryNote() {
           a.click();
           a.remove();
           window.URL.revokeObjectURL(url);
+          navigate("/listDocs");
         } else {
           alert("Error al generar el PDF");
         }

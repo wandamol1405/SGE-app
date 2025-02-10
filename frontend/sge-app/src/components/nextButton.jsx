@@ -17,7 +17,7 @@ const NextButton = styled.button`
   }
 
   @media (min-width: 1080px) {
-    width: 8vw;
+    width: 12vw;
     font-size: 20px;
     align-self: center;
   }

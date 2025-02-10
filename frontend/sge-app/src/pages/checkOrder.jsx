@@ -162,8 +162,7 @@ function CheckOrder() {
         <p>
           <strong>Total:</strong>{" "}
           {"$" +
-            details.reduce((acc, row) => acc + row.amount * row.unit_price, 0) *
-              1.21}
+            details.reduce((acc, row) => acc + row.amount * row.unit_price, 0)}
         </p>
       </section>
 
