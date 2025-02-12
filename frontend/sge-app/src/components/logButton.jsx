@@ -14,7 +14,6 @@ const LogButton = styled.button`
   color: #525b44;
 
   @media (min-width: 1080px) {
-    width: 8vw;
     font-size: 20px;
     align-self: center;
   }

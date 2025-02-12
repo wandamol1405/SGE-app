@@ -16,6 +16,7 @@ const deliveryNoteDetailRouter = require("./routes/deliveryNoteDetailRoutes");
 const chequeRouter = require("./routes/chequeRoutes");
 const promissoryNoteRouter = require("./routes/promissoryNoteRoutes");
 const cors = require("cors");
+const accountRouter = require("./routes/accountRoutes");
 
 app.use(cors());
 app.use(
@@ -42,6 +43,7 @@ app.use("/deliveryNote", deliveryNoteRouter);
 app.use("/deliveryNoteDetail", deliveryNoteDetailRouter);
 app.use("/cheque", chequeRouter);
 app.use("/promissoryNote", promissoryNoteRouter);
+app.use("/account", accountRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

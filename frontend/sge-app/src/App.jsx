@@ -34,6 +34,8 @@ import CheckCheque from "./pages/checkCheque";
 import CreatePromissoryNote from "./pages/createPromissoryNote";
 import CheckPromissoryNote from "./pages/checkPromissoryNote";
 import ListDocs from "./pages/listDocs";
+import UpdateGJ from "./pages/updateGeneralJournal";
+import AddAccount from "./pages/addAccount";
 
 function App() {
   return (
@@ -268,8 +270,23 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/updateGeneralJournal"
+          element={
+            <ProtectedRoute>
+              <UpdateGJ />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/addAccount"
+          element={
+            <ProtectedRoute>
+              <AddAccount />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
-
       <Footer />
     </>
   );
