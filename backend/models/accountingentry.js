@@ -10,9 +10,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       AccountingEntry.belongsTo(models.JournalEntry, {
         foreignKey: "id_jor_entry",
+        as: "journalEntry",
       });
       AccountingEntry.belongsTo(models.Account, {
         foreignKey: "id_account",
+        as: "accounts",
       });
     }
   }
@@ -37,12 +39,13 @@ module.exports = (sequelize, DataTypes) => {
           key: "id_account",
         },
       },
-      credit: DataTypes.DECIMAL,
+      debit: DataTypes.DECIMAL,
       credit: DataTypes.DECIMAL,
     },
     {
       sequelize,
       modelName: "AccountingEntry",
+      tableName: "AccountingEntries",
     }
   );
   return AccountingEntry;

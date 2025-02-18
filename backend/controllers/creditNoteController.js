@@ -67,7 +67,7 @@ const generateCreditNotePDF = async (req, res) => {
   const doc = new PDFDocument({ size: "A4", margin: 50 });
   const filePath = path.join(__dirname, "credit-note.pdf");
   const stream = fs.createWriteStream(filePath);
-  const showIVA = creditNoteData.type_credit_note === "Nota de crédito A";
+  const showIVA = creditNoteData.type_credit_note === "Nota de Crédito A";
 
   const creditNoteCounter = await CreditNoteCounter.findOne({
     where: { id_company: creditNoteData.company.id_user },

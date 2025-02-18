@@ -8,7 +8,10 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      JournalEntry.hasMany(models.AccountingEntry, {
+        foreignKey: "id_jor_entry",
+        as: "accountingEntries",
+      });
     }
   }
   JournalEntry.init(
@@ -18,6 +21,13 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
+      id_company: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "User",
+          key: "id_user",
+        },
+      },
       date: DataTypes.DATE,
       description: DataTypes.STRING,
       total_debit: DataTypes.DECIMAL,
@@ -26,7 +36,9 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "JournalEntry",
+      tableName: "JournalEntries",
     }
   );
+
   return JournalEntry;
 };

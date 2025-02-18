@@ -199,7 +199,7 @@ const generateDeliveryNotePDF = async (req, res) => {
     .fontSize(10)
     .font("Helvetica")
     .text("Gracias por su compra.", 50, doc.y, { align: "center" });
-  doc.text("Este remito ha sido generada automáticamente.", {
+  doc.text("Este remito ha sido generado automáticamente.", {
     align: "center",
   });
   doc.moveDown(0.5);

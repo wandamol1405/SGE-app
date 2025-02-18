@@ -88,14 +88,14 @@ const generatePromissoryNotePDF = async (req, res) => {
   });
 
   page.drawText(`Lugar de pago: ${promissoryNoteData.pay_place}`, {
-    x: width - 200,
+    x: width - 300,
     y: height - 40,
     size: fontSize,
     color: rgb(0, 0, 0),
     font: await pdfDoc.embedFont(StandardFonts.HelveticaBold),
   });
   page.drawText(`$${promissoryNoteData.amount} pesos argentinos`, {
-    x: width - 200,
+    x: width - 300,
     y: height - 80,
     size: fontSize + 2,
     color: rgb(0, 0, 0),

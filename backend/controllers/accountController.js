@@ -1,8 +1,15 @@
 const Account = require("../models").Account;
 
 const getAccounts = async (req, res) => {
-  const accounts = await Account.findAll();
-  res.json({ msg: "Accounts list", accounts });
+  try {
+    const accounts = await Account.findAll({
+      order: [["type", "ASC"]],
+    });
+    res.json({ msg: "Accounts list", accounts });
+  } catch (error) {
+    console.error("Error al obtener las cuentas:", error);
+    res.status(500).json({ error: "Error al obtener las cuentas." });
+  }
 };
 
 const addAccount = async (req, res) => {
