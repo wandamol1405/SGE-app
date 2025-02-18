@@ -1,13 +1,14 @@
 import { React, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { usePromissoryNote } from "../context/PromissoryNoteContext";
 import Input from "../components/input";
 import Select from "../components/select";
 import NextButton from "../components/nextButton";
 import CreateInvoiceContainer from "../components/createInvoice";
+import BackButton from "../components/backButton";
 
 function CreatePromissoryNote() {
-  const { updatePromissoryNote } = usePromissoryNote();
+  const { promissoryNote, updatePromissoryNote } = usePromissoryNote();
   const [issue_date, setDate] = useState("");
   const [issue_place, setPlace] = useState("");
   const [manturity_type, setManturityType] = useState("");
@@ -32,6 +33,19 @@ function CreatePromissoryNote() {
       setManturityDate("No corresponde");
     }
   }, [manturity_type]);
+
+  useEffect(() => {
+    if (promissoryNote.data) {
+      setDate(promissoryNote.data.issue_date || "");
+      setPlace(promissoryNote.data.issue_place || "");
+      setManturityType(promissoryNote.data.manturity_type || "");
+      setManturityDate(promissoryNote.data.manturity_date || "");
+      setManturityDays(promissoryNote.data.manturity_days || "");
+      setReceiverName(promissoryNote.data.receiver_name || "");
+      setAmount(promissoryNote.data.amount || "");
+      setPayPlace(promissoryNote.data.pay_place || "");
+    }
+  }, [promissoryNote]);
 
   const handleNext = (e) => {
     e.preventDefault();
@@ -136,9 +150,10 @@ function CreatePromissoryNote() {
           onChange={(e) => setPayPlace(e.target.value)}
         />
         <div>
-          <NextButton onClick={() => navigate("/createDocs")}>
-            Volver
-          </NextButton>
+          <Link to="/createDocs">
+            <BackButton>Volver</BackButton>
+          </Link>
+
           <NextButton onClick={handleNext}>Siguiente</NextButton>
         </div>
       </form>

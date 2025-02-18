@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import useLogin from "../hooks/useLogin";
+import BackButton from "../components/backButton";
 
 const HomeContainer = styled.div`
   justify-content: center;
@@ -63,8 +64,16 @@ const HomeButton = styled.button`
   }
 `;
 
+const LogoutButton = styled(HomeButton)`
+  background-color: #ff4d4d;
+
+  &:hover {
+    background-color: #ff1a1a;
+  }
+`;
+
 function Home() {
-  const { user } = useLogin();
+  const { user, logout } = useLogin();
   const [company_name, setCompanyName] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -94,10 +103,15 @@ function Home() {
           <HomeButton>Editar Libro Diario</HomeButton>
         </Link>
         {isAdmin && (
-          <Link to="/addAccount">
-            <HomeButton>Agregar cuenta</HomeButton>
+          <Link to="/updateAccounts">
+            <HomeButton>Editar cuentas</HomeButton>
           </Link>
         )}
+      </ButtonsContainer>
+      <ButtonsContainer>
+        <Link to="/login">
+          <BackButton onClick={logout}>Cerrar sesión</BackButton>
+        </Link>
       </ButtonsContainer>
     </HomeContainer>
   );

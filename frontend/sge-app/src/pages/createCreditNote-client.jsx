@@ -1,18 +1,28 @@
-import { React, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { React, useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { useCreditNote } from "../context/CreditNoteContext";
 import Input from "../components/input";
 import Select from "../components/select";
 import NextButton from "../components/nextButton";
 import CreateInvoiceContainer from "../components/createInvoice";
+import BackButton from "../components/backButton";
 
 function CreateCreditNoteClient() {
-  const { updateCreditNote } = useCreditNote();
+  const { creditNote, updateCreditNote } = useCreditNote();
   const [buyer_name, setBuyerName] = useState("");
   const [buyer_address, setBuyerAddress] = useState("");
   const [buyer_cuit, setBuyerCuit] = useState("");
   const [buyer_iva, setBuyerIva] = useState("");
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    if (creditNote.client) {
+      setBuyerName(creditNote.client.buyer_name || "");
+      setBuyerAddress(creditNote.client.buyer_address || "");
+      setBuyerCuit(creditNote.client.buyer_cuit || "");
+      setBuyerIva(creditNote.client.buyer_iva || "");
+    }
+  }, [creditNote]);
 
   const navigate = useNavigate();
 
@@ -121,9 +131,9 @@ function CreateCreditNoteClient() {
           <option value="Consumidor final">Consumidor final</option>
         </Select>
         <div>
-          <NextButton onClick={() => navigate("/createCreditNote-header")}>
-            Volver
-          </NextButton>
+          <Link to="/createCreditNote-header">
+            <BackButton>Volver</BackButton>
+          </Link>
           <NextButton onClick={handleNext}>Siguiente</NextButton>
         </div>
       </form>

@@ -1,19 +1,28 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { useBuyOrder } from "../context/BuyOrderContext";
 import Input from "../components/input";
 import Select from "../components/select";
 import NextButton from "../components/nextButton";
 import CreateInvoiceContainer from "../components/createInvoice";
+import BackButton from "../components/backButton";
 
 function CreateOrderHeader() {
-  const { updateBuyOrder } = useBuyOrder();
+  const { updateBuyOrder, buyOrder } = useBuyOrder();
   const [issue_date, setDate] = useState("");
   const [delivery_date, setDeliveryDate] = useState("");
   const [sale_condition, setSaleCondition] = useState("");
   const [completeInfo, setCompleteInfo] = useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (buyOrder.header) {
+      setDate(buyOrder.header.issue_date || "");
+      setDeliveryDate(buyOrder.header.delivery_date || "");
+      setSaleCondition(buyOrder.header.sale_condition || "");
+    }
+  }, [buyOrder]);
 
   const handleNext = (e) => {
     e.preventDefault();
@@ -74,9 +83,9 @@ function CreateOrderHeader() {
           <option value="Crédito">Crédito</option>
         </Select>
         <div>
-          <NextButton onClick={() => navigate("/createDocs")}>
-            Volver
-          </NextButton>
+          <Link to="/createDocs">
+            <BackButton>Volver</BackButton>
+          </Link>
           <NextButton onClick={handleNext}>Siguiente</NextButton>
         </div>
       </form>

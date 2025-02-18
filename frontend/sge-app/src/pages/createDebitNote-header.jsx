@@ -1,13 +1,14 @@
-import { React, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { React, useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { useDebitNote } from "../context/DebitNoteContext";
 import Input from "../components/input";
 import Select from "../components/select";
 import NextButton from "../components/nextButton";
 import CreateInvoiceContainer from "../components/createInvoice";
+import BackButton from "../components/backButton";
 
 function CreateDebitNoteHeader() {
-  const { updateDebitNote } = useDebitNote();
+  const { debitNote, updateDebitNote } = useDebitNote();
   const [type_debit_note, setTypeDebitNote] = useState("");
   const [point_sale, setPointSale] = useState("");
   const [issue_date, setDate] = useState("");
@@ -15,6 +16,15 @@ function CreateDebitNoteHeader() {
   const [completeInfo, setCompleteInfo] = useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (debitNote.header) {
+      setTypeDebitNote(debitNote.header.type_debit_note || "");
+      setPointSale(debitNote.header.point_sale || "");
+      setDate(debitNote.header.issue_date || "");
+      setSaleCondition(debitNote.header.sale_condition || "");
+    }
+  }, [debitNote]);
 
   const handleNext = (e) => {
     e.preventDefault();
@@ -82,9 +92,9 @@ function CreateDebitNoteHeader() {
           }}
         />
         <div>
-          <NextButton onClick={() => navigate("/createDocs")}>
-            Volver
-          </NextButton>
+          <Link to="/createDocs">
+            <BackButton>Volver</BackButton>
+          </Link>
           <NextButton onClick={handleNext}>Siguiente</NextButton>
         </div>
       </form>

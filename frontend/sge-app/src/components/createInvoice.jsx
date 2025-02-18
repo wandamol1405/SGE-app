@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 const CreateInvoiceContainer = styled.div`
+  display: flex;
   background-color: #ffcfcf;
   border-radius: 15px;
   align-items: center;
@@ -10,6 +11,8 @@ const CreateInvoiceContainer = styled.div`
   margin: 0 auto;
   margin-top: 2rem;
   margin-bottom: 2rem;
+  flex-direction: column;
+  gap: 1rem;
 
   p {
     color: #525b44;

@@ -19,7 +19,7 @@ const Select = styled.select`
   }
 
   @media (min-width: 1080px) {
-    width: 32vw;
+    width: 27vw;
     padding: 10px 20px;
     font-size: 20px;
 

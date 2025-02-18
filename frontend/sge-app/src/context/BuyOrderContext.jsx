@@ -7,22 +7,31 @@ export function useBuyOrder() {
 }
 
 export function BuyOrderProvider({ children }) {
-  const [buyOrder, setBuyOrder] = useState({
-    header: {},
-    supplier: {},
-    details: [],
-  });
+  const initialState = {
+    header: {}, // Datos de la factura (cabecera)
+    client: {}, // Datos del cliente
+    details: [], // Detalles de los productos/servicios
+  };
 
-  const updateBuyOrder = (key, value) => {
-    if (typeof key === "object") {
-      setBuyOrder((prev) => ({ ...prev, ...key }));
-    } else {
-      setBuyOrder((prev) => ({ ...prev, [key]: value }));
-    }
+  const [buyOrder, setBuyOrder] = useState(initialState);
+
+  const updateBuyOrder = (section, data) => {
+    setBuyOrder((prev) => ({
+      ...prev,
+      [section]: Array.isArray(data)
+        ? [...data]
+        : { ...prev[section], ...data },
+    }));
+  };
+
+  const resetBuyOrder = () => {
+    setBuyOrder(initialState);
   };
 
   return (
-    <BuyOrderContext.Provider value={{ buyOrder, updateBuyOrder }}>
+    <BuyOrderContext.Provider
+      value={{ buyOrder, updateBuyOrder, resetBuyOrder }}
+    >
       {children}
     </BuyOrderContext.Provider>
   );

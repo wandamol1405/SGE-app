@@ -1,29 +1,38 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useDebitNote } from "../context/DebitNoteContext";
 import Input from "../components/input";
 import NextButton from "../components/nextButton";
 import CreateInvoiceContainer from "../components/createInvoice";
 import TableContainer from "../components/tableContainer";
+import BackButton from "../components/backButton";
+import AddButton from "../components/addButton";
 
 function CreateDebitNoteDetails() {
   const { updateDebitNote } = useDebitNote();
-  const [details, setDetails] = useState(
-    Array(5)
-      .fill()
-      .map(() => ({ amount: "", product: "", unit_price: "" })) // Inicializa con 5 filas vacías
-  );
+  const [details, setDetails] = useState([
+    { amount: "", product: "", unit_price: "" },
+  ]);
   const navigate = useNavigate();
 
   const handleInputChange = (index, field, value) => {
     const updatedDetails = [...details];
-    updatedDetails[index][field] = value; // Actualiza el campo correspondiente
+    updatedDetails[index][field] = value;
     setDetails(updatedDetails);
   };
 
+  const addRow = () => {
+    setDetails([...details, { amount: "", product: "", unit_price: "" }]);
+  };
+
+  const removeRow = () => {
+    if (details.length > 1) {
+      setDetails(details.slice(0, -1));
+    }
+  };
+
   const handleSaveDetails = () => {
-    // Actualiza el contexto con los detalles ingresados
-    updateDebitNote({ details });
+    updateDebitNote("details", details); // Asegurar formato correcto
     alert("Detalles guardados en la nota de débito.");
   };
 
@@ -85,9 +94,13 @@ function CreateDebitNoteDetails() {
         </tbody>
       </TableContainer>
       <div>
-        <NextButton onClick={() => navigate("/createDebitNote-client")}>
-          Volver
-        </NextButton>
+        <AddButton onClick={addRow}>Agregar fila</AddButton>
+        <AddButton onClick={removeRow}>Eliminar fila</AddButton>
+      </div>
+      <div>
+        <Link to="/createDebitNote-client">
+          <BackButton>Volver</BackButton>
+        </Link>
         <NextButton onClick={handleNext}>Siguiente</NextButton>
       </div>
     </CreateInvoiceContainer>

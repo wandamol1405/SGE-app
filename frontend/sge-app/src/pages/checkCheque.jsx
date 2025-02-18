@@ -3,10 +3,11 @@ import { useCheque } from "../context/ChequeContext";
 import CheckContainer from "../components/checkContainer";
 import NextButton from "../components/nextButton";
 import useLogin from "../hooks/useLogin";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import BackButton from "../components/backButton";
 
 function CheckCheque() {
-  const { cheque = { data: {} } } = useCheque() || {};
+  const { cheque = { data: {} }, resetCheque } = useCheque() || {};
   const navigate = useNavigate();
   const [error, setError] = useState({});
   const [company, setCompany] = useState({});
@@ -67,6 +68,7 @@ function CheckCheque() {
           a.click();
           a.remove();
           window.URL.revokeObjectURL(url);
+          resetCheque();
           navigate("/listDocs");
         } else {
           alert("Error al generar el PDF");
@@ -133,7 +135,9 @@ function CheckCheque() {
 
       {error.form && <p style={{ color: "red" }}>{error.form.message}</p>}
       <NextButton onClick={handleSubmit}>Guardar e imprimir</NextButton>
-      <NextButton onClick={() => navigate("/createCheque")}>Volver</NextButton>
+      <Link to="/createCheque">
+        <BackButton>Volver</BackButton>
+      </Link>
     </CheckContainer>
   );
 }

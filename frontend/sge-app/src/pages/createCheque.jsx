@@ -1,13 +1,14 @@
 import { React, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useCheque } from "../context/ChequeContext";
 import Input from "../components/input";
 import Select from "../components/select";
 import NextButton from "../components/nextButton";
 import CreateInvoiceContainer from "../components/createInvoice";
+import BackButton from "../components/backButton";
 
 function CreateCheque() {
-  const { updateCheque } = useCheque();
+  const { cheque, updateCheque } = useCheque();
   const [type_cheque, setTypeCheque] = useState("");
   const [cheque_num, setChequeNum] = useState("");
   const [bank_name, setBankName] = useState("");
@@ -32,6 +33,23 @@ function CreateCheque() {
       setCollectionDate("No corresponde");
     }
   }, [emission_mode, type_cheque]);
+
+  useEffect(() => {
+    if (cheque.data) {
+      setTypeCheque(cheque.data.type_cheque || "");
+      setChequeNum(cheque.data.cheque_num || "");
+      setBankName(cheque.data.bank_name || "");
+      setDate(cheque.data.issue_date || "");
+      setPlace(cheque.data.issue_place || "");
+      setEmissionMode(cheque.data.emission_mode || "");
+      setCertificated(cheque.data.certificated || "");
+      setCrossed(cheque.data.crossed || "");
+      setReceiverName(cheque.data.receiver_name || "");
+      setAmount(cheque.data.amount || "");
+      setCollectionDate(cheque.data.collection_date || "");
+      setAccountNumber(cheque.data.account_number || "");
+    }
+  }, [cheque]);
 
   const handleNext = (e) => {
     e.preventDefault();
@@ -178,9 +196,10 @@ function CreateCheque() {
         />
 
         <div>
-          <NextButton onClick={() => navigate("/createDocs")}>
-            Volver
-          </NextButton>
+          <Link to="/createDocs">
+            <BackButton>Volver</BackButton>
+          </Link>
+
           <NextButton onClick={handleNext}>Siguiente</NextButton>
         </div>
       </form>

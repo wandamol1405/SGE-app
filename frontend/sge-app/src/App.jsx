@@ -36,6 +36,10 @@ import CheckPromissoryNote from "./pages/checkPromissoryNote";
 import ListDocs from "./pages/listDocs";
 import UpdateGJ from "./pages/updateGeneralJournal";
 import AddAccount from "./pages/addAccount";
+import UpdateAccounts from "./pages/updateAccounts";
+import ListAccounts from "./pages/listAccounts";
+import AddJournalEntry from "./pages/addJournalEntry";
+import ListJournalEntries from "./pages/listJournalEntries";
 
 function App() {
   return (
@@ -283,6 +287,38 @@ function App() {
           element={
             <ProtectedRoute>
               <AddAccount />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/updateAccounts"
+          element={
+            <ProtectedRoute>
+              <UpdateAccounts />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/listAccounts"
+          element={
+            <ProtectedRoute>
+              <ListAccounts />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/addJournalEntry"
+          element={
+            <ProtectedRoute>
+              <AddJournalEntry />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/listJournalEntries"
+          element={
+            <ProtectedRoute>
+              <ListJournalEntries />
             </ProtectedRoute>
           }
         />

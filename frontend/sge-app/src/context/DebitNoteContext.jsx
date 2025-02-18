@@ -1,28 +1,43 @@
 import React, { createContext, useContext, useState } from "react";
 
-const DebitNoteContext = createContext();
+export const DebitNoteContext = createContext();
 
 export function useDebitNote() {
   return useContext(DebitNoteContext);
 }
 
 export function DebitNoteProvider({ children }) {
-  const [debitNote, setDebitNote] = useState({
-    header: {}, // Datos de la factura (cabecera)
+  const initialState = {
+    header: {
+      type_debit_note: "",
+      point_sale: "",
+      issue_date: "",
+      sale_condition: "",
+    }, // Datos de la factura (cabecera)
     client: {}, // Datos del cliente
     details: [], // Detalles de los productos/servicios
-  });
+  };
 
-  const updateDebitNote = (key, value) => {
-    if (typeof key === "object") {
-      setDebitNote((prev) => ({ ...prev, ...key }));
-    } else {
-      setDebitNote((prev) => ({ ...prev, [key]: value }));
-    }
+  const [debitNote, setDebitNote] = useState(initialState);
+
+  const updateDebitNote = (section, data) => {
+    setDebitNote((prev) => ({
+      ...prev,
+      [section]: Array.isArray(data)
+        ? [...data]
+        : { ...prev[section], ...data },
+    }));
+  };
+
+  // Función para resetear el contexto
+  const resetDebitNote = () => {
+    setDebitNote(initialState);
   };
 
   return (
-    <DebitNoteContext.Provider value={{ debitNote, updateDebitNote }}>
+    <DebitNoteContext.Provider
+      value={{ debitNote, updateDebitNote, resetDebitNote }}
+    >
       {children}
     </DebitNoteContext.Provider>
   );

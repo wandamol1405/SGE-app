@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import BackButton from "../components/backButton";
 
-const CreateDocsContainer = styled.div`
+const UpdateAccountsContainer = styled.div`
   display: flex;
   flex-direction: column;
   background-color: #fffdec;
@@ -25,7 +25,7 @@ const CreateDocsContainer = styled.div`
   }
 `;
 
-const DocsButton = styled.button`
+const ActionButton = styled.button`
   background-color: #86a788;
   font-family: "Libre Franklin", sans-serif;
   color: #fff;
@@ -45,7 +45,7 @@ const DocsButton = styled.button`
   }
 `;
 
-const DocsButtonContainer = styled.div`
+const ActionButtonContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
@@ -54,38 +54,23 @@ const DocsButtonContainer = styled.div`
   margin-top: 2rem;
 `;
 
-function CreateDocs() {
+function UpdateAccounts() {
   return (
-    <CreateDocsContainer>
-      <p>Seleccione que tipo de documento desea crear</p>
-      <DocsButtonContainer>
-        <Link to="/createInvoice-header">
-          <DocsButton>Factura</DocsButton>
+    <UpdateAccountsContainer>
+      <p>Seleccione que desea realizar</p>
+      <ActionButtonContainer>
+        <Link to="/addAccount">
+          <ActionButton>Agregar cuenta</ActionButton>
         </Link>
-        <Link to="/createOrder-header">
-          <DocsButton>Orden de compra</DocsButton>
+        <Link to="/listAccounts">
+          <ActionButton>Listar cuentas cargadas</ActionButton>
         </Link>
-        <Link to="/createDebitNote-header">
-          <DocsButton>Nota de débito</DocsButton>
-        </Link>
-        <Link to="/createCreditNote-header">
-          <DocsButton>Nota de crédito</DocsButton>
-        </Link>
-        <Link to="/createDeliveryNote-header">
-          <DocsButton>Remito</DocsButton>
-        </Link>
-        <Link to="/createCheque">
-          <DocsButton>Cheque</DocsButton>
-        </Link>
-        <Link to="/createPromissoryNote">
-          <DocsButton>Pagaré</DocsButton>
-        </Link>
-      </DocsButtonContainer>
+      </ActionButtonContainer>
       <Link to="/home">
         <BackButton>Volver al inicio</BackButton>
       </Link>
-    </CreateDocsContainer>
+    </UpdateAccountsContainer>
   );
 }
 
-export default CreateDocs;
+export default UpdateAccounts;

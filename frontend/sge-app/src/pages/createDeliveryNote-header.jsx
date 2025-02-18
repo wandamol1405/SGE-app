@@ -1,13 +1,14 @@
-import { React, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDeliveryNote } from "../context/deliveryNoteContext";
+import { React, useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useDeliveryNote } from "../context/DeliveryNoteContext";
 import Input from "../components/input";
 import Select from "../components/select";
 import NextButton from "../components/nextButton";
 import CreateInvoiceContainer from "../components/createInvoice";
+import BackButton from "../components/backButton";
 
 function CreateDeliveryNoteHeader() {
-  const { updateDeliveryNote } = useDeliveryNote();
+  const { deliveryNote, updateDeliveryNote } = useDeliveryNote();
   const [type_delivery_note, setTypeDeliveryNote] = useState("");
   const [point_sale, setPointSale] = useState("");
   const [issue_date, setDate] = useState("");
@@ -17,6 +18,17 @@ function CreateDeliveryNoteHeader() {
   const [completeInfo, setCompleteInfo] = useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (deliveryNote.header) {
+      setTypeDeliveryNote(deliveryNote.header.type_delivery_note || "");
+      setPointSale(deliveryNote.header.point_sale || "");
+      setDate(deliveryNote.header.issue_date || "");
+      setSaleCondition(deliveryNote.header.sale_condition || "");
+      setMeansOfDelivery(deliveryNote.header.means_of_delivery || "");
+      setObservation(deliveryNote.header.observation || "");
+    }
+  }, [deliveryNote]);
 
   const handleNext = (e) => {
     e.preventDefault();
@@ -97,9 +109,9 @@ function CreateDeliveryNoteHeader() {
           onChange={(e) => setObservation(e.target.value)}
         />
         <div>
-          <NextButton onClick={() => navigate("/createDocs")}>
-            Volver
-          </NextButton>
+          <Link to="/createDocs">
+            <BackButton>Volver</BackButton>
+          </Link>
           <NextButton onClick={handleNext}>Siguiente</NextButton>
         </div>
       </form>

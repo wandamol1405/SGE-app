@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useDeliveryNote } from "../context/deliveryNoteContext";
+import { useDeliveryNote } from "../context/DeliveryNoteContext";
 import CheckContainer from "../components/checkContainer";
 import NextButton from "../components/nextButton";
 import useLogin from "../hooks/useLogin";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import BackButton from "../components/backButton";
 
 function CheckDeliveryNote() {
-  const { deliveryNote = { header: {}, client: {}, details: [] } } =
-    useDeliveryNote() || {};
+  const {
+    deliveryNote = { header: {}, client: {}, details: [] },
+    resetDeliveryNote,
+  } = useDeliveryNote() || {};
   const navigate = useNavigate();
   const details = Array.isArray(deliveryNote.details)
     ? deliveryNote.details.filter(
@@ -86,6 +89,7 @@ function CheckDeliveryNote() {
           a.click();
           a.remove();
           window.URL.revokeObjectURL(url);
+          resetDeliveryNote();
           navigate("/listDocs");
         } else {
           alert("Error al generar el PDF");
@@ -182,9 +186,9 @@ function CheckDeliveryNote() {
 
       {error.form && <p style={{ color: "red" }}>{error.form.message}</p>}
       <NextButton onClick={handleSubmit}>Guardar e imprimir</NextButton>
-      <NextButton onClick={() => navigate("/createDeliveryNote-details")}>
-        Volver
-      </NextButton>
+      <Link to="/createDeliveryNote-details">
+        <BackButton>Volver</BackButton>
+      </Link>
     </CheckContainer>
   );
 }

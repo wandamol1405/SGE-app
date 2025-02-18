@@ -1,13 +1,14 @@
-import { React, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { React, useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { useInvoice } from "../context/InvoiceContext";
 import Input from "../components/input";
 import Select from "../components/select";
 import NextButton from "../components/nextButton";
 import CreateInvoiceContainer from "../components/createInvoice";
+import BackButton from "../components/backButton";
 
 function CreateInvoiceClient() {
-  const { updateInvoice } = useInvoice();
+  const { invoice, updateInvoice } = useInvoice();
   const [buyer_name, setBuyerName] = useState("");
   const [buyer_address, setBuyerAddress] = useState("");
   const [buyer_cuit, setBuyerCuit] = useState("");
@@ -15,6 +16,15 @@ function CreateInvoiceClient() {
   const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (invoice.client) {
+      setBuyerName(invoice.client.buyer_name || "");
+      setBuyerAddress(invoice.client.buyer_address || "");
+      setBuyerCuit(invoice.client.buyer_cuit || "");
+      setBuyerIva(invoice.client.buyer_iva || "");
+    }
+  }, [invoice]);
 
   const handleNext = (e) => {
     e.preventDefault();
@@ -121,9 +131,9 @@ function CreateInvoiceClient() {
           <option value="Consumidor final">Consumidor final</option>
         </Select>
         <div>
-          <NextButton onClick={() => navigate("/createInvoice-header")}>
-            Volver
-          </NextButton>
+          <Link to="/createInvoice-header">
+            <BackButton>Volver</BackButton>
+          </Link>
           <NextButton onClick={handleNext}>Siguiente</NextButton>
         </div>
       </form>

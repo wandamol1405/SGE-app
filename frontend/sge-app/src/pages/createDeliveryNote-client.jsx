@@ -1,13 +1,14 @@
-import { React, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDeliveryNote } from "../context/deliveryNoteContext";
+import { React, useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useDeliveryNote } from "../context/DeliveryNoteContext";
 import Input from "../components/input";
 import Select from "../components/select";
 import NextButton from "../components/nextButton";
 import CreateInvoiceContainer from "../components/createInvoice";
+import BackButton from "../components/backButton";
 
 function CreateDeliveryNoteClient() {
-  const { updateDeliveryNote } = useDeliveryNote();
+  const { deliveryNote, updateDeliveryNote } = useDeliveryNote();
   const [buyer_name, setBuyerName] = useState("");
   const [buyer_address, setBuyerAddress] = useState("");
   const [buyer_cuit, setBuyerCuit] = useState("");
@@ -15,6 +16,15 @@ function CreateDeliveryNoteClient() {
   const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (deliveryNote.client) {
+      setBuyerName(deliveryNote.client.buyer_name || "");
+      setBuyerAddress(deliveryNote.client.buyer_address || "");
+      setBuyerCuit(deliveryNote.client.buyer_cuit || "");
+      setBuyerIva(deliveryNote.client.buyer_iva || "");
+    }
+  }, [deliveryNote]);
 
   const handleNext = (e) => {
     e.preventDefault();
@@ -121,9 +131,9 @@ function CreateDeliveryNoteClient() {
           <option value="Consumidor final">Consumidor final</option>
         </Select>
         <div>
-          <NextButton onClick={() => navigate("/createDeliveryNote-header")}>
-            Volver
-          </NextButton>
+          <Link to="/createDeliveryNote-header">
+            <BackButton>Volver</BackButton>
+          </Link>
           <NextButton onClick={handleNext}>Siguiente</NextButton>
         </div>
       </form>

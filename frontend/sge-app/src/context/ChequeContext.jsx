@@ -7,20 +7,27 @@ export function useCheque() {
 }
 
 export function ChequeProvider({ children }) {
-  const [cheque, setCheque] = useState({
+  const initialState = {
     data: {},
-  });
+  };
 
-  const updateCheque = (key, value) => {
-    if (typeof key === "object") {
-      setCheque((prev) => ({ ...prev, ...key }));
-    } else {
-      setCheque((prev) => ({ ...prev, [key]: value }));
-    }
+  const [cheque, setCheque] = useState(initialState);
+
+  const updateCheque = (section, data) => {
+    setCheque((prev) => ({
+      ...prev,
+      [section]: Array.isArray(data)
+        ? [...data]
+        : { ...prev[section], ...data },
+    }));
+  };
+
+  const resetCheque = () => {
+    setCheque(initialState);
   };
 
   return (
-    <ChequeContext.Provider value={{ cheque, updateCheque }}>
+    <ChequeContext.Provider value={{ cheque, updateCheque, resetCheque }}>
       {children}
     </ChequeContext.Provider>
   );

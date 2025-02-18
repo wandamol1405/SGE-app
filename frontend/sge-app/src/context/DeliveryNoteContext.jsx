@@ -7,22 +7,31 @@ export function useDeliveryNote() {
 }
 
 export function DeliveryNoteProvider({ children }) {
-  const [deliveryNote, setDeliveryNote] = useState({
+  const initialState = {
     header: {}, // Datos de la factura (cabecera)
     client: {}, // Datos del cliente
     details: [], // Detalles de los productos/servicios
-  });
+  };
 
-  const updateDeliveryNote = (key, value) => {
-    if (typeof key === "object") {
-      setDeliveryNote((prev) => ({ ...prev, ...key }));
-    } else {
-      setDeliveryNote((prev) => ({ ...prev, [key]: value }));
-    }
+  const [deliveryNote, setDeliveryNote] = useState(initialState);
+
+  const updateDeliveryNote = (section, data) => {
+    setDeliveryNote((prev) => ({
+      ...prev,
+      [section]: Array.isArray(data)
+        ? [...data]
+        : { ...prev[section], ...data },
+    }));
+  };
+
+  const resetDeliveryNote = () => {
+    setDeliveryNote(initialState);
   };
 
   return (
-    <DeliveryNoteContext.Provider value={{ deliveryNote, updateDeliveryNote }}>
+    <DeliveryNoteContext.Provider
+      value={{ deliveryNote, updateDeliveryNote, resetDeliveryNote }}
+    >
       {children}
     </DeliveryNoteContext.Provider>
   );

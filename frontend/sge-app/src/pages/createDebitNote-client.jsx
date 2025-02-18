@@ -1,13 +1,14 @@
-import { React, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { React, useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { useDebitNote } from "../context/DebitNoteContext";
 import Input from "../components/input";
 import Select from "../components/select";
 import NextButton from "../components/nextButton";
 import CreateInvoiceContainer from "../components/createInvoice";
+import BackButton from "../components/backButton";
 
 function CreateDebitNoteClient() {
-  const { updateDebitNote } = useDebitNote();
+  const { updateDebitNote, debitNote } = useDebitNote();
   const [buyer_name, setBuyerName] = useState("");
   const [buyer_address, setBuyerAddress] = useState("");
   const [buyer_cuit, setBuyerCuit] = useState("");
@@ -15,6 +16,15 @@ function CreateDebitNoteClient() {
   const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (debitNote.client) {
+      setBuyerName(debitNote.client.buyer_name || "");
+      setBuyerAddress(debitNote.client.buyer_address || "");
+      setBuyerCuit(debitNote.client.buyer_cuit || "");
+      setBuyerIva(debitNote.client.buyer_iva || "");
+    }
+  }, [debitNote]);
 
   const handleNext = (e) => {
     e.preventDefault();
@@ -121,9 +131,9 @@ function CreateDebitNoteClient() {
           <option value="Consumidor final">Consumidor final</option>
         </Select>
         <div>
-          <NextButton onClick={() => navigate("/createDebitNote-header")}>
-            Volver
-          </NextButton>
+          <Link to="/createDebitNote-header">
+            <BackButton>Volver</BackButton>
+          </Link>
           <NextButton onClick={handleNext}>Siguiente</NextButton>
         </div>
       </form>

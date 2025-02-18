@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useBuyOrder } from "../context/BuyOrderContext";
 import NextButton from "../components/nextButton";
 import CheckContainer from "../components/checkContainer";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import useLogin from "../hooks/useLogin";
+import BackButton from "../components/backButton";
 
 function CheckOrder() {
-  const { buyOrder = { header: {}, supplier: {}, details: [] } } =
-    useBuyOrder() || {};
+  const {
+    buyOrder = { header: {}, supplier: {}, details: [] },
+    resetBuyOrder,
+  } = useBuyOrder() || {};
   const navigate = useNavigate();
   const details = Array.isArray(buyOrder.details)
     ? buyOrder.details.filter(
@@ -78,6 +81,8 @@ function CheckOrder() {
           a.click();
           a.remove();
           window.URL.revokeObjectURL(url);
+          navigate("/listDocs");
+          resetBuyOrder();
         } else {
           setError((prev) => ({ ...prev, message: "Error al crear el PDF" }));
         }
@@ -168,9 +173,9 @@ function CheckOrder() {
 
       {error.message && <p style={{ color: "red" }}>{error.message}</p>}
       <NextButton onClick={handleSubmit}>Guardar e imprimir</NextButton>
-      <NextButton onClick={() => navigate("/createOrder-details")}>
-        Volver
-      </NextButton>
+      <Link to="/createOrder-details">
+        <BackButton>Volver</BackButton>
+      </Link>
     </CheckContainer>
   );
 }

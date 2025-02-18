@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import CheckContainer from "../components/checkContainer";
-import NextButton from "../components/nextButton";
 import useLogin from "../hooks/useLogin";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import BackButton from "../components/backButton";
 
 function ListDocs() {
   const [company, setCompany] = useState({});
@@ -480,9 +480,9 @@ function ListDocs() {
         <p>No hay pagarés generados.</p>
       )}
 
-      <NextButton onClick={() => navigate("/home")}>
-        Volver al inicio
-      </NextButton>
+      <Link to="/home">
+        <BackButton>Volver al inicio</BackButton>
+      </Link>
     </CheckContainer>
   );
 }

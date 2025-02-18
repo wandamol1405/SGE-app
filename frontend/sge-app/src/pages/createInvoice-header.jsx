@@ -1,13 +1,15 @@
-import { React, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { React, useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { useInvoice } from "../context/InvoiceContext";
 import Input from "../components/input";
 import Select from "../components/select";
 import NextButton from "../components/nextButton";
 import CreateInvoiceContainer from "../components/createInvoice";
+import BackButton from "../components/backButton";
+import { use } from "react";
 
 function CreateInvoiceHeader() {
-  const { updateInvoice } = useInvoice();
+  const { invoice, updateInvoice } = useInvoice();
   const [type_invoice, setTypeInvoice] = useState("");
   const [point_sale, setPointSale] = useState("");
   const [issue_date, setDate] = useState("");
@@ -15,6 +17,15 @@ function CreateInvoiceHeader() {
   const [completeInfo, setCompleteInfo] = useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (invoice.header) {
+      setTypeInvoice(invoice.header.type_invoice || "");
+      setPointSale(invoice.header.point_sale || "");
+      setDate(invoice.header.issue_date || "");
+      setSaleCondition(invoice.header.sale_condition || "");
+    }
+  }, [invoice]);
 
   const handleNext = (e) => {
     e.preventDefault();
@@ -82,9 +93,9 @@ function CreateInvoiceHeader() {
           }}
         />
         <div>
-          <NextButton onClick={() => navigate("/createDocs")}>
-            Volver
-          </NextButton>
+          <Link to="/createDocs">
+            <BackButton>Volver</BackButton>
+          </Link>
           <NextButton onClick={handleNext}>Siguiente</NextButton>
         </div>
       </form>

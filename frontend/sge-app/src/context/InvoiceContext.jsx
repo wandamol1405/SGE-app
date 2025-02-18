@@ -7,22 +7,29 @@ export function useInvoice() {
 }
 
 export function InvoiceProvider({ children }) {
-  const [invoice, setInvoice] = useState({
+  const initialState = {
     header: {}, // Datos de la factura (cabecera)
     client: {}, // Datos del cliente
     details: [], // Detalles de los productos/servicios
-  });
+  };
 
-  const updateInvoice = (key, value) => {
-    if (typeof key === "object") {
-      setInvoice((prev) => ({ ...prev, ...key }));
-    } else {
-      setInvoice((prev) => ({ ...prev, [key]: value }));
-    }
+  const [invoice, setInvoice] = useState(initialState);
+
+  const updateInvoice = (section, data) => {
+    setInvoice((prev) => ({
+      ...prev,
+      [section]: Array.isArray(data)
+        ? [...data]
+        : { ...prev[section], ...data },
+    }));
+  };
+
+  const resetInvoice = () => {
+    setInvoice(initialState);
   };
 
   return (
-    <InvoiceContext.Provider value={{ invoice, updateInvoice }}>
+    <InvoiceContext.Provider value={{ invoice, updateInvoice, resetInvoice }}>
       {children}
     </InvoiceContext.Provider>
   );

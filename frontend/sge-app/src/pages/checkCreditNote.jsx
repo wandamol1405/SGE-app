@@ -3,11 +3,14 @@ import { useCreditNote } from "../context/CreditNoteContext";
 import CheckContainer from "../components/checkContainer";
 import NextButton from "../components/nextButton";
 import useLogin from "../hooks/useLogin";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import BackButton from "../components/backButton";
 
 function CheckCreditNote() {
-  const { creditNote = { header: {}, client: {}, details: [] } } =
-    useCreditNote() || {};
+  const {
+    creditNote = { header: {}, client: {}, details: [] },
+    resetCreditNote,
+  } = useCreditNote() || {};
   const navigate = useNavigate();
   const details = Array.isArray(creditNote.details)
     ? creditNote.details.filter(
@@ -85,6 +88,7 @@ function CheckCreditNote() {
           a.remove();
           window.URL.revokeObjectURL(url);
           navigate("/listDocs");
+          resetCreditNote();
         } else {
           alert("Error al generar el PDF");
         }
@@ -192,9 +196,9 @@ function CheckCreditNote() {
       </section>
       {error.form && <p style={{ color: "red" }}>{error.form.message}</p>}
       <NextButton onClick={handleSubmit}>Guardar e imprimir</NextButton>
-      <NextButton onClick={() => navigate("/createCreditNote-details")}>
-        Volver
-      </NextButton>
+      <Link to="/createCreditNote-details">
+        <BackButton>Volver</BackButton>
+      </Link>
     </CheckContainer>
   );
 }

@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useInvoice } from "../context/InvoiceContext";
 import Input from "../components/input";
 import NextButton from "../components/nextButton";
 import CreateInvoiceContainer from "../components/createInvoice";
 import TableContainer from "../components/tableContainer";
+import BackButton from "../components/backButton";
+import AddButton from "../components/addButton";
 
 function CreateInvoiceDetails() {
   const { updateInvoice } = useInvoice();
-  const [details, setDetails] = useState(
-    Array(5)
-      .fill()
-      .map(() => ({ amount: "", product: "", sale_price: "" })) // Inicializa con 5 filas vacías
-  );
+  const [details, setDetails] = useState([
+    { amount: "", product: "", unit_price: "" },
+  ]);
   const navigate = useNavigate();
 
   const handleInputChange = (index, field, value) => {
@@ -21,9 +21,19 @@ function CreateInvoiceDetails() {
     setDetails(updatedDetails);
   };
 
+  const addRow = () => {
+    setDetails([...details, { amount: "", product: "", unit_price: "" }]);
+  };
+
+  const removeRow = () => {
+    if (details.length > 1) {
+      setDetails(details.slice(0, -1)); // Elimina la última fila
+    }
+  };
+
   const handleSaveDetails = () => {
     // Actualiza el contexto con los detalles ingresados
-    updateInvoice({ details });
+    updateInvoice("details", details);
     alert("Detalles guardados en la factura.");
   };
 
@@ -84,10 +94,15 @@ function CreateInvoiceDetails() {
           ))}
         </tbody>
       </TableContainer>
+
       <div>
-        <NextButton onClick={() => navigate("/createInvoice-client")}>
-          Volver
-        </NextButton>
+        <AddButton onClick={addRow}>Agregar fila</AddButton>
+        <AddButton onClick={removeRow}>Eliminar fila</AddButton>
+      </div>
+      <div>
+        <Link to="/createInvoice-client">
+          <BackButton>Volver</BackButton>
+        </Link>
         <NextButton onClick={handleNext}>Siguiente</NextButton>
       </div>
     </CreateInvoiceContainer>

@@ -7,21 +7,28 @@ export function usePromissoryNote() {
 }
 
 export function PromissoryNoteProvider({ children }) {
-  const [promissoryNote, setPromissoryNote] = useState({
+  const initialState = {
     data: {},
-  });
+  };
 
-  const updatePromissoryNote = (key, value) => {
-    if (typeof key === "object") {
-      setPromissoryNote((prev) => ({ ...prev, ...key }));
-    } else {
-      setPromissoryNote((prev) => ({ ...prev, [key]: value }));
-    }
+  const [promissoryNote, setPromissoryNote] = useState(initialState);
+
+  const updatePromissoryNote = (section, data) => {
+    setPromissoryNote((prev) => ({
+      ...prev,
+      [section]: Array.isArray(data)
+        ? [...data]
+        : { ...prev[section], ...data },
+    }));
+  };
+
+  const resetPromissoryNote = () => {
+    setPromissoryNote(initialState);
   };
 
   return (
     <PromissoryNoteContext.Provider
-      value={{ promissoryNote, updatePromissoryNote }}
+      value={{ promissoryNote, updatePromissoryNote, resetPromissoryNote }}
     >
       {children}
     </PromissoryNoteContext.Provider>

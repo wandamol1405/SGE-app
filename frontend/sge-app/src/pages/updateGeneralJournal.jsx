@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import BackButton from "../components/backButton";
 
 const UpdateGJContainer = styled.div`
   display: flex;
@@ -53,22 +54,23 @@ const DocsButtonContainer = styled.div`
   margin-top: 2rem;
 `;
 
-function updateGeneralJournal() {
-  const navigate = useNavigate();
-
+function UpdateGeneralJournal() {
   return (
     <UpdateGJContainer>
       <p>Seleccione que desea realiza en el libro diario de su empresa</p>
       <DocsButtonContainer>
-        <DocsButton onClick={() => navigate("/addAccountingEntry")}>
-          Agregar asiento contable
-        </DocsButton>
-        <DocsButton onClick={() => navigate("/showAccountingEntries")}>
-          Ver asientos contables
-        </DocsButton>
+        <Link to="/addJournalEntry">
+          <DocsButton>Agregar asiento contable</DocsButton>
+        </Link>
+        <Link to="/listJournalEntries">
+          <DocsButton>Ver asientos contables</DocsButton>
+        </Link>
       </DocsButtonContainer>
+      <Link to="/home">
+        <BackButton>Volver al inicio</BackButton>
+      </Link>
     </UpdateGJContainer>
   );
 }
 
-export default updateGeneralJournal;
+export default UpdateGeneralJournal;

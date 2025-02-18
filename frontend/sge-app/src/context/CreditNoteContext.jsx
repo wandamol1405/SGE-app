@@ -7,22 +7,31 @@ export function useCreditNote() {
 }
 
 export function CreditNoteProvider({ children }) {
-  const [creditNote, setCreditNote] = useState({
+  const initialState = {
     header: {}, // Datos de la factura (cabecera)
     client: {}, // Datos del cliente
     details: [], // Detalles de los productos/servicios
-  });
+  };
 
-  const updateCreditNote = (key, value) => {
-    if (typeof key === "object") {
-      setCreditNote((prev) => ({ ...prev, ...key }));
-    } else {
-      setCreditNote((prev) => ({ ...prev, [key]: value }));
-    }
+  const [creditNote, setCreditNote] = useState(initialState);
+
+  const updateCreditNote = (section, data) => {
+    setCreditNote((prev) => ({
+      ...prev,
+      [section]: Array.isArray(data)
+        ? [...data]
+        : { ...prev[section], ...data },
+    }));
+  };
+
+  const resetCreditNote = () => {
+    setCreditNote(initialState);
   };
 
   return (
-    <CreditNoteContext.Provider value={{ creditNote, updateCreditNote }}>
+    <CreditNoteContext.Provider
+      value={{ creditNote, updateCreditNote, resetCreditNote }}
+    >
       {children}
     </CreditNoteContext.Provider>
   );

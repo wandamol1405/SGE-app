@@ -3,10 +3,11 @@ import { useInvoice } from "../context/InvoiceContext";
 import CheckContainer from "../components/checkContainer";
 import NextButton from "../components/nextButton";
 import useLogin from "../hooks/useLogin";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import BackButton from "../components/backButton";
 
 function CheckInvoice() {
-  const { invoice = { header: {}, client: {}, details: [] } } =
+  const { invoice = { header: {}, client: {}, details: [] }, resetInvoice } =
     useInvoice() || {};
   const navigate = useNavigate();
   const details = Array.isArray(invoice.details)
@@ -84,6 +85,7 @@ function CheckInvoice() {
           a.click();
           a.remove();
           window.URL.revokeObjectURL(url);
+          resetInvoice();
           navigate("/listDocs");
         } else {
           alert("Error al generar el PDF");
@@ -191,9 +193,9 @@ function CheckInvoice() {
       </section>
       {error.form && <p style={{ color: "red" }}>{error.form.message}</p>}
       <NextButton onClick={handleSubmit}>Guardar e imprimir</NextButton>
-      <NextButton onClick={() => navigate("/createInvoice-details")}>
-        Volver
-      </NextButton>
+      <Link to="/createInvoice-details">
+        <BackButton>Volver</BackButton>
+      </Link>
     </CheckContainer>
   );
 }

@@ -1,9 +1,10 @@
 import { React, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "../components/input";
 import Select from "../components/select";
 import NextButton from "../components/nextButton";
 import CreateInvoiceContainer from "../components/createInvoice";
+import BackButton from "../components/backButton";
 
 function AddAccount() {
   const [account, setAccount] = useState({
@@ -16,14 +17,20 @@ function AddAccount() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (account.name && account.type) {
-      await fetch("http://localhost:3000/account", {
+      const response = await fetch("http://localhost:3000/account", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(account),
       });
-      alert("Cuenta agregada correctamente");
+      if (response.ok) {
+        setAccount({
+          name: "",
+          type: "",
+        });
+        alert("Cuenta agregada correctamente");
+      }
     } else {
       setCompleteInfo(true);
     }
@@ -60,7 +67,9 @@ function AddAccount() {
           <option value="Saldo acreedor">Saldo acreedor</option>
         </Select>
         <NextButton onClick={handleSubmit}>Agregar</NextButton>
-        <NextButton onClick={() => navigate("/home")}>Volver</NextButton>
+        <Link to="/updateAccounts">
+          <BackButton>Volver</BackButton>
+        </Link>
       </form>
     </CreateInvoiceContainer>
   );

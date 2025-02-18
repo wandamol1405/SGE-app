@@ -1,13 +1,14 @@
-import { React, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { React, useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { useBuyOrder } from "../context/BuyOrderContext";
 import Input from "../components/input";
 import NextButton from "../components/nextButton";
 import CreateInvoiceContainer from "../components/createInvoice";
 import Select from "../components/select";
+import BackButton from "../components/backButton";
 
 function CreateOrderSupplier() {
-  const { updateBuyOrder } = useBuyOrder();
+  const { buyOrder, updateBuyOrder } = useBuyOrder();
   const [supplier_name, setSupplierName] = useState("");
   const [supplier_address, setSupplierAddress] = useState("");
   const [supplier_cuit, setSupplierCuit] = useState("");
@@ -15,6 +16,15 @@ function CreateOrderSupplier() {
   const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (buyOrder.supplier) {
+      setSupplierName(buyOrder.supplier.supplier_name || "");
+      setSupplierAddress(buyOrder.supplier.supplier_address || "");
+      setSupplierCuit(buyOrder.supplier.supplier_cuit || "");
+      setSaleCondition(buyOrder.supplier.supplier_condition || "");
+    }
+  }, [buyOrder]);
 
   const handleNext = (e) => {
     e.preventDefault();
@@ -109,13 +119,9 @@ function CreateOrderSupplier() {
           <option value="Monotributista">Monotributista</option>
         </Select>
         <div>
-          <NextButton
-            onClick={() => {
-              navigate("/createOrder-header");
-            }}
-          >
-            Volver
-          </NextButton>
+          <Link to="/createOrder-header">
+            <BackButton>Volver</BackButton>
+          </Link>
           <NextButton onClick={handleNext}> Siguiente </NextButton>
         </div>
       </form>
