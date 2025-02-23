@@ -103,9 +103,16 @@ function Home() {
           <HomeButton>Editar Libro Diario</HomeButton>
         </Link>
         {isAdmin && (
-          <Link to="/updateAccounts">
-            <HomeButton>Editar cuentas</HomeButton>
-          </Link>
+          <>
+            <Link to="/updateAccounts">
+              <HomeButton>Editar cuentas</HomeButton>
+            </Link>
+            <Link to="/selectDocs">
+              <HomeButton>
+                Ver documentos comerciales de cada empresa
+              </HomeButton>
+            </Link>
+          </>
         )}
       </ButtonsContainer>
       <ButtonsContainer>

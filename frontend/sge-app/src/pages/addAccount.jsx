@@ -1,5 +1,5 @@
 import { React, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Input from "../components/input";
 import Select from "../components/select";
 import NextButton from "../components/nextButton";
@@ -11,50 +11,88 @@ function AddAccount() {
     name: "",
     type: "",
   });
-  const [completeInfo, setCompleteInfo] = useState(false);
-  const navigate = useNavigate();
+  const [error, setError] = useState({});
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (account.name && account.type) {
-      const response = await fetch("http://localhost:3000/account", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(account),
-      });
-      if (response.ok) {
-        setAccount({
-          name: "",
-          type: "",
-        });
-        alert("Cuenta agregada correctamente");
-      }
+    let errorFound = false;
+
+    if (!account.name) {
+      setError((prev) => ({
+        ...prev,
+        name: "Por favor, introduzca el nombre de la cuenta",
+      }));
+      errorFound = true;
     } else {
-      setCompleteInfo(true);
+      setError((prev) => ({
+        ...prev,
+        name: "",
+      }));
+    }
+    if (!account.type) {
+      setError((prev) => ({
+        ...prev,
+        type: "Por favor, seleccione el tipo de cuenta",
+      }));
+      errorFound = true;
+    } else {
+      setError((prev) => ({
+        ...prev,
+        type: "",
+      }));
+
+      if (errorFound) {
+        return;
+      }
+
+      if (account.name && account.type) {
+        const response = await fetch("http://localhost:3000/account", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(account),
+        });
+        if (response.ok) {
+          setAccount({
+            name: "",
+            type: "",
+          });
+          alert("Cuenta agregada correctamente");
+        }
+      }
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setAccount((prevAccount) => ({
+      ...prevAccount,
+      [name]: value,
+    }));
+    if (account.name && account.type) {
+      setCompleteInfo(false);
     }
   };
 
   return (
     <CreateInvoiceContainer>
       <p>Agrega una nueva cuenta</p>
-      {completeInfo && (
-        <p style={{ fontSize: "1.5rem", color: "red" }}>
-          Por favor, complete todos los campos antes de continuar
-        </p>
-      )}
       <form>
+        {error.name && (
+          <p style={{ color: "red", fontSize: "1.5rem" }}>{error.name}</p>
+        )}
         <Input
           type="text"
           placeholder="Nombre de la cuenta"
+          name="name"
           value={account.name}
-          onChange={(e) => setAccount({ ...account, name: e.target.value })}
+          onChange={handleInputChange}
         />
-        <Select
-          value={account.type}
-          onChange={(e) => setAccount({ ...account, type: e.target.value })}
-        >
+        {error.type && (
+          <p style={{ color: "red", fontSize: "1.5rem" }}>{error.type}</p>
+        )}
+        <Select name="type" value={account.type} onChange={handleInputChange}>
           <option value="" disabled>
             Selecciona el tipo de cuenta
           </option>

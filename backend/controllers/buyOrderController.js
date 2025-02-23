@@ -1,15 +1,27 @@
 const BuyOrder = require("../models").BuyOrder;
 const BuyOrderDetail = require("../models").BuyOrderDetail;
 const BuyOrderCounter = require("../models").BuyOrderCounter;
+const User = require("../models").User;
 const fs = require("fs");
 const path = require("path");
 const PDFDocument = require("pdfkit");
 
 const getBuyOrders = async (req, res) => {
   const buyOrders = await BuyOrder.findAll({
-    include: BuyOrderDetail,
+    include: [
+      {
+        model: User,
+        as: "User",
+        attributes: ["id_user", "company_name"],
+      },
+      {
+        model: BuyOrderDetail,
+        as: "details",
+        attributes: ["product", "amount", "unit_price"],
+      },
+    ],
   });
-  res.json({ buyOrders });
+  res.json({ msg: "Buy Orders list", buyOrders });
 };
 
 const addBuyOrder = async (req, res) => {

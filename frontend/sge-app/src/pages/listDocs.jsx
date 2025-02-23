@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import CheckContainer from "../components/checkContainer";
 import useLogin from "../hooks/useLogin";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import BackButton from "../components/backButton";
 
 function ListDocs() {
@@ -14,7 +14,6 @@ function ListDocs() {
   const [deliveryNotes, setDeliveryNotes] = useState([]);
   const [promissoryNotes, setPromissoryNotes] = useState([]);
   const { user } = useLogin();
-  const navigate = useNavigate();
 
   useEffect(() => {
     async function getCompany() {

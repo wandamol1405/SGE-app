@@ -8,8 +8,8 @@ const CheckContainer = styled.div`
   padding: 2rem;
   font-family: "Libre Franklin", sans-serif;
   margin: 2rem auto 2rem;
-  width: 80%;
-  gap: 1.5rem;
+  width: 90vw;
+  gap: 2rem;
   border-radius: 15px;
   background-color: #ffcfcf;
   color: #333;
@@ -25,12 +25,20 @@ const CheckContainer = styled.div`
     font-size: 2rem;
     padding: 1rem;
     color: #525b44;
+    font-weight: normal;
   }
 
   p {
     font-size: 1.2rem;
     padding: 0.5rem;
     color: #525b44;
+  }
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    list-style: none;
+    padding: 0;
   }
 
   section {
@@ -76,6 +84,9 @@ const CheckContainer = styled.div`
 
   tbody tr:nth-child(even) {
     background-color: #fffdec;
+  }
+  @media (min-width: 1080px) {
+    width: 60vw;
   }
 `;
 

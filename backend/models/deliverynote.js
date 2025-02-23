@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
       DeliveryNote.belongsTo(models.User, {
         foreignKey: "id_company",
       });
+      DeliveryNote.hasMany(models.DeliveryNoteDetail, {
+        foreignKey: "id_delivery_note",
+        as: "details",
+      });
     }
   }
   DeliveryNote.init(

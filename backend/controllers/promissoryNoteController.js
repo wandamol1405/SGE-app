@@ -1,12 +1,21 @@
 const PromissoryNote = require("../models").PromissoryNote;
+const User = require("../models").User;
 const fs = require("fs");
 const path = require("path");
 const { PDFDocument, rgb, StandardFonts } = require("pdf-lib");
 const { NumerosALetras } = require("numero-a-letras");
 
 const getPromissoryNotes = async (req, res) => {
-  const promissoryNote = await PromissoryNote.findAll();
-  res.json({ msg: "Promissory notes list", promissoryNote });
+  const promissoryNotes = await PromissoryNote.findAll({
+    include: [
+      {
+        model: User,
+        as: "User",
+        attributes: ["id_user", "company_name"],
+      },
+    ],
+  });
+  res.json({ msg: "Promissory notes list", promissoryNotes });
 };
 
 const getPromissoryNotesByCompany = async (req, res) => {

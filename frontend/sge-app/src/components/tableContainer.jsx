@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const TableContainer = styled.table`
   border-collapse: collapse;
-  width: 100%;
+  width: 70vw;
   margin: 1rem 0;
   font-size: 1rem;
   border-radius: 10px;
@@ -72,6 +72,9 @@ const TableContainer = styled.table`
     color: #333333;
     font-family: "Libre Franklin", sans-serif;
     text-align: left;
+  }
+  @media (min-width: 1080px) {
+    width: 50vw;
   }
 `;
 

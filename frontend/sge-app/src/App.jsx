@@ -40,6 +40,14 @@ import UpdateAccounts from "./pages/updateAccounts";
 import ListAccounts from "./pages/listAccounts";
 import AddJournalEntry from "./pages/addJournalEntry";
 import ListJournalEntries from "./pages/listJournalEntries";
+import SelectDocs from "./pages/selectDocs";
+import ListInvoicesByUser from "./pages/listInvoicesByUser";
+import ListBuyOrderByUser from "./pages/listBuyOrderByUser";
+import ListDebitNotesByUser from "./pages/listDebitNotesByUser";
+import ListCreditNotesByUser from "./pages/listCreditNotesByUser";
+import ListDeliveryNotesByUser from "./pages/listDeliveryNotesByUser";
+import ListChequesByUser from "./pages/listChequesByUser";
+import ListPromissoryNotesByUser from "./pages/listPromissoryNotesByUser";
 
 function App() {
   return (
@@ -319,6 +327,70 @@ function App() {
           element={
             <ProtectedRoute>
               <ListJournalEntries />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/selectDocs"
+          element={
+            <ProtectedRoute>
+              <SelectDocs />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/listInvoicesByUser"
+          element={
+            <ProtectedRoute>
+              <ListInvoicesByUser />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/listBuyOrderByUser"
+          element={
+            <ProtectedRoute>
+              <ListBuyOrderByUser />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/listDebitNotesByUser"
+          element={
+            <ProtectedRoute>
+              <ListDebitNotesByUser />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/listCreditNotesByUser"
+          element={
+            <ProtectedRoute>
+              <ListCreditNotesByUser />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/listDeliveryNotesByUser"
+          element={
+            <ProtectedRoute>
+              <ListDeliveryNotesByUser />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/listChequesByUser"
+          element={
+            <ProtectedRoute>
+              <ListChequesByUser />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/listPromissoryNotesByUser"
+          element={
+            <ProtectedRoute>
+              <ListPromissoryNotesByUser />
             </ProtectedRoute>
           }
         />

@@ -1,12 +1,26 @@
 const DebitNote = require("../models").DebitNote;
 const DebitNoteDetail = require("../models").DebitNoteDetail;
 const DebitNoteCounter = require("../models").DebitNoteCounter;
+const User = require("../models").User;
 const fs = require("fs");
 const path = require("path");
 const PDFDocument = require("pdfkit");
 
 const getDebitNote = async (req, res) => {
-  const debitNotes = await DebitNote.findAll();
+  const debitNotes = await DebitNote.findAll({
+    include: [
+      {
+        model: User,
+        as: "User",
+        attributes: ["id_user", "company_name"],
+      },
+      {
+        model: DebitNoteDetail,
+        as: "details",
+        attributes: ["product", "amount", "unit_price"],
+      },
+    ],
+  });
   res.json({ msg: "Debit note list", debitNotes });
 };
 
@@ -48,7 +62,7 @@ const addDebitNote = async (req, res) => {
 
     details = details || []; // Asegurar que details sea un array
     for (const detail of details) {
-      detail.id_debit_note_detail = debitNoteId;
+      detail.id_debit_note = debitNoteId;
       await DebitNoteDetail.create(detail); // Insertar cada detalle en la base de datos
     }
 

@@ -1,12 +1,26 @@
 const Invoice = require("../models").Invoice;
 const InvoiceDetail = require("../models").InvoiceDetail;
 const InvoiceCounter = require("../models").InvoiceCounter;
+const User = require("../models").User;
 const fs = require("fs");
 const path = require("path");
 const PDFDocument = require("pdfkit");
 
 const getInvoices = async (req, res) => {
-  const invoices = await Invoice.findAll();
+  const invoices = await Invoice.findAll({
+    include: [
+      {
+        model: User,
+        as: "User",
+        attributes: ["id_user", "company_name"],
+      },
+      {
+        model: InvoiceDetail,
+        as: "details",
+        attributes: ["product", "amount", "sale_price"],
+      },
+    ],
+  });
   res.json({ msg: "Invoices list", invoices });
 };
 
@@ -31,7 +45,6 @@ const addInvoice = async (req, res) => {
   try {
     let { details, ...invoice } = req.body; // Separar details del resto de los datos de la factura
     const companyId = invoice.id_company;
-    console.log(companyId);
 
     // Obtener el último número de factura para la compañía
     const invoiceCounter = await InvoiceCounter.findOne({

@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
       CreditNote.belongsTo(models.User, {
         foreignKey: "id_company",
       });
+      CreditNote.hasMany(models.CreditNoteDetail, {
+        foreignKey: "id_credit_note",
+        as: "details",
+      });
     }
   }
   CreditNote.init(

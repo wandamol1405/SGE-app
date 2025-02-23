@@ -15,7 +15,7 @@ const JournalEntryContainer = styled.div`
   border-radius: 15px;
   align-items: center;
   padding: 4rem;
-  width: 80vw;
+  width: 85vw;
   font-family: "Libre Franklin", sans-serif;
   gap: 1.5rem;
   margin: 0 auto;
@@ -59,6 +59,11 @@ const JournalEntryContainer = styled.div`
       font-size: 1.5rem;
     }
   }
+    @media (min-width: 1080px) {
+    width: 70vw;
+    h1 {
+      font-size: 2.5rem;
+    }
 `;
 
 const DateContainer = styled.div`
@@ -73,6 +78,7 @@ const Input = styled.input`
   width: 40vw;
   border-radius: 10px;
   padding: 10px 20px;
+  height: 4vh;
   font-size: 20px;
   cursor: pointer;
   font-family: "Libre Franklin", sans-serif;
@@ -85,7 +91,7 @@ const Input = styled.input`
   }
 
   @media (min-width: 1080px) {
-    width: 15vw;
+    width: 20vw;
     padding: 10px 20px;
     font-size: 20px;
   }
@@ -105,6 +111,7 @@ const AddJournalEntry = () => {
   const { user } = useLogin();
   const navigate = useNavigate();
   const [company, setCompany] = useState({});
+  const [validEntries, setValidEntries] = useState(false);
 
   useEffect(() => {
     async function getCompany() {
@@ -174,12 +181,18 @@ const AddJournalEntry = () => {
     }
 
     // Validar que los campos debit y credit no estén vacíos
-    const validEntries = accountingEntries.every(
-      (entry) => entry.debit !== "" || entry.credit !== ""
-    );
+    const validEntries =
+      accountingEntries.every(
+        (entry) =>
+          (entry.debit !== "" && entry.debit !== 0) ||
+          (entry.credit !== "" && entry.credit !== 0)
+      ) &&
+      journalEntry.date !== "" &&
+      journalEntry.description !== "";
+
+    setValidEntries(!validEntries);
 
     if (!validEntries) {
-      alert("Todos los campos de Debe y Haber deben tener valores válidos.");
       return;
     }
 
@@ -211,6 +224,11 @@ const AddJournalEntry = () => {
     <JournalEntryContainer>
       <h1 style={{ textAlign: "center" }}>Libro Diario</h1>
       <p>Complete los datos correspondientes al asiento contable</p>
+      {validEntries && (
+        <p style={{ fontSize: "1.5rem", color: "red" }}>
+          Por favor, complete todos los campos antes de continuar
+        </p>
+      )}
       <DateContainer>
         <Input
           type="text"

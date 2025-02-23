@@ -5,30 +5,30 @@ import CreateDocsContainer from "../components/createDocs";
 import DocsButton from "../components/docsButton";
 import DocsButtonContainer from "../components/docsButtonsConteiner";
 
-function CreateDocs() {
+function SelectDocs() {
   return (
     <CreateDocsContainer>
-      <p>Seleccione que tipo de documento desea crear</p>
+      <p>Seleccione el tipo de documento que desea ver</p>
       <DocsButtonContainer>
-        <Link to="/createInvoice-header">
+        <Link to="/listInvoicesByUser">
           <DocsButton>Factura</DocsButton>
         </Link>
-        <Link to="/createOrder-header">
+        <Link to="/listBuyOrderByUser">
           <DocsButton>Orden de compra</DocsButton>
         </Link>
-        <Link to="/createDebitNote-header">
+        <Link to="/listDebitNotesByUser">
           <DocsButton>Nota de débito</DocsButton>
         </Link>
-        <Link to="/createCreditNote-header">
+        <Link to="/listCreditNotesByUser">
           <DocsButton>Nota de crédito</DocsButton>
         </Link>
-        <Link to="/createDeliveryNote-header">
+        <Link to="/listDeliveryNotesByUser">
           <DocsButton>Remito</DocsButton>
         </Link>
-        <Link to="/createCheque">
+        <Link to="/listChequesByUser">
           <DocsButton>Cheque</DocsButton>
         </Link>
-        <Link to="/createPromissoryNote">
+        <Link to="/listPromissoryNotesByUser">
           <DocsButton>Pagaré</DocsButton>
         </Link>
       </DocsButtonContainer>
@@ -39,4 +39,4 @@ function CreateDocs() {
   );
 }
 
-export default CreateDocs;
+export default SelectDocs;

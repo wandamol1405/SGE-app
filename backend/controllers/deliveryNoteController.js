@@ -1,12 +1,26 @@
 const DeliveryNote = require("../models").DeliveryNote;
 const DeliveryNoteDetail = require("../models").DeliveryNoteDetail;
 const DeliveryNoteCounter = require("../models").DeliveryNoteCounter;
+const User = require("../models").User;
 const fs = require("fs");
 const path = require("path");
 const PDFDocument = require("pdfkit");
 
 const getDeliveryNote = async (req, res) => {
-  const deliveryNotes = await DeliveryNote.findAll();
+  const deliveryNotes = await DeliveryNote.findAll({
+    include: [
+      {
+        model: User,
+        as: "User",
+        attributes: ["id_user", "company_name"],
+      },
+      {
+        model: DeliveryNoteDetail,
+        as: "details",
+        attributes: ["product", "amount", "unit_price"],
+      },
+    ],
+  });
   res.json({ msg: "Delivery note list", deliveryNotes });
 };
 
@@ -20,7 +34,7 @@ const getDeliveryNoteByCompany = async (req, res) => {
 
 const addDeliveryNote = async (req, res) => {
   try {
-    let { details, ...deliveryNote } = req.body; // Separar details del resto de los datos de la factura
+    let { details, ...deliveryNote } = req.body;
     const companyId = deliveryNote.id_company;
 
     // Obtener el último número de factura para la compañía
@@ -44,7 +58,7 @@ const addDeliveryNote = async (req, res) => {
     details = details || []; // Asegurar que details sea un array
     for (const detail of details) {
       detail.id_delivery_note = deliveryNoteId; // Asignar el id de la factura a cada detalle
-      await DeliveryNoteDetail.create(deliveryNote); // Insertar cada detalle en la base de datos
+      await DeliveryNoteDetail.create(detail); // Insertar cada detalle en la base de datos
     }
 
     if (deliveryNoteCounter) {

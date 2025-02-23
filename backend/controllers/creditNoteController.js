@@ -1,12 +1,26 @@
 const CreditNote = require("../models").CreditNote;
 const CreditNoteDetail = require("../models").CreditNoteDetail;
 const CreditNoteCounter = require("../models").CreditNoteCounter;
+const User = require("../models").User;
 const fs = require("fs");
 const path = require("path");
 const PDFDocument = require("pdfkit");
 
 const getCreditNote = async (req, res) => {
-  const creditNotes = await CreditNote.findAll();
+  const creditNotes = await CreditNote.findAll({
+    include: [
+      {
+        model: User,
+        as: "User",
+        attributes: ["id_user", "company_name"],
+      },
+      {
+        model: CreditNoteDetail,
+        as: "details",
+        attributes: ["product", "amount", "unit_price"],
+      },
+    ],
+  });
   res.json({ msg: "Credit note list", creditNotes });
 };
 
@@ -38,7 +52,7 @@ const addCreditNote = async (req, res) => {
 
     details = details || []; // Asegurar que details sea un array
     for (const detail of details) {
-      detail.id_credit_note_detail = creditNoteId;
+      detail.id_credit_note = creditNoteId;
       await CreditNoteDetail.create(detail); // Insertar cada detalle en la base de datos
     }
 

@@ -6,7 +6,7 @@ const CreateInvoiceContainer = styled.div`
   border-radius: 15px;
   align-items: center;
   padding: 4rem;
-  width: 60%;
+  width: 70vw;
   font-family: "Libre Franklin", sans-serif;
   margin: 0 auto;
   margin-top: 2rem;
@@ -36,6 +36,10 @@ const CreateInvoiceContainer = styled.div`
     display: flex;
     gap: 1rem;
     justify-content: center;
+  }
+  @media (min-width: 1080px) {
+    width: 55vw;
+    font-size: 1.8rem;
   }
 `;
 
