@@ -48,6 +48,7 @@ import ListCreditNotesByUser from "./pages/listCreditNotesByUser";
 import ListDeliveryNotesByUser from "./pages/listDeliveryNotesByUser";
 import ListChequesByUser from "./pages/listChequesByUser";
 import ListPromissoryNotesByUser from "./pages/listPromissoryNotesByUser";
+import IvaSalesLedger from "./pages/ivaSalesLedger";
 
 function App() {
   return (
@@ -391,6 +392,14 @@ function App() {
           element={
             <ProtectedRoute>
               <ListPromissoryNotesByUser />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/ivaSalesLedger"
+          element={
+            <ProtectedRoute>
+              <IvaSalesLedger />
             </ProtectedRoute>
           }
         />

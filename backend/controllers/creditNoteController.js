@@ -5,6 +5,9 @@ const User = require("../models").User;
 const fs = require("fs");
 const path = require("path");
 const PDFDocument = require("pdfkit");
+const { formatDate } = require("../utils/formatDate");
+const formatDocNumber = require("../utils/formatDocNumber");
+const formatPointSale = require("../utils/formatPointSale");
 
 const getCreditNote = async (req, res) => {
   const creditNotes = await CreditNote.findAll({
@@ -87,10 +90,6 @@ const generateCreditNotePDF = async (req, res) => {
     where: { id_company: creditNoteData.company.id_user },
   });
 
-  const creditNoteNumber = creditNoteCounter
-    ? String(creditNoteCounter.last_credit_note_number).padStart(8, "0")
-    : "00000001";
-
   doc.pipe(stream);
 
   // Header
@@ -101,12 +100,14 @@ const generateCreditNotePDF = async (req, res) => {
 
   // credit note info (right-aligned)
   doc.fontSize(12);
-  doc.text(`Punto de venta: ${creditNoteData.point_sale}`, { align: "right" });
-  doc.text(`Número de nota de crédito: ${creditNoteNumber}`, {
+  doc.text(`Punto de venta: ${formatPointSale(creditNoteData.point_sale)}`, {
+    align: "right",
+  });
+  doc.text(`Número de nota de crédito: ${formatDocNumber(creditNoteCounter)}`, {
     align: "right",
   });
   const date = new Date(creditNoteData.issue_date).toLocaleDateString("es-AR");
-  doc.text(`Fecha de emisión: ${date}`, { align: "right" });
+  doc.text(`Fecha de emisión: ${formatDate(date)}`, { align: "right" });
   doc.text(`Condición de venta: ${creditNoteData.sale_condition}`, {
     align: "right",
   });

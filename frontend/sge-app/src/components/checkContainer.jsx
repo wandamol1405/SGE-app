@@ -8,7 +8,7 @@ const CheckContainer = styled.div`
   padding: 2rem;
   font-family: "Libre Franklin", sans-serif;
   margin: 2rem auto 2rem;
-  width: 90vw;
+  width: 100%;
   gap: 2rem;
   border-radius: 15px;
   background-color: #ffcfcf;
@@ -46,6 +46,7 @@ const CheckContainer = styled.div`
     flex-wrap: wrap;
     justify-content: space-between;
     width: 100%;
+    overflow-x: auto;
     align-items: center;
     padding: 1rem;
     background-color: #fffdec;
@@ -82,11 +83,25 @@ const CheckContainer = styled.div`
     color: #525b44;
   }
 
+  div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+  }
+
   tbody tr:nth-child(even) {
     background-color: #fffdec;
   }
   @media (min-width: 1080px) {
     width: 60vw;
+    div {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+    }
   }
 `;
 

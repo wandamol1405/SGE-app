@@ -5,16 +5,18 @@ import useLogin from "../hooks/useLogin";
 import BackButton from "../components/backButton";
 
 const HomeContainer = styled.div`
-  justify-content: center;
-  padding: 5rem;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
   width: 100%;
   font-family: "Libre Franklin", sans-serif;
   gap: 2rem;
 
   h1 {
     color: #86a788;
-    font-size: 2.5rem;
+    font-size: 2rem;
     padding: 1.5rem;
+    text-align: center; /* Align the title to the center */
   }
   p {
     color: #fff;
@@ -29,6 +31,12 @@ const HomeContainer = styled.div`
     background-color: #fffdec;
     width: 100%;
   }
+  @media (min-width: 1080px) {
+    h1 {
+      font-size: 2.5rem;
+      padding: 1.5rem;
+    }
+  }
 `;
 const ButtonsContainer = styled.div`
   display: flex;
@@ -37,6 +45,7 @@ const ButtonsContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 2rem;
+  width: 100%;
 `;
 
 const HomeButton = styled.button`
@@ -44,9 +53,8 @@ const HomeButton = styled.button`
   color: #fff;
   border: none;
   border-radius: 20px;
-  padding: 20px 30px;
-  font-size: 1.5rem;
-  width: 50vw;
+  font-size: 1.3rem;
+  width: 70vw;
   height: 15vh;
   align-self: center;
   cursor: pointer;
@@ -55,20 +63,13 @@ const HomeButton = styled.button`
 
   @media (min-width: 1080px) {
     width: 30vw;
-    font-size: 1.8rem;
+    font-size: 1.7rem;
+    padding: 10px 20px;
     align-self: center;
   }
 
   &:hover {
     background-color: #ffb3b3;
-  }
-`;
-
-const LogoutButton = styled(HomeButton)`
-  background-color: #ff4d4d;
-
-  &:hover {
-    background-color: #ff1a1a;
   }
 `;
 
@@ -97,10 +98,20 @@ function Home() {
           <HomeButton>Crear documento comercial</HomeButton>
         </Link>
         <Link to="/listDocs">
-          <HomeButton>Ver documentos comerciales</HomeButton>
+          <HomeButton>Ver documentos comerciales emitidos</HomeButton>
         </Link>
         <Link to="/updateGeneralJournal">
           <HomeButton>Editar Libro Diario</HomeButton>
+        </Link>
+        <Link to="/ivaSalesLedger">
+          <HomeButton>
+            Libro de IVA <strong>Ventas</strong>
+          </HomeButton>
+        </Link>
+        <Link to="/ivaPurchasesLedger">
+          <HomeButton>
+            Libro de IVA <strong>Compras</strong>
+          </HomeButton>
         </Link>
         {isAdmin && (
           <>

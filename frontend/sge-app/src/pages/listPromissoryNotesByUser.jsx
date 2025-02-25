@@ -3,6 +3,7 @@ import CheckContainer from "../components/checkContainer";
 import { Link } from "react-router-dom";
 import BackButton from "../components/backButton";
 import Input from "../components/input";
+import formatDate from "../utils/formatDate";
 
 function ListPromissoryNotesByUser() {
   const [promissoryNotes, setPromissoryNotes] = useState([]);
@@ -34,23 +35,10 @@ function ListPromissoryNotesByUser() {
       />
       <ul>
         {filteredPromissoryNotes.map((promissoryNote) => {
-          const date = new Date(promissoryNote.issue_date);
-          const formattedDate = `${date
-            .getDate()
-            .toString()
-            .padStart(2, "0")}/${(date.getMonth() + 1)
-            .toString()
-            .padStart(2, "0")}/${date.getFullYear()}`;
-          const formattedManturityDate = `${date
-            .getDate()
-            .toString()
-            .padStart(2, "0")}/${(date.getMonth() + 1)
-            .toString()
-            .padStart(2, "0")}/${date.getFullYear()}`;
           return (
             <section key={promissoryNote.num_promissoryNote}>
               <p>
-                <strong>Fecha:</strong> {formattedDate}
+                <strong>Fecha:</strong> {formatDate(promissoryNote.issue_date)}
               </p>
               <p>
                 <strong>Empresa:</strong> {promissoryNote.User.company_name}
@@ -71,7 +59,7 @@ function ListPromissoryNotesByUser() {
                 !promissoryNote.manturity_days ? (
                 <p>
                   <strong>Vencimiento: </strong>
-                  {formattedManturityDate}
+                  {formatDate(promissoryNote.manturity_date)}
                 </p>
               ) : (
                 <p>

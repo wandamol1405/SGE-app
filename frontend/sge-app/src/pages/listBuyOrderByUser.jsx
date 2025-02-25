@@ -3,7 +3,9 @@ import CheckContainer from "../components/checkContainer";
 import { Link } from "react-router-dom";
 import BackButton from "../components/backButton";
 import TableContainer from "../components/tableContainer";
+import formatDate from "../utils/formatDate";
 import Input from "../components/input";
+import formatDocNumber from "../utils/formatDocNumber";
 
 function ListBuyOrderByUser() {
   const [buyOrders, setBuyOrders] = useState([]);
@@ -32,25 +34,15 @@ function ListBuyOrderByUser() {
         onChange={(e) => setFilter(e.target.value)}
       />
       <ul>
-        {buyOrders.map((buyOrder) => {
-          const date = new Date(buyOrder.issue_date);
-          const formattedDate = `${date
-            .getDate()
-            .toString()
-            .padStart(2, "0")}/${(date.getMonth() + 1)
-            .toString()
-            .padStart(2, "0")}/${date.getFullYear()}`;
-          const formattedBuyOrderNumber = String(
-            buyOrder.order_number
-          ).padStart(8, "0");
+        {filteredBuyOrders.map((buyOrder) => {
           return (
             <section>
               <p>
                 <strong>Número de órden de compra:</strong>{" "}
-                {formattedBuyOrderNumber}
+                {formatDocNumber(buyOrder.num_buy_order)}
               </p>
               <p>
-                <strong>Fecha:</strong> {formattedDate}
+                <strong>Fecha:</strong> {formatDate(buyOrder.issue_date)}
               </p>
               <p>
                 <strong>Empresa:</strong> {buyOrder.User.company_name}

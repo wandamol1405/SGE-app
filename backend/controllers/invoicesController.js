@@ -5,6 +5,9 @@ const User = require("../models").User;
 const fs = require("fs");
 const path = require("path");
 const PDFDocument = require("pdfkit");
+const formatDate = require("../utils/formatDate");
+const formatDocNumber = require("../utils/formatDocNumber");
+const formatPointSale = require("../utils/formatPointSale");
 
 const getInvoices = async (req, res) => {
   const invoices = await Invoice.findAll({
@@ -106,10 +109,6 @@ const generateInvoicePDF = async (req, res) => {
     return;
   }
 
-  const invoiceNumber = invoiceCounter
-    ? String(invoiceCounter.last_invoice_number).padStart(8, "0")
-    : "00000001";
-
   doc.pipe(stream);
 
   // Header
@@ -118,10 +117,14 @@ const generateInvoicePDF = async (req, res) => {
 
   // Invoice info (right-aligned)
   doc.fontSize(12);
-  doc.text(`Punto de venta: ${invoiceData.point_sale}`, { align: "right" });
-  doc.text(`Número de factura: ${invoiceNumber}`, { align: "right" });
+  doc.text(`Punto de venta: ${formatPointSale(invoiceData.point_sale)}`, {
+    align: "right",
+  });
+  doc.text(`Número de factura: ${formatDocNumber(invoiceCounter)}`, {
+    align: "right",
+  });
   const date = new Date(invoiceData.issue_date).toLocaleDateString("es-AR");
-  doc.text(`Fecha de emisión: ${date}`, { align: "right" });
+  doc.text(`Fecha de emisión: ${formatDate(date)}`, { align: "right" });
   doc.text(`Condición de venta: ${invoiceData.sale_condition}`, {
     align: "right",
   });

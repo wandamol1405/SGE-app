@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import CheckContainer from "../components/checkContainer";
 import { Link } from "react-router-dom";
 import BackButton from "../components/backButton";
-import TableContainer from "../components/tableContainer";
+import formatDate from "../utils/formatDate";
 import Input from "../components/input";
 
 function ListChequesByUser() {
@@ -33,20 +33,13 @@ function ListChequesByUser() {
       />
       <ul>
         {filteredCheques.map((cheque) => {
-          const date = new Date(cheque.issue_date);
-          const formattedDate = `${date
-            .getDate()
-            .toString()
-            .padStart(2, "0")}/${(date.getMonth() + 1)
-            .toString()
-            .padStart(2, "0")}/${date.getFullYear()}`;
           return (
             <section key={cheque.num_cheque}>
               <p>
                 <strong>Número de cheque:</strong> {cheque.cheque_num}
               </p>
               <p>
-                <strong>Fecha:</strong> {formattedDate}
+                <strong>Fecha:</strong> {formatDate(cheque.issue_date)}
               </p>
               <p>
                 <strong>Empresa:</strong> {cheque.User.company_name}

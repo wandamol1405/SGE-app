@@ -4,7 +4,7 @@ const Select = styled.select`
   background-color: #fffdec;
   color: #5a6c57;
   border: none;
-  width: 55vw;
+  width: 30vw;
   border-radius: 10px;
   padding: 10px 20px;
   font-size: 20px;
@@ -19,10 +19,9 @@ const Select = styled.select`
   }
 
   @media (min-width: 1080px) {
-    width: 27vw;
     padding: 10px 20px;
     font-size: 20px;
-
+    width: 33vw;
     &::option {
       color: #5a6c57;
       opacity: 0.6;

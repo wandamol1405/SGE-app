@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 import BackButton from "../components/backButton";
 import TableContainer from "../components/tableContainer";
 import Input from "../components/input";
+import formatDate from "../utils/formatDate";
+import formatDocNumber from "../utils/formatDocNumber";
+import formatPointSale from "../utils/formatPointSale";
 
 function ListDebitNotesByUser() {
   const [debitNotes, setDebitNotes] = useState([]);
@@ -34,33 +37,18 @@ function ListDebitNotesByUser() {
       />
       <ul>
         {filteredDebitNotes.map((debitNotes) => {
-          const date = new Date(debitNotes.issue_date);
-          const formattedDate = `${date
-            .getDate()
-            .toString()
-            .padStart(2, "0")}/${(date.getMonth() + 1)
-            .toString()
-            .padStart(2, "0")}/${date.getFullYear()}`;
-
-          const formattedDebitNoteNumber = String(
-            debitNotes.num_debit_note
-          ).padStart(8, "0");
-          const formattedPointSale = String(debitNotes.point_sale).padStart(
-            4,
-            "0"
-          );
           return (
             <section key={debitNotes.num_debitNotes}>
               <p>
                 <strong>Punto de venta: </strong>
-                {formattedPointSale}
+                {formatPointSale(debitNotes.point_sale)}
               </p>
               <p>
                 <strong>Número de nota de débito:</strong>{" "}
-                {formattedDebitNoteNumber}
+                {formatDocNumber(debitNotes.num_debitNotes)}
               </p>
               <p>
-                <strong>Fecha:</strong> {formattedDate}
+                <strong>Fecha:</strong> {formatDate(debitNotes.issue_date)}
               </p>
               <p>
                 <strong>Empresa:</strong> {debitNotes.User.company_name}

@@ -3,6 +3,8 @@ import CheckContainer from "../components/checkContainer";
 import useLogin from "../hooks/useLogin";
 import { Link } from "react-router-dom";
 import BackButton from "../components/backButton";
+import formatDate from "../utils/formatDate";
+import formatDocNumber from "../utils/formatDocNumber";
 
 function ListDocs() {
   const [company, setCompany] = useState({});
@@ -25,83 +27,28 @@ function ListDocs() {
   }, [user]);
 
   useEffect(() => {
-    async function getInvoices() {
-      const result = await fetch(
-        `http://localhost:3000/invoice/find/` + company.id_user
-      );
-      const response = await result.json();
-
-      setInvoices(response.invoices || []);
-    }
-    if (company.id_user) {
-      getInvoices();
-    }
-
-    async function getBuyOrders() {
-      const result = await fetch(
-        `http://localhost:3000/buyOrder/find/` + company.id_user
-      );
-      const response = await result.json();
-      setBuyOrders(response.buyOrders || []);
-    }
-    if (company.id_user) {
-      getBuyOrders();
+    async function getDocuments() {
+      try {
+        const result = await fetch(
+          `http://localhost:3000/documents/find/${company.id_user}`
+        );
+        const response = await result.json();
+        console.log("Documents: ", response);
+        const documents = response.documents;
+        setInvoices(documents.invoices || []);
+        setBuyOrders(documents.buyOrders || []);
+        setDebitNotes(documents.debitNotes || []);
+        setCreditNotes(documents.creditNotes || []);
+        setCheques(documents.cheques || []);
+        setDeliveryNotes(documents.deliveryNotes || []);
+        setPromissoryNotes(documents.promissoryNotes || []);
+      } catch (error) {
+        console.error("Error fetching documents:", error);
+      }
     }
 
-    async function getDebitNotes() {
-      const result = await fetch(
-        `http://localhost:3000/debitNote/find/` + company.id_user
-      );
-      const response = await result.json();
-      setDebitNotes(response.debitNotes || []);
-    }
     if (company.id_user) {
-      getDebitNotes();
-    }
-
-    async function getCreditNotes() {
-      const result = await fetch(
-        `http://localhost:3000/creditNote/find/` + company.id_user
-      );
-      const response = await result.json();
-      setCreditNotes(response.creditNotes || []);
-    }
-    if (company.id_user) {
-      getCreditNotes();
-    }
-
-    async function getCheques() {
-      const result = await fetch(
-        `http://localhost:3000/cheque/find/` + company.id_user
-      );
-      const response = await result.json();
-      setCheques(response.cheques || []);
-    }
-    if (company.id_user) {
-      getCheques();
-    }
-
-    async function getDeliveryNotes() {
-      const result = await fetch(
-        `http://localhost:3000/deliveryNote/find/` + company.id_user
-      );
-      const response = await result.json();
-      console.log(response);
-      setDeliveryNotes(response.deliveryNotes || []);
-    }
-    if (company.id_user) {
-      getDeliveryNotes();
-    }
-
-    async function getPromissoryNotes() {
-      const result = await fetch(
-        `http://localhost:3000/promissoryNote/find/` + company.id_user
-      );
-      const response = await result.json();
-      setPromissoryNotes(response.promissoryNotes || []);
-    }
-    if (company.id_user) {
-      getPromissoryNotes();
+      getDocuments();
     }
   }, [company.id_user]);
 
@@ -124,17 +71,10 @@ function ListDocs() {
             </thead>
             <tbody>
               {invoices.map((invoice, index) => {
-                const date = new Date(invoice.issue_date);
-                const formattedDate = `${date
-                  .getDate()
-                  .toString()
-                  .padStart(2, "0")}/${(date.getMonth() + 1)
-                  .toString()
-                  .padStart(2, "0")}/${date.getFullYear()}`;
                 return (
                   <tr key={index}>
-                    <td>{invoice.num_invoice}</td>
-                    <td>{formattedDate}</td>
+                    <td>{formatDocNumber(invoice.num_invoice)}</td>
+                    <td>{formatDate(invoice.issue_date)}</td>
                     <td>{invoice.buyer_name}</td>
                     <td>
                       $
@@ -178,25 +118,11 @@ function ListDocs() {
             </thead>
             <tbody>
               {buyOrders.map((buyOrder, index) => {
-                const date = new Date(buyOrder.issue_date);
-                const formattedIssueDate = `${date
-                  .getDate()
-                  .toString()
-                  .padStart(2, "0")}/${(date.getMonth() + 1)
-                  .toString()
-                  .padStart(2, "0")}/${date.getFullYear()}`;
-                const deliveryDate = new Date(buyOrder.delivery_date);
-                const formattedDeliveryDate = `${deliveryDate
-                  .getDate()
-                  .toString()
-                  .padStart(2, "0")}/${(deliveryDate.getMonth() + 1)
-                  .toString()
-                  .padStart(2, "0")}/${deliveryDate.getFullYear()}`;
                 return (
                   <tr key={index}>
-                    <td>{buyOrder.order_number}</td>
-                    <td>{formattedIssueDate}</td>
-                    <td>{formattedDeliveryDate}</td>
+                    <td>{formatDocNumber(buyOrder.order_number)}</td>
+                    <td>{formatDate(buyOrder.issue_date)}</td>
+                    <td>{formatDate(buyOrder.delivery_date)}</td>
                     <td>{buyOrder.supplier_name}</td>
                     <td>
                       $
@@ -229,17 +155,10 @@ function ListDocs() {
             </thead>
             <tbody>
               {debitNotes.map((debitNote, index) => {
-                const date = new Date(debitNote.issue_date);
-                const formattedDate = `${date
-                  .getDate()
-                  .toString()
-                  .padStart(2, "0")}/${(date.getMonth() + 1)
-                  .toString()
-                  .padStart(2, "0")}/${date.getFullYear()}`;
                 return (
                   <tr key={index}>
-                    <td>{debitNote.num_debit_note}</td>
-                    <td>{formattedDate}</td>
+                    <td>{formatDocNumber(debitNote.num_debit_note)}</td>
+                    <td>{formatDate(debitNote.issue_date)}</td>
                     <td>{debitNote.buyer_name}</td>
                     <td>
                       $
@@ -284,17 +203,10 @@ function ListDocs() {
             </thead>
             <tbody>
               {creditNotes.map((creditNote, index) => {
-                const date = new Date(creditNote.issue_date);
-                const formattedDate = `${date
-                  .getDate()
-                  .toString()
-                  .padStart(2, "0")}/${(date.getMonth() + 1)
-                  .toString()
-                  .padStart(2, "0")}/${date.getFullYear()}`;
                 return (
                   <tr key={index}>
-                    <td>{creditNote.num_credit_note}</td>
-                    <td>{formattedDate}</td>
+                    <td>{formatDocNumber(creditNote.num_credit_note)}</td>
+                    <td>{formatDate(creditNote.issue_date)}</td>
                     <td>{creditNote.buyer_name}</td>
                     <td>
                       $
@@ -340,22 +252,9 @@ function ListDocs() {
             </thead>
             <tbody>
               {cheques.map((cheque, index) => {
-                const issueDate = new Date(cheque.issue_date);
-                const formattedIssueDate = `${issueDate
-                  .getDate()
-                  .toString()
-                  .padStart(2, "0")}/${(issueDate.getMonth() + 1)
-                  .toString()
-                  .padStart(2, "0")}/${issueDate.getFullYear()}`;
-                const cashDate = new Date(cheque.collection_date);
                 let formattedCashDate;
                 if (cheque.collection_date) {
-                  formattedCashDate = `${cashDate
-                    .getDate()
-                    .toString()
-                    .padStart(2, "0")}/${(cashDate.getMonth() + 1)
-                    .toString()
-                    .padStart(2, "0")}/${cashDate.getFullYear()}`;
+                  formattedCashDate = formatDate(cheque.collection_date);
                 } else {
                   formattedCashDate = "No corresponde";
                 }
@@ -370,7 +269,7 @@ function ListDocs() {
                     <td>{cheque.cheque_num}</td>
                     <td>{cheque.bank_name}</td>
                     <td>{receiverName}</td>
-                    <td>{formattedIssueDate}</td>
+                    <td>{formatDate(cheque.issue_date)}</td>
                     <td>{formattedCashDate}</td>
                     <td>
                       $
@@ -401,17 +300,10 @@ function ListDocs() {
             </thead>
             <tbody>
               {deliveryNotes.map((deliveryNote, index) => {
-                const date = new Date(deliveryNote.issue_date);
-                const formattedDate = `${date
-                  .getDate()
-                  .toString()
-                  .padStart(2, "0")}/${(date.getMonth() + 1)
-                  .toString()
-                  .padStart(2, "0")}/${date.getFullYear()}`;
                 return (
                   <tr key={index}>
-                    <td>{deliveryNote.num_delivery_note}</td>
-                    <td>{formattedDate}</td>
+                    <td>{formatDocNumber(deliveryNote.num_delivery_note)}</td>
+                    <td>{formatDate(deliveryNote.issue_date)}</td>
                     <td>{deliveryNote.buyer_name}</td>
                     <td>{deliveryNote.means_of_delivery}</td>
                   </tr>
@@ -437,22 +329,9 @@ function ListDocs() {
             </thead>
             <tbody>
               {promissoryNotes.map((promissoryNote, index) => {
-                const issueDate = new Date(promissoryNote.issue_date);
-                const formattedIssueDate = `${issueDate
-                  .getDate()
-                  .toString()
-                  .padStart(2, "0")}/${(issueDate.getMonth() + 1)
-                  .toString()
-                  .padStart(2, "0")}/${issueDate.getFullYear()}`;
                 let formattedDueDate;
                 if (promissoryNote.manturity_date) {
-                  const dueDate = new Date(promissoryNote.manturity_date);
-                  formattedDueDate = `${dueDate
-                    .getDate()
-                    .toString()
-                    .padStart(2, "0")}/${(dueDate.getMonth() + 1)
-                    .toString()
-                    .padStart(2, "0")}/${dueDate.getFullYear()}`;
+                  formattedDueDate = formatDate(promissoryNote.manturity_date);
                 } else if (promissoryNote.manturity_days) {
                   formattedDueDate = `${promissoryNote.manturity_days} días`;
                 } else {
@@ -460,7 +339,7 @@ function ListDocs() {
                 }
                 return (
                   <tr key={index}>
-                    <td>{formattedIssueDate}</td>
+                    <td>{formatDate(promissoryNote.issue_date)}</td>
                     <td>{formattedDueDate}</td>
                     <td>{promissoryNote.receiver_name}</td>
                     <td>

@@ -5,6 +5,8 @@ const User = require("../models").User;
 const fs = require("fs");
 const path = require("path");
 const PDFDocument = require("pdfkit");
+const { formatDate } = require("../utils/formatDate");
+const formatDocNumber = require("../utils/formatDocNumber");
 
 const getBuyOrders = async (req, res) => {
   const buyOrders = await BuyOrder.findAll({
@@ -89,18 +91,18 @@ const generateBuyOrderPDF = async (req, res) => {
     where: { company_id: buyOrderData.company.id_user },
   });
 
-  const buyOrderNumber = buyOrderCounter
-    ? String(buyOrderCounter.last_buy_order_number).padStart(8, "0")
-    : "00000001";
-
   doc.pipe(stream);
   doc.fontSize(20).text("X - Orden de Compra", { align: "center" });
   doc.moveDown(0.5);
 
   doc.fontSize(12);
-  doc.text(`Número de Orden: ${buyOrderNumber}`, { align: "right" });
-  doc.text(`Fecha de Emisión: ${buyOrderData.issue_date}`, { align: "right" });
-  doc.text(`Fecha de Entrega: ${buyOrderData.delivery_date}`, {
+  doc.text(`Número de Orden: ${formatDocNumber(buyOrderCounter)}`, {
+    align: "right",
+  });
+  doc.text(`Fecha de Emisión: ${formatDate(buyOrderData.issue_date)}`, {
+    align: "right",
+  });
+  doc.text(`Fecha de Entrega: ${formatDate(buyOrderData.delivery_date)}`, {
     align: "right",
   });
   doc.text(`Condición de Venta: ${buyOrderData.sale_condition}`, {

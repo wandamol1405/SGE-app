@@ -5,6 +5,9 @@ const User = require("../models").User;
 const fs = require("fs");
 const path = require("path");
 const PDFDocument = require("pdfkit");
+const formatDate = require("../utils/formatDate");
+const formatDocNumber = require("../utils/formatDocNumber");
+const formatPointSale = require("../utils/formatPointSale");
 
 const getDeliveryNote = async (req, res) => {
   const deliveryNotes = await DeliveryNote.findAll({
@@ -91,10 +94,6 @@ const generateDeliveryNotePDF = async (req, res) => {
     where: { id_company: deliveryNoteData.company.id_user },
   });
 
-  const deliveryNoteNumber = deliveryNoteCounter
-    ? String(deliveryNoteCounter.last_delivery_note_number).padStart(8, "0")
-    : "00000001";
-
   doc.pipe(stream);
 
   // Header
@@ -104,14 +103,16 @@ const generateDeliveryNotePDF = async (req, res) => {
   doc.moveDown(0.5);
 
   doc.fontSize(12);
-  doc.text(`Punto de venta: ${deliveryNoteData.point_sale}`, {
+  doc.text(`Punto de venta: ${formatPointSale(deliveryNoteData.point_sale)}`, {
     align: "right",
   });
-  doc.text(`Número de remito: ${deliveryNoteNumber}`, { align: "right" });
+  doc.text(`Número de remito: ${formatDocNumber(deliveryNoteCounter)}`, {
+    align: "right",
+  });
   const date = new Date(deliveryNoteData.issue_date).toLocaleDateString(
     "es-AR"
   );
-  doc.text(`Fecha de emisión: ${date}`, { align: "right" });
+  doc.text(`Fecha de emisión: ${formatDate(date)}`, { align: "right" });
   doc.text(`Condición de venta: ${deliveryNoteData.sale_condition}`, {
     align: "right",
   });

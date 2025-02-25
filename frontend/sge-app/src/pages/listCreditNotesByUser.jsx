@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 import BackButton from "../components/backButton";
 import TableContainer from "../components/tableContainer";
 import Input from "../components/input";
+import formatDate from "../utils/formatDate";
+import formatDocNumber from "../utils/formatDocNumber";
+import formatPointSale from "../utils/formatPointSale";
 
 function ListCreditNoteByUser() {
   const [creditNotes, setCreditNotes] = useState([]);
@@ -33,32 +36,18 @@ function ListCreditNoteByUser() {
       />
       <ul>
         {filteredCreditNotes.map((creditNote) => {
-          const date = new Date(creditNote.issue_date);
-          const formattedDate = `${date
-            .getDate()
-            .toString()
-            .padStart(2, "0")}/${(date.getMonth() + 1)
-            .toString()
-            .padStart(2, "0")}/${date.getFullYear()}`;
-          const formattedCreditNoteNumber = String(
-            creditNote.num_credit_note
-          ).padStart(8, "0");
-          const formattedPointSale = String(creditNote.point_sale).padStart(
-            4,
-            "0"
-          );
           return (
             <section key={creditNote.num_credit_note}>
               <p>
                 <strong>Punto de venta: </strong>
-                {formattedPointSale}
+                {formatPointSale(creditNote.point_sale)}
               </p>
               <p>
                 <strong>Número de nota de crédito:</strong>{" "}
-                {formattedCreditNoteNumber}
+                {formatDocNumber(creditNote.num_credit_note)}
               </p>
               <p>
-                <strong>Fecha:</strong> {formattedDate}
+                <strong>Fecha:</strong> {formatDate(creditNote.issue_date)}
               </p>
               <p>
                 <strong>Empresa:</strong> {creditNote.User.company_name}

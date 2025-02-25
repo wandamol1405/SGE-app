@@ -19,7 +19,7 @@ const Input = styled.input`
   }
 
   @media (min-width: 1080px) {
-    width: 25vw;
+    width: 30vw;
     padding: 10px 20px;
     font-size: 20px;
   }

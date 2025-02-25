@@ -91,11 +91,14 @@ video {
   vertical-align: baseline;
   box-sizing: border-box;
 }
+html,
 body {
   line-height: 1;
   background-color: #ffe2e2;
   font-family: "Roboto", sans-serif;
-  height: 100%;
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
 }
 ol,
 ul {

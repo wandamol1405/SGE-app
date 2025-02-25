@@ -5,8 +5,8 @@ const BackButton = styled.button`
   border: none;
   border-radius: 20px;
   padding: 10px 20px;
-  font-size: 20px;
-  width: 20vw;
+  font-size: 1rem;
+  width: 25vw;
   cursor: pointer;
   font-family: "Libre Franklin", sans-serif;
   color: #fffdec;

@@ -5,6 +5,9 @@ const User = require("../models").User;
 const fs = require("fs");
 const path = require("path");
 const PDFDocument = require("pdfkit");
+const formatDate = require("../utils/formatDate");
+const formatDocNumber = require("../utils/formatDocNumber");
+const formatPointSale = require("../utils/formatPointSale");
 
 const getDebitNote = async (req, res) => {
   const debitNotes = await DebitNote.findAll({
@@ -97,10 +100,6 @@ const generateDebitNotePDF = async (req, res) => {
     where: { id_company: debitNoteData.company.id_user },
   });
 
-  const debitNoteNumber = debitNoteCounter
-    ? String(debitNoteCounter.last_debit_note_number).padStart(8, "0")
-    : "00000001";
-
   doc.pipe(stream);
 
   // Header
@@ -111,10 +110,14 @@ const generateDebitNotePDF = async (req, res) => {
 
   // Debit note info (right-aligned)
   doc.fontSize(12);
-  doc.text(`Punto de venta: ${debitNoteData.point_sale}`, { align: "right" });
-  doc.text(`Número de nota de débito: ${debitNoteNumber}`, { align: "right" });
+  doc.text(`Punto de venta: ${formatPointSale(debitNoteData.point_sale)}`, {
+    align: "right",
+  });
+  doc.text(`Número de nota de débito: ${formatDocNumber(debitNoteCounter)}`, {
+    align: "right",
+  });
   const date = new Date(debitNoteData.issue_date).toLocaleDateString("es-AR");
-  doc.text(`Fecha de emisión: ${date}`, { align: "right" });
+  doc.text(`Fecha de emisión: ${formatDate(date)}`, { align: "right" });
   doc.text(`Condición de venta: ${debitNoteData.sale_condition}`, {
     align: "right",
   });

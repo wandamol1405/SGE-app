@@ -9,7 +9,7 @@ const DocsButton = styled.button`
   padding: 10px 20px;
   font-size: 25px;
   width: 40vw;
-  height: 7vh;
+  height: 10vh;
   align-self: center;
   cursor: pointer;
   &:hover {

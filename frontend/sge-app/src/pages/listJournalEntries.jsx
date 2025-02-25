@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import CheckContainer from "../components/checkContainer";
 import TableContainer from "../components/tableContainer";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import BackButton from "../components/backButton";
 import useLogin from "../hooks/useLogin";
+import formatDate from "../utils/formatDate";
 
 function ListJournalEntries() {
   const [journalEntries, setJournalEntries] = useState([]);
-  const navigate = useNavigate();
   const { user } = useLogin();
   const [company, setCompany] = useState({});
 
@@ -49,17 +49,10 @@ function ListJournalEntries() {
       <h1>Asientos contables</h1>
       {journalEntries.length > 0 ? (
         journalEntries.map((entry) => {
-          const date = new Date(entry.date);
-          const formattedDate = `${date
-            .getDate()
-            .toString()
-            .padStart(2, "0")}/${(date.getMonth() + 1)
-            .toString()
-            .padStart(2, "0")}/${date.getFullYear()}`;
           return (
             <section key={entry.id}>
               <p>
-                <strong>Fecha:</strong> {formattedDate}
+                <strong>Fecha:</strong> {formatDate(entry.date)}
               </p>
 
               <TableContainer>
