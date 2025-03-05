@@ -6,7 +6,7 @@ const LogButton = styled.button`
   border: none;
   border-radius: 20px;
   padding: 10px 20px;
-  font-size: 20px;
+  font-size: 1rem;
   width: 20vw;
   align-self: center;
   cursor: pointer;
@@ -14,7 +14,7 @@ const LogButton = styled.button`
   color: #525b44;
 
   @media (min-width: 1080px) {
-    font-size: 20px;
+    font-size: 1.2rem;
     align-self: center;
   }
 

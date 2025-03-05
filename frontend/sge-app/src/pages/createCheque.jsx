@@ -97,104 +97,138 @@ function CreateCheque() {
       )}
       <form>
         <h1>Información sobre el tipo de cheque</h1>
-        <Select
-          value={type_cheque}
-          onChange={(e) => setTypeCheque(e.target.value)}
-        >
-          <option value="" disabled>
-            Selecciona el tipo de cheque
-          </option>
-          <option value="Común">Común</option>
-          <option value="Diferido">Diferido</option>
-        </Select>
-        <Select
-          value={emission_mode}
-          onChange={(e) => setEmissionMode(e.target.value)}
-        >
-          <option value="" disabled>
-            Selecciona la modalidad de emisión
-          </option>
-          <option value="Al portador">Al portador</option>
-          <option value="A la orden">A la orden</option>
-        </Select>
-        <Select
-          value={certificated}
-          onChange={(e) => setCertificated(e.target.value)}
-        >
-          <option value="" disabled>
-            Selecciona si esta certificado
-          </option>
-          <option value="Sí">Sí</option>
-          <option value="No">No</option>
-        </Select>
-        <Select value={crossed} onChange={(e) => setCrossed(e.target.value)}>
-          <option value="" disabled>
-            Selecciona si es cruzado
-          </option>
-          <option value="Sí">Sí</option>
-          <option value="No">No</option>
-        </Select>
+        <label>
+          Tipo de cheque
+          <Select
+            value={type_cheque}
+            onChange={(e) => setTypeCheque(e.target.value)}
+          >
+            <option value="" disabled>
+              Selecciona el tipo de cheque
+            </option>
+            <option value="Común">Común</option>
+            <option value="Diferido">Diferido</option>
+          </Select>
+        </label>
+        <label>
+          Modalidad de emisión
+          <Select
+            value={emission_mode}
+            onChange={(e) => setEmissionMode(e.target.value)}
+          >
+            <option value="" disabled>
+              Selecciona la modalidad de emisión
+            </option>
+            <option value="Al portador">Al portador</option>
+            <option value="A la orden">A la orden</option>
+          </Select>
+        </label>
+        <label>
+          ¿Está certificado?
+          <Select
+            value={certificated}
+            onChange={(e) => setCertificated(e.target.value)}
+          >
+            <option value="" disabled>
+              Selecciona si esta certificado
+            </option>
+            <option value="Sí">Sí</option>
+            <option value="No">No</option>
+          </Select>
+        </label>
+        <label>
+          ¿Está cruzado?
+          <Select value={crossed} onChange={(e) => setCrossed(e.target.value)}>
+            <option value="" disabled>
+              Selecciona si es cruzado
+            </option>
+            <option value="Sí">Sí</option>
+            <option value="No">No</option>
+          </Select>
+        </label>
         <h1>Datos de cheque</h1>
-        <Input
-          type="text"
-          placeholder="Número de cheque"
-          value={cheque_num}
-          onChange={(e) => setChequeNum(e.target.value)}
-        />
-        <Input
-          type="text"
-          placeholder="Banco"
-          value={bank_name}
-          onChange={(e) => setBankName(e.target.value)}
-        />
-        <Input
-          type="text"
-          placeholder="Fecha emisión"
-          value={issue_date}
-          onChange={(e) => setDate(e.target.value)}
-          onFocus={(e) => (e.target.type = "date")}
-          onBlur={(e) => {
-            if (!e.target.value) e.target.type = "text";
-          }}
-        />
-        <Input
-          type="text"
-          placeholder="Lugar de emisión"
-          value={issue_place}
-          onChange={(e) => setPlace(e.target.value)}
-        />
-
-        <Input
-          type="text"
-          placeholder="Nombre del beneficiario"
-          value={receiver_name}
-          disabled={emission_mode === "Al portador"}
-          onChange={(e) => setReceiverName(e.target.value)}
-        />
-        <Input
-          type="number"
-          placeholder="Monto"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-        />
-        <Input
-          type="text"
-          placeholder="Fecha de cobro"
-          value={collection_date}
-          disabled={type_cheque === "Común"}
-          onChange={(e) => setCollectionDate(e.target.value)}
-          onFocus={(e) => (e.target.type = "date")}
-          onBlur={(e) => {
-            if (!e.target.value) e.target.type = "text";
-          }}
-        />
-        <Input
-          type="text"
-          placeholder="Número de cuenta"
-          value={account_number}
-          onChange={(e) => setAccountNumber(e.target.value)}
-        />
-
+        <label>
+          Número de cheque
+          <Input
+            type="text"
+            placeholder="Número de cheque"
+            value={cheque_num}
+            onChange={(e) => setChequeNum(e.target.value)}
+          />
+        </label>
+        <label>
+          Banco
+          <Input
+            type="text"
+            placeholder="Banco"
+            value={bank_name}
+            onChange={(e) => setBankName(e.target.value)}
+          />
+        </label>
+        <label>
+          Fecha de emisión
+          <Input
+            type="text"
+            placeholder="Fecha emisión"
+            value={issue_date}
+            onChange={(e) => setDate(e.target.value)}
+            onFocus={(e) => (e.target.type = "date")}
+            onBlur={(e) => {
+              if (!e.target.value) e.target.type = "text";
+            }}
+          />
+        </label>
+        <label>
+          Lugar de emisión
+          <Input
+            type="text"
+            placeholder="Lugar de emisión"
+            value={issue_place}
+            onChange={(e) => setPlace(e.target.value)}
+          />
+        </label>
+        <label>
+          Nombre del beneficiario
+          <Input
+            type="text"
+            placeholder="Nombre del beneficiario"
+            value={receiver_name}
+            disabled={emission_mode === "Al portador"}
+            onChange={(e) => setReceiverName(e.target.value)}
+          />
+        </label>
+        <label>
+          Monto
+          <Input
+            type="number"
+            placeholder="Monto"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+          />
+        </label>
+        <label>
+          Fecha de cobro
+          <Input
+            type="text"
+            placeholder="Fecha de cobro"
+            value={collection_date}
+            disabled={type_cheque === "Común"}
+            onChange={(e) => setCollectionDate(e.target.value)}
+            onFocus={(e) => (e.target.type = "date")}
+            onBlur={(e) => {
+              if (!e.target.value) e.target.type = "text";
+            }}
+          />
+        </label>
+        <label>
+          Número de cuenta
+          <Input
+            type="text"
+            placeholder="Número de cuenta"
+            value={account_number}
+            onChange={(e) => setAccountNumber(e.target.value)}
+          />
+        </label>
         <div>
           <Link to="/createDocs">
             <BackButton>Volver</BackButton>

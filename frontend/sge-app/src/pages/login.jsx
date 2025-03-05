@@ -23,7 +23,7 @@ const LoginContainer = styled.div`
 
   h1 {
     color: #fff;
-    font-size: 2.5rem;
+    font-size: 2rem;
     padding: 1rem;
   }
   form {
@@ -34,9 +34,17 @@ const LoginContainer = styled.div`
   }
   p {
     color: #fff;
-    font-size: 1.5rem;
+    font-size: 1rem;
     padding: 1rem;
     text-align: center;
+  }
+  @media (min-width: 1080px) {
+    h1 {
+      font-size: 2.5rem;
+    }
+    p {
+      font-size: 1.5rem;
+    }
   }
 `;
 

@@ -8,6 +8,7 @@ const PDFDocument = require("pdfkit");
 const formatDate = require("../utils/formatDate");
 const formatDocNumber = require("../utils/formatDocNumber");
 const formatPointSale = require("../utils/formatPointSale");
+const formatPrice = require("../utils/formatPrice");
 
 const getDebitNote = async (req, res) => {
   const debitNotes = await DebitNote.findAll({
@@ -49,9 +50,10 @@ const addDebitNote = async (req, res) => {
   try {
     let { details, ...debitNote } = req.body;
     const companyId = debitNote.id_company;
+    const debitNoteType = debitNote.type_debit_note;
 
     const debitNoteCounter = await DebitNoteCounter.findOne({
-      where: { id_company: companyId },
+      where: { id_company: companyId, debit_note_type: debitNoteType },
     });
     const debitNoteNumber = debitNoteCounter.last_debit_note_number
       ? debitNoteCounter.last_debit_note_number + 1
@@ -72,11 +74,12 @@ const addDebitNote = async (req, res) => {
     if (debitNoteCounter) {
       await DebitNoteCounter.update(
         { last_debit_note_number: debitNoteNumber },
-        { where: { id_company: companyId } }
+        { where: { id_company: companyId, debit_note_type: debitNoteType } }
       );
     } else {
       await DebitNoteCounter.create({
         id_company: companyId,
+        debit_note_type: debitNoteType,
         last_debit_note_number: debitNoteNumber,
       });
     }
@@ -97,7 +100,10 @@ const generateDebitNotePDF = async (req, res) => {
   const showIVA = debitNoteData.type_debit_note === "Nota de Débito A";
 
   const debitNoteCounter = await DebitNoteCounter.findOne({
-    where: { id_company: debitNoteData.company.id_user },
+    where: {
+      id_company: debitNoteData.company.id_user,
+      debit_note_type: debitNoteData.type_debit_note,
+    },
   });
 
   doc.pipe(stream);
@@ -113,11 +119,18 @@ const generateDebitNotePDF = async (req, res) => {
   doc.text(`Punto de venta: ${formatPointSale(debitNoteData.point_sale)}`, {
     align: "right",
   });
-  doc.text(`Número de nota de débito: ${formatDocNumber(debitNoteCounter)}`, {
+  doc.text(
+    `Número de nota de débito: ${formatDocNumber(
+      debitNoteCounter.last_debit_note_number
+    )}`,
+    {
+      align: "right",
+    }
+  );
+
+  doc.text(`Fecha de emisión: ${formatDate(debitNoteData.issue_date)}`, {
     align: "right",
   });
-  const date = new Date(debitNoteData.issue_date).toLocaleDateString("es-AR");
-  doc.text(`Fecha de emisión: ${formatDate(date)}`, { align: "right" });
   doc.text(`Condición de venta: ${debitNoteData.sale_condition}`, {
     align: "right",
   });
@@ -139,13 +152,10 @@ const generateDebitNotePDF = async (req, res) => {
   doc.font("Helvetica").text(`${debitNoteData.company.IVA_condition}`);
   doc.font("Helvetica-Bold").text("Ingresos brutos: ", { continued: true });
   doc.font("Helvetica").text(`${debitNoteData.company.gross_revenue}`);
-  const startDate = new Date(
-    debitNoteData.company.start_date
-  ).toLocaleDateString("es-AR");
   doc.font("Helvetica-Bold").text("Fecha de inicio de actividades:", {
     continued: true,
   });
-  doc.font("Helvetica").text(`${startDate}`);
+  doc.font("Helvetica").text(`${formatDate(debitNoteData.company.start_date)}`);
   doc.moveDown(1);
 
   // Line separator
@@ -173,8 +183,8 @@ const generateDebitNotePDF = async (req, res) => {
   doc.fontSize(10).font("Helvetica-Bold");
   doc.text("Descripción", 50, currentY);
   doc.text("Cantidad", 300, currentY);
-  doc.text("Precio Unitario", 400, currentY);
-  doc.text("Subtotal", 500, currentY);
+  doc.text("Precio Unitario", 350, currentY);
+  doc.text("Subtotal", 450, currentY);
   doc.moveDown(0.5);
 
   // Line separator
@@ -192,15 +202,15 @@ const generateDebitNotePDF = async (req, res) => {
     // Definir posiciones centrales según un ancho de página estándar
     const productX = 50;
     const amountX = 300;
-    const priceX = 400;
-    const subtotalX = 500;
+    const priceX = 350;
+    const subtotalX = 450;
 
     const currentY = doc.y;
 
     doc.text(detail.product, productX, currentY);
     doc.text(detail.amount.toString(), amountX, currentY);
-    doc.text(`$${salePrice}`, priceX, currentY);
-    doc.text(`$${subtotal}`, subtotalX, currentY);
+    doc.text(`$${formatPrice(salePrice)}`, priceX, currentY);
+    doc.text(`$${formatPrice(subtotal)}`, subtotalX, currentY);
 
     doc.moveDown(0.5);
   });
@@ -213,19 +223,23 @@ const generateDebitNotePDF = async (req, res) => {
   doc.fontSize(12).font("Helvetica-Bold");
 
   if (showIVA) {
-    doc.text(`Subtotal: $${debitNoteData.subtotal}`, 450, doc.y, {
+    doc.text(`Subtotal: $${formatPrice(debitNoteData.subtotal)}`, 400, doc.y, {
       align: "right",
     });
-    doc.text(`IVA: $${debitNoteData.IVA_total}`, 450, doc.y, {
+    doc.text(`IVA: $${formatPrice(debitNoteData.IVA_total)}`, 400, doc.y, {
       align: "right",
     });
     doc
       .fontSize(14)
-      .text(`Total: $${debitNoteData.total}`, 450, doc.y, { align: "right" });
+      .text(`Total: $${formatPrice(debitNoteData.total)}`, 400, doc.y, {
+        align: "right",
+      });
   } else {
     doc
       .fontSize(14)
-      .text(`Total: $${debitNoteData.total}`, 450, doc.y, { align: "right" });
+      .text(`Total: $${formatPrice(debitNoteData.total)}`, 400, doc.y, {
+        align: "right",
+      });
     doc.moveDown(0.5);
     doc
       .fontSize(10)

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import BackButton from "../components/backButton";
 import formatDate from "../utils/formatDate";
 import formatDocNumber from "../utils/formatDocNumber";
+import formatPrice from "../utils/formatPrice";
 
 function ListDocs() {
   const [company, setCompany] = useState({});
@@ -33,7 +34,6 @@ function ListDocs() {
           `http://localhost:3000/documents/find/${company.id_user}`
         );
         const response = await result.json();
-        console.log("Documents: ", response);
         const documents = response.documents;
         setInvoices(documents.invoices || []);
         setBuyOrders(documents.buyOrders || []);
@@ -62,6 +62,7 @@ function ListDocs() {
             <thead>
               <tr>
                 <th>Número de factura</th>
+                <th>Tipo de factura</th>
                 <th>Fecha de emisión</th>
                 <th>Comprador</th>
                 <th>Subtotal</th>
@@ -74,26 +75,12 @@ function ListDocs() {
                 return (
                   <tr key={index}>
                     <td>{formatDocNumber(invoice.num_invoice)}</td>
+                    <td>{invoice.type_invoice}</td>
                     <td>{formatDate(invoice.issue_date)}</td>
                     <td>{invoice.buyer_name}</td>
-                    <td>
-                      $
-                      {invoice.subtotal.toLocaleString("es-ES", {
-                        minimumFractionDigits: 2,
-                      })}
-                    </td>
-                    <td>
-                      $
-                      {invoice.IVA_total.toLocaleString("es-ES", {
-                        minimumFractionDigits: 2,
-                      })}
-                    </td>
-                    <td>
-                      $
-                      {invoice.total.toLocaleString("es-ES", {
-                        minimumFractionDigits: 2,
-                      })}
-                    </td>
+                    <td>${formatPrice(invoice.subtotal)}</td>
+                    <td>${formatPrice(invoice.IVA_total)}</td>
+                    <td>${formatPrice(invoice.total)}</td>
                   </tr>
                 );
               })}
@@ -124,12 +111,7 @@ function ListDocs() {
                     <td>{formatDate(buyOrder.issue_date)}</td>
                     <td>{formatDate(buyOrder.delivery_date)}</td>
                     <td>{buyOrder.supplier_name}</td>
-                    <td>
-                      $
-                      {buyOrder.total.toLocaleString("es-ES", {
-                        minimumFractionDigits: 2,
-                      })}
-                    </td>
+                    <td>${formatPrice(buyOrder.total_amount)}</td>
                   </tr>
                 );
               })}
@@ -146,6 +128,7 @@ function ListDocs() {
             <thead>
               <tr>
                 <th>Número de nota</th>
+                <th>Tipo de nota</th>
                 <th>Fecha de emisión</th>
                 <th>Comprador</th>
                 <th>Subtotal</th>
@@ -158,26 +141,12 @@ function ListDocs() {
                 return (
                   <tr key={index}>
                     <td>{formatDocNumber(debitNote.num_debit_note)}</td>
+                    <td>{debitNote.type_debit_note}</td>
                     <td>{formatDate(debitNote.issue_date)}</td>
                     <td>{debitNote.buyer_name}</td>
-                    <td>
-                      $
-                      {debitNote.subtotal.toLocaleString("es-ES", {
-                        minimumFractionDigits: 2,
-                      })}
-                    </td>
-                    <td>
-                      $
-                      {debitNote.IVA_total.toLocaleString("es-ES", {
-                        minimumFractionDigits: 2,
-                      })}
-                    </td>
-                    <td>
-                      $
-                      {debitNote.total.toLocaleString("es-ES", {
-                        minimumFractionDigits: 2,
-                      })}
-                    </td>
+                    <td>${formatPrice(debitNote.subtotal)}</td>
+                    <td>${formatPrice(debitNote.IVA_total)}</td>
+                    <td>${formatPrice(debitNote.total)}</td>
                   </tr>
                 );
               })}
@@ -194,6 +163,7 @@ function ListDocs() {
             <thead>
               <tr>
                 <th>Número de nota</th>
+                <th>Tipo de nota</th>
                 <th>Fecha de emisión</th>
                 <th>Comprador</th>
                 <th>Subtotal</th>
@@ -206,26 +176,12 @@ function ListDocs() {
                 return (
                   <tr key={index}>
                     <td>{formatDocNumber(creditNote.num_credit_note)}</td>
+                    <td>{creditNote.type_credit_note}</td>
                     <td>{formatDate(creditNote.issue_date)}</td>
                     <td>{creditNote.buyer_name}</td>
-                    <td>
-                      $
-                      {creditNote.subtotal.toLocaleString("es-ES", {
-                        minimumFractionDigits: 2,
-                      })}
-                    </td>
-                    <td>
-                      $
-                      {creditNote.IVA_total.toLocaleString("es-ES", {
-                        minimumFractionDigits: 2,
-                      })}
-                    </td>
-                    <td>
-                      $
-                      {creditNote.total.toLocaleString("es-ES", {
-                        minimumFractionDigits: 2,
-                      })}
-                    </td>
+                    <td>${formatPrice(creditNote.subtotal)}</td>
+                    <td>${formatPrice(creditNote.IVA_total)}</td>
+                    <td>${formatPrice(creditNote.total)}</td>
                   </tr>
                 );
               })}
@@ -271,12 +227,7 @@ function ListDocs() {
                     <td>{receiverName}</td>
                     <td>{formatDate(cheque.issue_date)}</td>
                     <td>{formattedCashDate}</td>
-                    <td>
-                      $
-                      {cheque.amount.toLocaleString("es-ES", {
-                        minimumFractionDigits: 2,
-                      })}
-                    </td>
+                    <td>${formatPrice(cheque.amount)}</td>
                   </tr>
                 );
               })}
@@ -293,6 +244,7 @@ function ListDocs() {
             <thead>
               <tr>
                 <th>Número de remito</th>
+                <th>Tipo de remito</th>
                 <th>Fecha de emisión</th>
                 <th>Cliente</th>
                 <th>Medio de transporte</th>
@@ -303,6 +255,7 @@ function ListDocs() {
                 return (
                   <tr key={index}>
                     <td>{formatDocNumber(deliveryNote.num_delivery_note)}</td>
+                    <td>{deliveryNote.type_delivery_note}</td>
                     <td>{formatDate(deliveryNote.issue_date)}</td>
                     <td>{deliveryNote.buyer_name}</td>
                     <td>{deliveryNote.means_of_delivery}</td>
@@ -342,12 +295,7 @@ function ListDocs() {
                     <td>{formatDate(promissoryNote.issue_date)}</td>
                     <td>{formattedDueDate}</td>
                     <td>{promissoryNote.receiver_name}</td>
-                    <td>
-                      $
-                      {promissoryNote.amount.toLocaleString("es-ES", {
-                        minimumFractionDigits: 2,
-                      })}
-                    </td>
+                    <td>${formatPrice(promissoryNote.amount)}</td>
                   </tr>
                 );
               })}

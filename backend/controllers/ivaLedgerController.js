@@ -1,15 +1,23 @@
 const Invoice = require("../models").Invoice;
 const DebitNote = require("../models").DebitNote;
 const CreditNote = require("../models").CreditNote;
+const InvoiceReceived = require("../models").InvoiceReceived;
+const DebitNoteReceived = require("../models").DebitNoteReceived;
+const CreditNoteReceived = require("../models").CreditNoteReceived;
 const { Op } = require("sequelize");
 
 const getIvaSalesLedgers = async (req, res) => {
   const { from, to, id_company } = req.params;
+  const fromDate = new Date(from);
+  fromDate.setDate(fromDate.getDate() - 1); // Include the 'from' date
+  const toDate = new Date(to);
+  toDate.setDate(toDate.getDate() + 1); // Include the 'to' date
+
   const invoices = await Invoice.findAll({
     where: {
       id_company,
       issue_date: {
-        [Op.between]: [from, to],
+        [Op.between]: [fromDate, toDate],
       },
     },
   });
@@ -18,7 +26,7 @@ const getIvaSalesLedgers = async (req, res) => {
     where: {
       id_company,
       issue_date: {
-        [Op.between]: [from, to],
+        [Op.between]: [fromDate, toDate],
       },
     },
   });
@@ -27,7 +35,7 @@ const getIvaSalesLedgers = async (req, res) => {
     where: {
       id_company,
       issue_date: {
-        [Op.between]: [from, to],
+        [Op.between]: [fromDate, toDate],
       },
     },
   });
@@ -36,38 +44,45 @@ const getIvaSalesLedgers = async (req, res) => {
   res.json({ message: "List Docs", docs: allEntries });
 };
 
-/*
 const getIvaPurchasesLedgers = async (req, res) => {
-  const { from, to, id_company } = req.query;
-  const invoicesReceived = await Invoice.findAll({
+  const { from, to, id_company } = req.params;
+  const fromDate = new Date(from);
+  fromDate.setDate(fromDate.getDate() - 1); // Include the 'from' date
+  const toDate = new Date(to);
+  toDate.setDate(toDate.getDate() + 1); // Include the 'to' date
+  const invoicesReceived = await InvoiceReceived.findAll({
     where: {
-      id_company,
-      date: {
-        [Op.between]: [from, until],
+      company_id: id_company,
+      issue_date: {
+        [Op.between]: [fromDate, toDate],
       },
     },
   });
 
-  const debitNotesReceived = await DebitNote.findAll({
+  const debitNotesReceived = await DebitNoteReceived.findAll({
     where: {
-      id_company,
-      date: {
-        [Op.between]: [from, until],
+      company_id: id_company,
+      issue_date: {
+        [Op.between]: [fromDate, toDate],
       },
     },
   });
 
-  const creditNotesReceived = await CreditNote.findAll({
+  const creditNotesReceived = await CreditNoteReceived.findAll({
     where: {
-      id_company,
-      date: {
-        [Op.between]: [from, until],
+      company_id: id_company,
+      issue_date: {
+        [Op.between]: [fromDate, toDate],
       },
     },
   });
 
-  const allEntries = [...invoices, ...debitNotes, ...creditNotes];
+  const allEntries = [
+    ...invoicesReceived,
+    ...debitNotesReceived,
+    ...creditNotesReceived,
+  ];
+  res.json({ message: "List Docs", docs: allEntries });
 };
-*/
 
-module.exports = { getIvaSalesLedgers };
+module.exports = { getIvaSalesLedgers, getIvaPurchasesLedgers };

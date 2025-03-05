@@ -5,6 +5,9 @@ import NextButton from "../components/nextButton";
 import useLogin from "../hooks/useLogin";
 import { useNavigate, Link } from "react-router-dom";
 import BackButton from "../components/backButton";
+import formatPointSale from "../utils/formatPointSale";
+import formatDate from "../utils/formatDate";
+import formatPrice from "../utils/formatPrice";
 
 function CheckDeliveryNote() {
   const {
@@ -87,7 +90,8 @@ function CheckDeliveryNote() {
           a.download = `remito-${company.company_name}-${newDeliveryNote.buyer_name}.pdf`;
           document.body.appendChild(a);
           a.click();
-          a.remove();
+          document.body.removeChild(a);
+          window.open(url, "_blank");
           window.URL.revokeObjectURL(url);
           resetDeliveryNote();
           navigate("/listDocs");
@@ -116,13 +120,15 @@ function CheckDeliveryNote() {
       <section>
         <p>
           <strong>Tipo de remito:</strong>{" "}
-          {deliveryNote.header.type_deliveryNote}
+          {deliveryNote.header.type_delivery_note}
         </p>
         <p>
-          <strong>Punto de venta:</strong> {deliveryNote.header.point_sale}
+          <strong>Punto de venta:</strong>{" "}
+          {formatPointSale(deliveryNote.header.point_sale)}
         </p>
         <p>
-          <strong>Fecha de emisión:</strong> {deliveryNote.header.issue_date}
+          <strong>Fecha de emisión:</strong>{" "}
+          {formatDate(deliveryNote.header.issue_date)}
         </p>
         <p>
           <strong>Condición de venta:</strong>{" "}
@@ -170,10 +176,10 @@ function CheckDeliveryNote() {
               <tr key={index}>
                 <td>{row.amount || ""}</td>
                 <td>{row.product}</td>
-                <td>{row.unit_price || ""}</td>
+                <td>{formatPrice(row.unit_price) || ""}</td>
                 <td>
                   {row.unit_price && row.amount
-                    ? row.unit_price * row.amount
+                    ? formatPrice(row.unit_price * row.amount)
                     : ""}
                 </td>
               </tr>

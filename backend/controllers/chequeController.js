@@ -4,6 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const { PDFDocument, rgb, StandardFonts } = require("pdf-lib");
 const { NumerosALetras } = require("numero-a-letras");
+const formatPrice = require("../utils/formatPrice");
 
 const getCheques = async (req, res) => {
   const cheques = await Cheque.findAll({
@@ -77,23 +78,22 @@ const generateChequePDF = async (req, res) => {
     color: rgb(0, 0, 0),
     font: await pdfDoc.embedFont(StandardFonts.HelveticaBold),
   });
-  const issueDateWords = new Date(chequeData.issue_date).toLocaleDateString(
-    "es-AR",
-    {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    }
-  );
+  const issueDate = new Date(chequeData.issue_date);
+  issueDate.setDate(issueDate.getDate() + 1);
+  const issueDateWords = issueDate.toLocaleDateString("es-AR", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
   page.drawText(`Fecha: ${issueDateWords}`, {
-    x: width - 200,
+    x: width - 300,
     y: height - 60,
     size: fontSize,
     color: rgb(0, 0, 0),
     font: await pdfDoc.embedFont(StandardFonts.HelveticaBold),
   });
   page.drawText(`Lugar: ${chequeData.issue_place}`, {
-    x: width - 200,
+    x: width - 300,
     y: height - 80,
     size: fontSize,
     color: rgb(0, 0, 0),
@@ -175,7 +175,7 @@ const generateChequePDF = async (req, res) => {
     size: fontSize,
     color: rgb(0, 0, 0),
   });
-  page.drawText(`$${chequeData.amount}`, {
+  page.drawText(`$${formatPrice(chequeData.amount)}`, {
     x: width - 100,
     y: height - 170,
     size: fontSize + 2,

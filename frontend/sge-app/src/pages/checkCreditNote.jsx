@@ -5,6 +5,9 @@ import NextButton from "../components/nextButton";
 import useLogin from "../hooks/useLogin";
 import { useNavigate, Link } from "react-router-dom";
 import BackButton from "../components/backButton";
+import formatPointSale from "../utils/formatPointSale";
+import formatDate from "../utils/formatDate";
+import formatPrice from "../utils/formatPrice";
 
 function CheckCreditNote() {
   const {
@@ -85,10 +88,11 @@ function CheckCreditNote() {
           a.download = `nota_de_crédito-${company.company_name}-${newCreditNote.buyer_name}.pdf`;
           document.body.appendChild(a);
           a.click();
-          a.remove();
+          document.body.removeChild(a);
+          window.open(url, "_blank");
           window.URL.revokeObjectURL(url);
-          navigate("/listDocs");
           resetCreditNote();
+          navigate("/listDocs");
         } else {
           alert("Error al generar el PDF");
         }
@@ -113,13 +117,15 @@ function CheckCreditNote() {
       <h2>Datos de la nota</h2>
       <section>
         <p>
-          <strong>Tipo de nota:</strong> {creditNote.header.type_creditNote}
+          <strong>Tipo de nota:</strong> {creditNote.header.type_credit_note}
         </p>
         <p>
-          <strong>Punto de venta:</strong> {creditNote.header.point_sale}
+          <strong>Punto de venta:</strong>{" "}
+          {formatPointSale(creditNote.header.point_sale)}
         </p>
         <p>
-          <strong>Fecha de emisión:</strong> {creditNote.header.issue_date}
+          <strong>Fecha de emisión:</strong>{" "}
+          {formatDate(creditNote.header.issue_date)}
         </p>
         <p>
           <strong>Condición de venta:</strong>{" "}
@@ -160,10 +166,10 @@ function CheckCreditNote() {
               <tr key={index}>
                 <td>{row.amount || ""}</td>
                 <td>{row.product}</td>
-                <td>{row.unit_price || ""}</td>
+                <td>{formatPrice(row.unit_price) || ""}</td>
                 <td>
                   {row.unit_price && row.amount
-                    ? row.unit_price * row.amount
+                    ? formatPrice(row.unit_price * row.amount)
                     : ""}
                 </td>
               </tr>
@@ -179,19 +185,29 @@ function CheckCreditNote() {
         <p>
           <strong>Subtotal:</strong>{" "}
           {"$" +
-            details.reduce((acc, row) => acc + row.amount * row.unit_price, 0)}
+            formatPrice(
+              details.reduce((acc, row) => acc + row.amount * row.unit_price, 0)
+            )}
         </p>
         <p>
           <strong>IVA:</strong>{" "}
           {"$" +
-            details.reduce((acc, row) => acc + row.amount * row.unit_price, 0) *
-              0.21}
+            formatPrice(
+              details.reduce(
+                (acc, row) => acc + row.amount * row.unit_price,
+                0
+              ) * 0.21
+            )}
         </p>
         <p>
           <strong>Total:</strong>{" "}
           {"$" +
-            details.reduce((acc, row) => acc + row.amount * row.unit_price, 0) *
-              1.21}
+            formatPrice(
+              details.reduce(
+                (acc, row) => acc + row.amount * row.unit_price,
+                0
+              ) * 1.21
+            )}
         </p>
       </section>
       {error.form && <p style={{ color: "red" }}>{error.form.message}</p>}

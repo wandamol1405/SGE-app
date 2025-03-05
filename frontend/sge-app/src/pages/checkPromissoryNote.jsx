@@ -5,6 +5,8 @@ import NextButton from "../components/nextButton";
 import useLogin from "../hooks/useLogin";
 import { useNavigate, Link } from "react-router-dom";
 import BackButton from "../components/backButton";
+import formatDate from "../utils/formatDate";
+import formatPrice from "../utils/formatPrice";
 
 function CheckPromissoryNote() {
   const { promissoryNote = { data: {} }, resetPromissoryNote } =
@@ -63,7 +65,8 @@ function CheckPromissoryNote() {
           a.download = `pagaré-${company.company_name}-${newPromissoryNote.receiver_name}.pdf`;
           document.body.appendChild(a);
           a.click();
-          a.remove();
+          document.body.removeChild(a);
+          window.open(url, "_blank");
           window.URL.revokeObjectURL(url);
           resetPromissoryNote();
           navigate("/listDocs");
@@ -91,7 +94,8 @@ function CheckPromissoryNote() {
       <h2>Datos del pagaré</h2>
       <section>
         <p>
-          <strong>Fecha de emisión: </strong> {promissoryNote.data.issue_date}
+          <strong>Fecha de emisión: </strong>{" "}
+          {formatDate(promissoryNote.data.issue_date)}
         </p>
         <p>
           <strong>Lugar de emisión: </strong> {promissoryNote.data.issue_place}
@@ -101,12 +105,12 @@ function CheckPromissoryNote() {
           {promissoryNote.data.receiver_name}
         </p>
         <p>
-          <strong>Monto: </strong> {promissoryNote.data.amount}
+          <strong>Monto: </strong> ${formatPrice(promissoryNote.data.amount)}
         </p>
         {promissoryNote.data.manturity_type === "Día fijo" && (
           <p>
             <strong>Fecha de vencimiento: </strong>{" "}
-            {promissoryNote.data.manturity_date}
+            {formatDate(promissoryNote.data.manturity_date)}
           </p>
         )}
         {promissoryNote.data.manturity_type === "Tantos días" && (

@@ -5,8 +5,9 @@ const User = require("../models").User;
 const fs = require("fs");
 const path = require("path");
 const PDFDocument = require("pdfkit");
-const { formatDate } = require("../utils/formatDate");
+const formatDate = require("../utils/formatDate");
 const formatDocNumber = require("../utils/formatDocNumber");
+const formatPrice = require("../utils/formatPrice");
 
 const getBuyOrders = async (req, res) => {
   const buyOrders = await BuyOrder.findAll({
@@ -96,9 +97,14 @@ const generateBuyOrderPDF = async (req, res) => {
   doc.moveDown(0.5);
 
   doc.fontSize(12);
-  doc.text(`Número de Orden: ${formatDocNumber(buyOrderCounter)}`, {
-    align: "right",
-  });
+  doc.text(
+    `Número de Orden: ${formatDocNumber(
+      buyOrderCounter.last_buy_order_number
+    )}`,
+    {
+      align: "right",
+    }
+  );
   doc.text(`Fecha de Emisión: ${formatDate(buyOrderData.issue_date)}`, {
     align: "right",
   });
@@ -125,13 +131,10 @@ const generateBuyOrderPDF = async (req, res) => {
   doc.font("Helvetica").text(`${buyOrderData.company.IVA_condition}`);
   doc.font("Helvetica-Bold").text("Ingresos brutos: ", { continued: true });
   doc.font("Helvetica").text(`${buyOrderData.company.gross_revenue}`);
-  const startDate = new Date(
-    buyOrderData.company.start_date
-  ).toLocaleDateString("es-AR");
   doc.font("Helvetica-Bold").text("Fecha de inicio de actividades:", {
     continued: true,
   });
-  doc.font("Helvetica").text(`${startDate}`);
+  doc.font("Helvetica").text(`${formatDate(buyOrderData.company.start_date)}`);
   doc.moveDown(1);
 
   doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
@@ -150,12 +153,14 @@ const generateBuyOrderPDF = async (req, res) => {
   doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
   doc.moveDown(0.5);
 
+  const currentY = doc.y;
+
   // Table header
   doc.fontSize(10).font("Helvetica-Bold");
-  doc.text("Descripción", 50, doc.y, { continued: true });
-  doc.text("Cantidad", 100, doc.y, { continued: true });
-  doc.text("Precio Unitario", 200, doc.y, { continued: true });
-  doc.text("Subtotal", 300, doc.y);
+  doc.text("Descripción", 50, currentY);
+  doc.text("Cantidad", 300, currentY);
+  doc.text("Precio Unitario", 350, currentY);
+  doc.text("Subtotal", 450, currentY);
   doc.moveDown(0.5);
 
   // Line separator
@@ -170,35 +175,33 @@ const generateBuyOrderPDF = async (req, res) => {
 
     // Definir posiciones centrales según un ancho de página estándar
     const productX = 50;
-    const amountX = 125;
-    const priceX = 250;
-    const subtotalX = 400;
+    const amountX = 300;
+    const priceX = 350;
+    const subtotalX = 450;
 
-    doc.text(detail.product, productX, doc.y, {
-      continued: true,
-    });
-    doc.text(detail.amount.toString(), amountX, doc.y, {
-      continued: true,
-    });
-    doc.text(`$${salePrice}`, priceX, doc.y, {
-      continued: true,
-    });
-    doc.text(`$${subtotal}`, subtotalX, doc.y);
+    const currentY = doc.y;
 
+    doc.text(detail.product, productX, currentY);
+    doc.text(detail.amount.toString(), amountX, currentY);
+    doc.text(`$${formatPrice(salePrice)}`, priceX, currentY);
+    doc.text(`$${formatPrice(subtotal)}`, subtotalX, currentY);
+
+    doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
     doc.moveDown(0.5);
   });
 
-  doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
-  doc.moveDown(0.5);
-
   doc.fontSize(12).font("Helvetica-Bold");
-  doc.fontSize(14).text(`Total: $${buyOrderData.total}`, { align: "right" });
+  doc
+    .fontSize(14)
+    .text(`Total: $${formatPrice(buyOrderData.total)}`, 400, doc.y, {
+      align: "right",
+    });
 
   doc.moveDown(2);
   doc
     .fontSize(10)
     .font("Helvetica")
-    .text("Gracias por su compra.", { align: "center" });
+    .text("Gracias por su compra.", 50, doc.y, { align: "center" });
   doc.text("Esta orden de compra ha sido generada automáticamente.", {
     align: "center",
   });

@@ -5,6 +5,8 @@ import CheckContainer from "../components/checkContainer";
 import { useNavigate, Link } from "react-router-dom";
 import useLogin from "../hooks/useLogin";
 import BackButton from "../components/backButton";
+import formatDate from "../utils/formatDate";
+import formatPrice from "../utils/formatPrice";
 
 function CheckOrder() {
   const {
@@ -79,7 +81,8 @@ function CheckOrder() {
           a.download = `orden_compra-${company.company_name}-${newOrder.supplier_name}.pdf`;
           document.body.appendChild(a);
           a.click();
-          a.remove();
+          document.body.removeChild(a);
+          window.open(url, "_blank");
           window.URL.revokeObjectURL(url);
           navigate("/listDocs");
           resetBuyOrder();
@@ -110,10 +113,12 @@ function CheckOrder() {
       <h2>Datos de la orden de compra</h2>
       <section>
         <p>
-          <strong>Fecha de emisión: </strong> {buyOrder.header.issue_date}
+          <strong>Fecha de emisión: </strong>{" "}
+          {formatDate(buyOrder.header.issue_date)}
         </p>
         <p>
-          <strong>Fecha de entrega: </strong> {buyOrder.header.delivery_date}
+          <strong>Fecha de entrega: </strong>{" "}
+          {formatDate(buyOrder.header.delivery_date)}
         </p>
         <p>
           <strong>Condición de venta: </strong> {buyOrder.header.sale_condition}
@@ -149,10 +154,10 @@ function CheckOrder() {
               <tr key={index}>
                 <td>{row.amount || ""}</td>
                 <td>{row.product}</td>
-                <td>{row.unit_price || ""}</td>
+                <td>{formatPrice(row.unit_price) || ""}</td>
                 <td>
                   {row.unit_price && row.amount
-                    ? row.unit_price * row.amount
+                    ? formatPrice(row.unit_price * row.amount)
                     : ""}
                 </td>
               </tr>
@@ -167,7 +172,9 @@ function CheckOrder() {
         <p>
           <strong>Total:</strong>{" "}
           {"$" +
-            details.reduce((acc, row) => acc + row.amount * row.unit_price, 0)}
+            formatPrice(
+              details.reduce((acc, row) => acc + row.amount * row.unit_price, 0)
+            )}
         </p>
       </section>
 

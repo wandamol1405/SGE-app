@@ -4,7 +4,7 @@ import useLogin from "../hooks/useLogin";
 import Select from "../components/select";
 import NextButton from "../components/nextButton";
 import BackButton from "../components/backButton";
-import TableContainer from "../components/tableContainer";
+import TableInputContainer from "../components/tableInputContainer";
 import AddButton from "../components/addButton";
 import styled from "styled-components";
 
@@ -64,94 +64,6 @@ const JournalEntryContainer = styled.div`
     h1 {
       font-size: 2.5rem;
     }
-`;
-
-const TableAccountingEntries = styled.table`
-  border-collapse: collapse;
-  width: 100%;
-  margin: 1rem 0;
-  font-size: 1rem;
-  border-radius: 10px;
-  overflow: hidden;
-
-  th {
-    background-color: #fffdec;
-    color: #ffffff;
-    padding: 1rem;
-    font-size: 1rem;
-    font-family: "Libre Franklin", sans-serif;
-    letter-spacing: 0.05em;
-  }
-
-  th,
-  td {
-    border: 1px solid #d4d4d4;
-    padding: 0.5rem;
-    background-color: #fffdec;
-    text-align: center;
-    font-family: "Libre Franklin", sans-serif;
-    color: #5a6c57;
-  }
-
-  tr:nth-child(even) {
-    background-color: #f7f9f7; /* Un tono suave y limpio */
-  }
-
-  tr:nth-child(odd) {
-    background-color: #ffffff;
-  }
-
-  tr:hover {
-    background-color: #e8f5e9; /* Un color destacado pero suave */
-    transition: background-color 0.3s ease;
-  }
-
-  td {
-    vertical-align: middle; /* Asegura una alineación uniforme */
-  }
-
-  input {
-    width: calc(100% - 1rem);
-    padding: 1rem;
-    border: none;
-    border-radius: 5px;
-    text-align: center;
-    box-sizing: border-box;
-    font-family: "Libre Franklin", sans-serif;
-    font-size: 1.1rem;
-    color: #5a6c57;
-    opacity: 0.8;
-    background-color: #fffdec;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  input:focus {
-    border-color: #3a4731;
-    box-shadow: 0 0 5px rgba(58, 71, 49, 0.5);
-    outline: none;
-  }
-
-  caption {
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-    color: #333333;
-    font-family: "Libre Franklin", sans-serif;
-    text-align: left;
-  }
-  @media (min-width: 1080px) {
-    width: 60vw;
-    th {
-      padding: 1rem;
-      font-size: 1.3rem;
-    }
-    td {
-      font-size: 1.2rem;
-    }
-    caption {
-      font-size: 1.5rem;
-    }
-  }
 `;
 
 const DateContainer = styled.div`
@@ -331,7 +243,7 @@ const AddJournalEntry = () => {
           }}
         />
       </DateContainer>
-      <TableAccountingEntries>
+      <TableInputContainer>
         <thead>
           <tr className="bg-gray-300">
             <th className="border p-2">Cuenta</th>
@@ -398,7 +310,7 @@ const AddJournalEntry = () => {
             </td>
           </tr>
         </tfoot>
-      </TableAccountingEntries>
+      </TableInputContainer>
       <div>
         <AddButton onClick={addRow}>+ Agregar línea</AddButton>
         <AddButton onClick={removeRow}>- Eliminar línea</AddButton>

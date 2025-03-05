@@ -84,71 +84,99 @@ function CreatePromissoryNote() {
         </p>
       )}
       <form>
-        <Input
-          type="text"
-          placeholder="Fecha emisión"
-          value={issue_date}
-          onChange={(e) => setDate(e.target.value)}
-          onFocus={(e) => (e.target.type = "date")}
-          onBlur={(e) => {
-            if (!e.target.value) e.target.type = "text";
-          }}
-        />
-        <Input
-          type="text"
-          placeholder="Lugar de emisión"
-          value={issue_place}
-          onChange={(e) => setPlace(e.target.value)}
-        />
-        <Select
-          value={manturity_type}
-          onChange={(e) => setManturityType(e.target.value)}
-        >
-          <option value="" disabled>
-            Seleccione el tipo de vencimiento
-          </option>
-          <option value="A la vista">A la vista</option>
-          <option value="Día fijo">Día fijo</option>
-          <option value="Tantos días">Tantos días</option>
-        </Select>
-        {manturity_type === "Día fijo" && (
+        <label>
+          Fecha de emisión
           <Input
             type="text"
-            placeholder="Fecha de vencimiento"
-            value={manturity_date}
-            onChange={(e) => setManturityDate(e.target.value)}
+            label="Fecha de emisión"
+            placeholder="Fecha emisión"
+            value={issue_date}
+            onChange={(e) => setDate(e.target.value)}
             onFocus={(e) => (e.target.type = "date")}
             onBlur={(e) => {
               if (!e.target.value) e.target.type = "text";
             }}
           />
-        )}
-        {manturity_type === "Tantos días" && (
+        </label>
+        <label>
+          Lugar de emisión
           <Input
             type="text"
-            placeholder="Cantidad de días"
-            value={manturity_days}
-            onChange={(e) => setManturityDays(e.target.value)}
+            label="Lugar de emisión"
+            placeholder="Lugar de emisión"
+            value={issue_place}
+            onChange={(e) => setPlace(e.target.value)}
           />
+        </label>
+        <label>
+          Tipo de vencimiento
+          <Select
+            value={manturity_type}
+            label="Tipo de vencimiento"
+            onChange={(e) => setManturityType(e.target.value)}
+          >
+            <option value="" disabled>
+              Seleccione el tipo de vencimiento
+            </option>
+            <option value="A la vista">A la vista</option>
+            <option value="Día fijo">Día fijo</option>
+            <option value="Tantos días">Tantos días</option>
+          </Select>
+        </label>
+        {manturity_type === "Día fijo" && (
+          <label>
+            Fecha de vencimiento
+            <Input
+              type="text"
+              placeholder="Fecha de vencimiento"
+              value={manturity_date}
+              onChange={(e) => setManturityDate(e.target.value)}
+              onFocus={(e) => (e.target.type = "date")}
+              onBlur={(e) => {
+                if (!e.target.value) e.target.type = "text";
+              }}
+            />
+          </label>
         )}
-        <Input
-          type="text"
-          placeholder="Nombre del beneficiario"
-          value={receiver_name}
-          onChange={(e) => setReceiverName(e.target.value)}
-        />
-        <Input
-          type="text"
-          placeholder="Monto"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-        />
-        <Input
-          type="text"
-          placeholder="Lugar de pago"
-          value={pay_place}
-          onChange={(e) => setPayPlace(e.target.value)}
-        />
+        {manturity_type === "Tantos días" && (
+          <label>
+            Cantidad de días
+            <Input
+              type="text"
+              label="Cantidad de días"
+              placeholder="Cantidad de días"
+              value={manturity_days}
+              onChange={(e) => setManturityDays(e.target.value)}
+            />
+          </label>
+        )}
+        <label>
+          Nombre del beneficiario
+          <Input
+            type="text"
+            placeholder="Nombre del beneficiario"
+            value={receiver_name}
+            onChange={(e) => setReceiverName(e.target.value)}
+          />
+        </label>
+        <label>
+          Monto
+          <Input
+            type="text"
+            placeholder="Monto"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+          />
+        </label>
+        <label>
+          Lugar de pago
+          <Input
+            type="text"
+            placeholder="Lugar de pago"
+            value={pay_place}
+            onChange={(e) => setPayPlace(e.target.value)}
+          />
+        </label>
         <div>
           <Link to="/createDocs">
             <BackButton>Volver</BackButton>

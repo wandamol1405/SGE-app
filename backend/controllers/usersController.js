@@ -10,14 +10,22 @@ const getUsers = async (req, res) => {
 const addUser = async (req, res) => {
   try {
     const user = req.body;
-
-    // Crear el nuevo usuario
     const createdUser = await User.create(user);
 
-    // Crear un registro en la tabla invoicecounters asociado al id_company del usuario
     if (createdUser.id_company) {
       await InvoiceCounter.create({
         company_id: createdUser.id_company,
+        invoice_type: "Factura A",
+        last_invoice_numer: 0,
+      });
+      await InvoiceCounter.create({
+        company_id: createdUser.id_company,
+        invoice_type: "Factura B",
+        last_invoice_numer: 0,
+      });
+      await InvoiceCounter.create({
+        company_id: createdUser.id_company,
+        invoice_type: "Factura C",
         last_invoice_numer: 0,
       });
       await BuyOrderCounter.create({
@@ -26,14 +34,42 @@ const addUser = async (req, res) => {
       });
       await DeliveryNoteCounter.create({
         id_company: createdUser.id_company,
+        delivery_note_type: "Remito R",
+        last_delivery_note_number: 0,
+      });
+      await DeliveryNoteCounter.create({
+        id_company: createdUser.id_company,
+        delivery_note_type: "Remito X",
         last_delivery_note_number: 0,
       });
       await DebitNoteCounter.create({
         id_company: createdUser.id_company,
+        debit_note_type: "Nota de Débito A",
+        last_debit_note_number: 0,
+      });
+      await DebitNoteCounter.create({
+        id_company: createdUser.id_company,
+        debit_note_type: "Nota de Débito B",
+        last_debit_note_number: 0,
+      });
+      await DebitNoteCounter.create({
+        id_company: createdUser.id_company,
+        debit_note_type: "Nota de Débito C",
         last_debit_note_number: 0,
       });
       await CreditNoteCounter.create({
         id_company: createdUser.id_company,
+        credit_note_type: "Nota de Crédito A",
+        last_credit_note_number: 0,
+      });
+      await CreditNoteCounter.create({
+        id_company: createdUser.id_company,
+        credit_note_type: "Nota de Crédito B",
+        last_credit_note_number: 0,
+      });
+      await CreditNoteCounter.create({
+        id_company: createdUser.id_company,
+        credit_note_type: "Nota de Crédito C",
         last_credit_note_number: 0,
       });
     }

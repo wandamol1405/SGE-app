@@ -4,7 +4,7 @@ import { useDeliveryNote } from "../context/DeliveryNoteContext";
 import Input from "../components/input";
 import NextButton from "../components/nextButton";
 import CreateInvoiceContainer from "../components/createInvoice";
-import TableContainer from "../components/tableContainer";
+import TableInputContainer from "../components/tableInputContainer";
 import BackButton from "../components/backButton";
 import AddButton from "../components/addButton";
 
@@ -49,7 +49,7 @@ function CreateDeliveryNoteDetails() {
     <CreateInvoiceContainer>
       <h1>Crear remito: Paso 3</h1>
       <p>Complete el detalle del remito</p>
-      <TableContainer>
+      <TableInputContainer>
         <thead>
           <tr>
             <th>Cantidad</th>
@@ -93,7 +93,7 @@ function CreateDeliveryNoteDetails() {
             </tr>
           ))}
         </tbody>
-      </TableContainer>
+      </TableInputContainer>
       <div>
         <AddButton onClick={addRow}>Agregar fila</AddButton>
         <AddButton onClick={removeRow}>Eliminar fila</AddButton>

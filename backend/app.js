@@ -21,6 +21,9 @@ const accountingEntryRouter = require("./routes/accountingEntryRoutes");
 const journalEntryRouter = require("./routes/journalEntryRoutes");
 const ivaLedgerRouter = require("./routes/ivaLedgerRoutes");
 const documentsRouter = require("./routes/documentsRoutes");
+const invoiceReceivedRouter = require("./routes/invoiceReceivedRoutes");
+const debitNoteReceivedRouter = require("./routes/debitNotesRoutes");
+const creditNoteReceivedRouter = require("./routes/creditNoteReceivedRoutes");
 
 app.use(cors());
 app.use(
@@ -52,6 +55,9 @@ app.use("/accountingEntry", accountingEntryRouter);
 app.use("/journalEntry", journalEntryRouter);
 app.use("/ivaLedger", ivaLedgerRouter);
 app.use("/documents", documentsRouter);
+app.use("/invoiceReceived", invoiceReceivedRouter);
+app.use("/debitNoteReceived", debitNoteReceivedRouter);
+app.use("/creditNoteReceived", creditNoteReceivedRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

@@ -4,6 +4,8 @@ const fs = require("fs");
 const path = require("path");
 const { PDFDocument, rgb, StandardFonts } = require("pdf-lib");
 const { NumerosALetras } = require("numero-a-letras");
+const formatDate = require("../utils/formatDate");
+const formatPrice = require("../utils/formatPrice");
 
 const getPromissoryNotes = async (req, res) => {
   const promissoryNotes = await PromissoryNote.findAll({
@@ -78,13 +80,7 @@ const generatePromissoryNotePDF = async (req, res) => {
   if (promissoryNoteData.manturity_type === "Tantos días") {
     manturityDateWords = `a los ${promissoryNoteData.manturity_days} días`;
   } else if (promissoryNoteData.manturity_type === "Día fijo") {
-    manturityDateWords = new Date(
-      promissoryNoteData.manturity_date
-    ).toLocaleDateString("es-AR", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
+    manturityDateWords = formatDate(promissoryNoteData.manturity_date);
   } else {
     manturityDateWords = "a la vista";
   }
@@ -103,7 +99,7 @@ const generatePromissoryNotePDF = async (req, res) => {
     color: rgb(0, 0, 0),
     font: await pdfDoc.embedFont(StandardFonts.HelveticaBold),
   });
-  page.drawText(`$${promissoryNoteData.amount} pesos argentinos`, {
+  page.drawText(`$${formatPrice(promissoryNoteData.amount)} pesos argentinos`, {
     x: width - 300,
     y: height - 80,
     size: fontSize + 2,
@@ -150,13 +146,14 @@ const generatePromissoryNotePDF = async (req, res) => {
   });
 
   // Fecha de emision
-  const issueDateWords = new Date(
-    promissoryNoteData.issue_date
-  ).toLocaleDateString("es-AR", {
+  const issueDate = new Date(promissoryNoteData.issue_date);
+  issueDate.setDate(issueDate.getDate() + 1);
+  const issueDateWords = issueDate.toLocaleDateString("es-AR", {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
+
   page.drawText(`Fecha de emisión: ${issueDateWords}`, {
     x: 20,
     y: height - 200,
@@ -184,10 +181,10 @@ const generatePromissoryNotePDF = async (req, res) => {
   // Mensaje de footer
   page.drawText(
     "Documento de práctica - No válido para operaciones comerciales.",
-    { x: width / 3, y: height - 280, size: 10, color: rgb(0, 0, 0) }
+    { x: width / 2 - 150, y: height - 280, size: 10, color: rgb(0, 0, 0) }
   );
   page.drawText("Este pagaré ha sido generado automáticamente.", {
-    x: width / 4,
+    x: width / 2 - 150,
     y: height - 290,
     size: 10,
     color: rgb(0, 0, 0),

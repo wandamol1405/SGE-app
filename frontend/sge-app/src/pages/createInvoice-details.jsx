@@ -4,7 +4,7 @@ import { useInvoice } from "../context/InvoiceContext";
 import Input from "../components/input";
 import NextButton from "../components/nextButton";
 import CreateInvoiceContainer from "../components/createInvoice";
-import TableContainer from "../components/tableContainer";
+import TableInputContainer from "../components/tableInputContainer";
 import BackButton from "../components/backButton";
 import AddButton from "../components/addButton";
 
@@ -49,7 +49,7 @@ function CreateInvoiceDetails() {
     <CreateInvoiceContainer>
       <h1>Crear factura: Paso 3</h1>
       <p>Complete el detalle de la venta</p>
-      <TableContainer>
+      <TableInputContainer>
         <thead>
           <tr>
             <th>Cantidad</th>
@@ -93,7 +93,7 @@ function CreateInvoiceDetails() {
             </tr>
           ))}
         </tbody>
-      </TableContainer>
+      </TableInputContainer>
 
       <div>
         <AddButton onClick={addRow}>Agregar fila</AddButton>

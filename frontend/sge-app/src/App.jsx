@@ -49,6 +49,11 @@ import ListDeliveryNotesByUser from "./pages/listDeliveryNotesByUser";
 import ListChequesByUser from "./pages/listChequesByUser";
 import ListPromissoryNotesByUser from "./pages/listPromissoryNotesByUser";
 import IvaSalesLedger from "./pages/ivaSalesLedger";
+import RegisterReceivedDocs from "./pages/registerReceivedDocs";
+import InvoiceReceived from "./pages/invoiceReceived";
+import DebitNoteReceived from "./pages/debitNoteReceived";
+import CreditNoteReceived from "./pages/creditNoteReceived";
+import IvaPurchasesLedger from "./pages/ivaPurchasesLedger";
 
 function App() {
   return (
@@ -400,6 +405,46 @@ function App() {
           element={
             <ProtectedRoute>
               <IvaSalesLedger />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/registerReceivedDocs"
+          element={
+            <ProtectedRoute>
+              <RegisterReceivedDocs />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/invoiceReceived"
+          element={
+            <ProtectedRoute>
+              <InvoiceReceived />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/debitNoteReceived"
+          element={
+            <ProtectedRoute>
+              <DebitNoteReceived />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/creditNoteReceived"
+          element={
+            <ProtectedRoute>
+              <CreditNoteReceived />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/ivaPurchasesLedger"
+          element={
+            <ProtectedRoute>
+              <IvaPurchasesLedger />
             </ProtectedRoute>
           }
         />

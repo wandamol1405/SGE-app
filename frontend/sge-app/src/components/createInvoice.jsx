@@ -37,6 +37,13 @@ const CreateInvoiceContainer = styled.div`
     gap: 1rem;
     justify-content: center;
   }
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 1.3rem;
+    color: #525b44;
+  }
   @media (min-width: 1080px) {
     width: 55vw;
     font-size: 1.8rem;

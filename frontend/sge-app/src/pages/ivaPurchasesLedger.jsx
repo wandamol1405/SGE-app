@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from "react";
+import { React, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import useLogin from "../hooks/useLogin";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import TableContainer from "../components/tableContainer";
 import NextButton from "../components/nextButton";
 import BackButton from "../components/backButton";
 import CheckContainer from "../components/checkContainer";
-import useLogin from "../hooks/useLogin";
 import formatDate from "../utils/formatDate";
 import formatDocNumber from "../utils/formatDocNumber";
 import formatPointSale from "../utils/formatPointSale";
 import InputDate from "../components/inputDate";
 import formatPrice from "../utils/formatPrice";
 
-function IvaSalesLedger() {
+function IvaPurchasesLedger() {
   const [docs, setDocs] = useState([]);
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
@@ -29,6 +29,7 @@ function IvaSalesLedger() {
       const response = await result.json();
       setCompany(response.user);
     }
+
     getCompany();
   }, [user]);
 
@@ -36,7 +37,7 @@ function IvaSalesLedger() {
     async function fetchDocs() {
       try {
         const response = await fetch(
-          `http://localhost:3000/ivaLedger/sales/from/${from}/to/${to}/id_company/${company.id_user}`
+          `http://localhost:3000/ivaLedger/purchases/from/${from}/to/${to}/id_company/${company.id_user}`
         );
         const data = await response.json();
         const sortedDocs = data.docs.sort(
@@ -70,12 +71,12 @@ function IvaSalesLedger() {
     setIva(
       (docs ?? []).reduce((sum, doc) => {
         if (doc.type_credit_note === "Nota de Crédito A") {
-          return sum - Number(doc.IVA_total || 0);
+          return sum - Number(doc.IVA || 0);
         } else if (
           doc.type_debit_note === "Nota de Débito A" ||
           doc.type_invoice === "Factura A"
         ) {
-          return sum + Number(doc.IVA_total || 0);
+          return sum + Number(doc.IVA || 0);
         } else {
           return sum;
         }
@@ -108,7 +109,7 @@ function IvaSalesLedger() {
 
     doc.setFontSize(20);
     doc.text(
-      `Libro de IVA Ventas - ${company.company_name}`,
+      `Libro de IVA Compras - ${company.company_name}`,
       doc.internal.pageSize.getWidth() / 2,
       16,
       {
@@ -129,7 +130,7 @@ function IvaSalesLedger() {
           "Tipo de Documento",
           "Punto de Venta",
           "Número",
-          "Cliente",
+          "Proveedor",
           "Neto",
           "IVA",
           "Total",
@@ -140,21 +141,21 @@ function IvaSalesLedger() {
           doc.type_invoice === "Factura A" ||
           doc.type_debit_note === "Nota de Débito A" ||
           doc.type_credit_note === "Nota de Crédito A";
-        const formattedNumber = doc.num_invoice
-          ? formatDocNumber(doc.num_invoice)
-          : doc.num_debit_note
-          ? formatDocNumber(doc.num_debit_note)
-          : doc.num_credit_note
-          ? formatDocNumber(doc.num_credit_note)
+        const formattedNumber = doc.invoice_number
+          ? formatDocNumber(doc.invoice_number)
+          : doc.debit_note_number
+          ? formatDocNumber(doc.debit_note_number)
+          : doc.credit_note_number
+          ? formatDocNumber(doc.credit_note_number)
           : "";
         return [
           formatDate(doc.issue_date),
           doc.type_invoice || doc.type_debit_note || doc.type_credit_note,
           formatPointSale(doc.point_sale),
           formattedNumber,
-          doc.buyer_name,
-          `$${isA ? formatPrice(doc.subtotal) : "0"}`,
-          `$${isA ? formatPrice(doc.IVA_total) : "0"}`,
+          doc.supplier,
+          `$${isA ? formatPrice(doc.subtotal) : 0}`,
+          `$${isA ? formatPrice(doc.IVA) : 0}`,
           `$${formatPrice(doc.total)}`,
         ];
       }),
@@ -171,7 +172,7 @@ function IvaSalesLedger() {
 
     window.open(
       doc.output("bloburl", {
-        filename: `Libro_IVA_Ventas_${company.company_name}.pdf`,
+        filename: `Libro_IVA_Compras_${company.company_name}.pdf`,
       }),
       "_blank"
     );
@@ -179,19 +180,18 @@ function IvaSalesLedger() {
 
   return (
     <CheckContainer>
-      <h1>Libro de IVA Ventas</h1>
+      <h1>Libro de IVA Compras</h1>
       <div>
         <p>Desde:</p>
         <InputDate
-          type="date"
           value={from}
+          type="date"
           onChange={(e) => setFrom(e.target.value)}
         />
-
         <p>Hasta:</p>
         <InputDate
-          type="date"
           value={to}
+          type="date"
           onChange={(e) => setTo(e.target.value)}
         />
       </div>
@@ -202,9 +202,9 @@ function IvaSalesLedger() {
               <tr>
                 <th>Fecha</th>
                 <th>Tipo de Documento</th>
-                <th>Punto de venta</th>
+                <th>Punto de Venta</th>
                 <th>Número</th>
-                <th>Cliente</th>
+                <th>Proveedor</th>
                 <th>Neto</th>
                 <th>IVA</th>
                 <th>Total</th>
@@ -216,12 +216,12 @@ function IvaSalesLedger() {
                   doc.type_invoice === "Factura A" ||
                   doc.type_debit_note === "Nota de Débito A" ||
                   doc.type_credit_note === "Nota de Crédito A";
-                const formattedNumber = doc.num_invoice
-                  ? formatDocNumber(doc.num_invoice)
-                  : doc.num_debit_note
-                  ? formatDocNumber(doc.num_debit_note)
-                  : doc.num_credit_note
-                  ? formatDocNumber(doc.num_credit_note)
+                const formattedNumber = doc.invoice_number
+                  ? formatDocNumber(doc.invoice_number)
+                  : doc.debit_note_number
+                  ? formatDocNumber(doc.debit_note_number)
+                  : doc.credit_note_number
+                  ? formatDocNumber(doc.credit_note_number)
                   : "";
                 return (
                   <tr key={doc.id}>
@@ -233,9 +233,9 @@ function IvaSalesLedger() {
                     </td>
                     <td>{formatPointSale(doc.point_sale)}</td>
                     <td>{formattedNumber}</td>
-                    <td>{doc.buyer_name}</td>
-                    <td>${isA ? formatPrice(doc.subtotal) : "0"}</td>
-                    <td>${isA ? formatPrice(doc.IVA_total) : "0"}</td>
+                    <td>{doc.supplier}</td>
+                    <td>${isA ? formatPrice(doc.subtotal) : 0}</td>
+                    <td>${isA ? formatPrice(doc.IVA) : 0}</td>
                     <td>${formatPrice(doc.total)}</td>
                   </tr>
                 );
@@ -260,7 +260,7 @@ function IvaSalesLedger() {
       </section>
       <div>
         <Link to="/home">
-          <BackButton> Volver </BackButton>
+          <BackButton>Volver</BackButton>
         </Link>
         <Link>
           <NextButton type="button" onClick={generatePDF}>
@@ -272,4 +272,4 @@ function IvaSalesLedger() {
   );
 }
 
-export default IvaSalesLedger;
+export default IvaPurchasesLedger;

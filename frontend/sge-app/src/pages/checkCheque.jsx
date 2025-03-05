@@ -5,6 +5,8 @@ import NextButton from "../components/nextButton";
 import useLogin from "../hooks/useLogin";
 import { useNavigate, Link } from "react-router-dom";
 import BackButton from "../components/backButton";
+import formatPrice from "../utils/formatPrice";
+import formatDate from "../utils/formatDate";
 
 function CheckCheque() {
   const { cheque = { data: {} }, resetCheque } = useCheque() || {};
@@ -66,7 +68,8 @@ function CheckCheque() {
           a.download = `cheque-${company.company_name}-${newCheque.receiver_name}.pdf`;
           document.body.appendChild(a);
           a.click();
-          a.remove();
+          document.body.removeChild(a);
+          window.open(url, "_blank");
           window.URL.revokeObjectURL(url);
           resetCheque();
           navigate("/listDocs");
@@ -117,11 +120,15 @@ function CheckCheque() {
           <strong>Banco: </strong> {cheque.data.bank_name}
         </p>
         <p>
-          <strong>Fecha de emisión: </strong> {cheque.data.issue_date}
+          <strong>Fecha de emisión: </strong>{" "}
+          {formatDate(cheque.data.issue_date)}
         </p>
         <p>
           <strong>Lugar de emisión: </strong>
           {cheque.data.issue_place}
+        </p>
+        <p>
+          <strong>Monto: </strong> ${formatPrice(cheque.data.amount)}
         </p>
         <p>
           <strong>Nombre del beneficiario: </strong>
@@ -129,7 +136,9 @@ function CheckCheque() {
         </p>
         <p>
           <strong>Fecha de cobro: </strong>
-          {cheque.data.collection_date}
+          {cheque.data.collection_date === "No corresponde"
+            ? cheque.data.collection_date
+            : formatDate(cheque.data.collection_date)}
         </p>
       </section>
 

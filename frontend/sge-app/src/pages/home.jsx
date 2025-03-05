@@ -95,10 +95,13 @@ function Home() {
       </div>
       <ButtonsContainer>
         <Link to="/createDocs">
-          <HomeButton>Crear documento comercial</HomeButton>
+          <HomeButton>Emitir documento comercial</HomeButton>
         </Link>
         <Link to="/listDocs">
           <HomeButton>Ver documentos comerciales emitidos</HomeButton>
+        </Link>
+        <Link to="/registerReceivedDocs">
+          <HomeButton>Registrar documentos comerciales recibidos</HomeButton>
         </Link>
         <Link to="/updateGeneralJournal">
           <HomeButton>Editar Libro Diario</HomeButton>

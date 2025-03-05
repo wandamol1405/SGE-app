@@ -5,7 +5,7 @@ const Title = styled.div`
   background-color: rgb(236, 151, 151);
   margin: 1rem;
   border-radius: 10px;
-  width: 70%;
+  width: 90%;
   text-align: center;
   justify-content: center;
   font-size: 1rem;
@@ -14,7 +14,7 @@ const Title = styled.div`
   color: black;
   gap: 1.5rem;
   @media (min-width: 1080px) {
-    font-size: 1.5rem;
+    width: 70%;
   }
 `;
 

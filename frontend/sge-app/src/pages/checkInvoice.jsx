@@ -5,6 +5,9 @@ import NextButton from "../components/nextButton";
 import useLogin from "../hooks/useLogin";
 import { useNavigate, Link } from "react-router-dom";
 import BackButton from "../components/backButton";
+import formatPointSale from "../utils/formatPointSale";
+import formatDate from "../utils/formatDate";
+import formatPrice from "../utils/formatPrice";
 
 function CheckInvoice() {
   const { invoice = { header: {}, client: {}, details: [] }, resetInvoice } =
@@ -83,7 +86,8 @@ function CheckInvoice() {
           a.download = `factura-${company.company_name}-${newInvoice.buyer_name}.pdf`;
           document.body.appendChild(a);
           a.click();
-          a.remove();
+          document.body.removeChild(a);
+          window.open(url, "_blank");
           window.URL.revokeObjectURL(url);
           resetInvoice();
           navigate("/listDocs");
@@ -114,10 +118,12 @@ function CheckInvoice() {
           <strong>Tipo de factura:</strong> {invoice.header.type_invoice}
         </p>
         <p>
-          <strong>Punto de venta:</strong> {invoice.header.point_sale}
+          <strong>Punto de venta:</strong>{" "}
+          {formatPointSale(invoice.header.point_sale)}
         </p>
         <p>
-          <strong>Fecha de emisión:</strong> {invoice.header.issue_date}
+          <strong>Fecha de emisión:</strong>{" "}
+          {formatDate(invoice.header.issue_date)}
         </p>
         <p>
           <strong>Condición de venta:</strong> {invoice.header.sale_condition}
@@ -157,10 +163,10 @@ function CheckInvoice() {
               <tr key={index}>
                 <td>{row.amount || ""}</td>
                 <td>{row.product}</td>
-                <td>{row.sale_price || ""}</td>
+                <td>{formatPrice(row.sale_price) || ""}</td>
                 <td>
                   {row.sale_price && row.amount
-                    ? row.sale_price * row.amount
+                    ? formatPrice(row.sale_price * row.amount)
                     : ""}
                 </td>
               </tr>
@@ -176,19 +182,29 @@ function CheckInvoice() {
         <p>
           <strong>Subtotal:</strong>{" "}
           {"$" +
-            details.reduce((acc, row) => acc + row.amount * row.sale_price, 0)}
+            formatPrice(
+              details.reduce((acc, row) => acc + row.amount * row.sale_price, 0)
+            )}
         </p>
         <p>
           <strong>IVA:</strong>{" "}
           {"$" +
-            details.reduce((acc, row) => acc + row.amount * row.sale_price, 0) *
-              0.21}
+            formatPrice(
+              details.reduce(
+                (acc, row) => acc + row.amount * row.sale_price,
+                0
+              ) * 0.21
+            )}
         </p>
         <p>
           <strong>Total:</strong>{" "}
           {"$" +
-            details.reduce((acc, row) => acc + row.amount * row.sale_price, 0) *
-              1.21}
+            formatPrice(
+              details.reduce(
+                (acc, row) => acc + row.amount * row.sale_price,
+                0
+              ) * 1.21
+            )}
         </p>
       </section>
       {error.form && <p style={{ color: "red" }}>{error.form.message}</p>}

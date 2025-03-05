@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Select = styled.select`
+const InputDate = styled.input`
   background-color: #fffdec;
   color: #5a6c57;
   border: none;
@@ -10,25 +10,19 @@ const Select = styled.select`
   font-size: 20px;
   cursor: pointer;
   font-family: "Libre Franklin", sans-serif;
-  text-align: center;
+  text-align: center; /* Centrar el texto del input */
 
-  &::option {
+  &::placeholder {
     color: #5a6c57;
     opacity: 0.6;
     text-align: center;
   }
 
   @media (min-width: 1080px) {
+    width: 15vw;
     padding: 10px 20px;
     font-size: 20px;
-    width: 33vw;
-    &::option {
-      color: #5a6c57;
-      opacity: 0.6;
-      width: 32vw;
-      text-align: center;
-    }
   }
 `;
 
-export default Select;
+export default InputDate;

@@ -5,9 +5,10 @@ const User = require("../models").User;
 const fs = require("fs");
 const path = require("path");
 const PDFDocument = require("pdfkit");
-const { formatDate } = require("../utils/formatDate");
 const formatDocNumber = require("../utils/formatDocNumber");
 const formatPointSale = require("../utils/formatPointSale");
+const formatPrice = require("../utils/formatPrice");
+const formatDate = require("../utils/formatDate");
 
 const getCreditNote = async (req, res) => {
   const creditNotes = await CreditNote.findAll({
@@ -39,9 +40,10 @@ const addCreditNote = async (req, res) => {
   try {
     let { details, ...creditNote } = req.body;
     const companyId = creditNote.id_company;
+    const creditNoteType = creditNote.type_credit_note;
 
     const creditNoteCounter = await CreditNoteCounter.findOne({
-      where: { id_company: companyId },
+      where: { id_company: companyId, credit_note_type: creditNoteType },
     });
     const creditNoteNumber = creditNoteCounter.last_credit_note_number
       ? creditNoteCounter.last_credit_note_number + 1
@@ -62,11 +64,12 @@ const addCreditNote = async (req, res) => {
     if (creditNoteCounter) {
       await CreditNoteCounter.update(
         { last_credit_note_number: creditNoteNumber },
-        { where: { id_company: companyId } }
+        { where: { id_company: companyId, credit_note_type: creditNoteType } }
       );
     } else {
       await CreditNoteCounter.create({
         id_company: companyId,
+        credit_note_type: creditNoteType,
         last_credit_note_number: creditNoteNumber,
       });
     }
@@ -87,7 +90,10 @@ const generateCreditNotePDF = async (req, res) => {
   const showIVA = creditNoteData.type_credit_note === "Nota de Crédito A";
 
   const creditNoteCounter = await CreditNoteCounter.findOne({
-    where: { id_company: creditNoteData.company.id_user },
+    where: {
+      id_company: creditNoteData.company.id_user,
+      credit_note_type: creditNoteData.type_credit_note,
+    },
   });
 
   doc.pipe(stream);
@@ -103,11 +109,17 @@ const generateCreditNotePDF = async (req, res) => {
   doc.text(`Punto de venta: ${formatPointSale(creditNoteData.point_sale)}`, {
     align: "right",
   });
-  doc.text(`Número de nota de crédito: ${formatDocNumber(creditNoteCounter)}`, {
+  doc.text(
+    `Número de nota de crédito: ${formatDocNumber(
+      creditNoteCounter.last_credit_note_number
+    )}`,
+    {
+      align: "right",
+    }
+  );
+  doc.text(`Fecha de emisión: ${formatDate(creditNoteData.issue_date)}`, {
     align: "right",
   });
-  const date = new Date(creditNoteData.issue_date).toLocaleDateString("es-AR");
-  doc.text(`Fecha de emisión: ${formatDate(date)}`, { align: "right" });
   doc.text(`Condición de venta: ${creditNoteData.sale_condition}`, {
     align: "right",
   });
@@ -129,13 +141,12 @@ const generateCreditNotePDF = async (req, res) => {
   doc.font("Helvetica").text(`${creditNoteData.company.IVA_condition}`);
   doc.font("Helvetica-Bold").text("Ingresos brutos: ", { continued: true });
   doc.font("Helvetica").text(`${creditNoteData.company.gross_revenue}`);
-  const startDate = new Date(
-    creditNoteData.company.start_date
-  ).toLocaleDateString("es-AR");
   doc.font("Helvetica-Bold").text("Fecha de inicio de actividades:", {
     continued: true,
   });
-  doc.font("Helvetica").text(`${startDate}`);
+  doc
+    .font("Helvetica")
+    .text(`${formatDate(creditNoteData.company.start_date)}`);
   doc.moveDown(1);
 
   // Line separator
@@ -163,8 +174,8 @@ const generateCreditNotePDF = async (req, res) => {
   doc.fontSize(10).font("Helvetica-Bold");
   doc.text("Descripción", 50, currentY);
   doc.text("Cantidad", 300, currentY);
-  doc.text("Precio Unitario", 400, currentY);
-  doc.text("Subtotal", 500, currentY);
+  doc.text("Precio Unitario", 350, currentY);
+  doc.text("Subtotal", 450, currentY);
   doc.moveDown(0.5);
 
   // Line separator
@@ -182,15 +193,15 @@ const generateCreditNotePDF = async (req, res) => {
     // Definir posiciones centrales según un ancho de página estándar
     const productX = 50;
     const amountX = 300;
-    const priceX = 400;
-    const subtotalX = 500;
+    const priceX = 350;
+    const subtotalX = 450;
 
     const currentY = doc.y;
 
     doc.text(detail.product, productX, currentY);
     doc.text(detail.amount.toString(), amountX, currentY);
-    doc.text(`$${salePrice}`, priceX, currentY);
-    doc.text(`$${subtotal}`, subtotalX, currentY);
+    doc.text(`$${formatPrice(salePrice)}`, priceX, currentY);
+    doc.text(`$${formatPrice(subtotal)}`, subtotalX, currentY);
 
     doc.moveDown(0.5);
   });
@@ -203,19 +214,23 @@ const generateCreditNotePDF = async (req, res) => {
   doc.fontSize(12).font("Helvetica-Bold");
 
   if (showIVA) {
-    doc.text(`Subtotal: $${creditNoteData.subtotal}`, 450, doc.y, {
+    doc.text(`Subtotal: $${formatPrice(creditNoteData.subtotal)}`, 400, doc.y, {
       align: "right",
     });
-    doc.text(`IVA: $${creditNoteData.IVA_total}`, 450, doc.y, {
+    doc.text(`IVA: $${formatPrice(creditNoteData.IVA_total)}`, 400, doc.y, {
       align: "right",
     });
     doc
       .fontSize(14)
-      .text(`Total: $${creditNoteData.total}`, 450, doc.y, { align: "right" });
+      .text(`Total: $${formatPrice(creditNoteData.total)}`, 400, doc.y, {
+        align: "right",
+      });
   } else {
     doc
       .fontSize(14)
-      .text(`Total: $${creditNoteData.total}`, 450, doc.y, { align: "right" });
+      .text(`Total: $${formatPrice(creditNoteData.total)}`, 400, doc.y, {
+        align: "right",
+      });
     doc.moveDown(0.5);
     doc
       .fontSize(10)
@@ -228,9 +243,14 @@ const generateCreditNotePDF = async (req, res) => {
           align: "left",
         }
       );
-    doc.text(`IVA Contenido: $${creditNoteData.IVA_total}`, 50, doc.y, {
-      align: "left",
-    });
+    doc.text(
+      `IVA Contenido: $${formatPrice(creditNoteData.IVA_total)}`,
+      50,
+      doc.y,
+      {
+        align: "left",
+      }
+    );
   }
 
   // Footer
@@ -238,7 +258,7 @@ const generateCreditNotePDF = async (req, res) => {
   doc
     .fontSize(10)
     .font("Helvetica")
-    .text("Gracias por su compra.", { align: "center" });
+    .text("Gracias por su compra.", 50, doc.y, { align: "center" });
   doc.text("Esta nota de crédito ha sido generada automáticamente.", {
     align: "center",
   });

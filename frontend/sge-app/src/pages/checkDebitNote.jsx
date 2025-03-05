@@ -5,6 +5,9 @@ import NextButton from "../components/nextButton";
 import useLogin from "../hooks/useLogin";
 import { useNavigate, Link } from "react-router-dom";
 import BackButton from "../components/backButton";
+import formatPointSale from "../utils/formatPointSale";
+import formatDate from "../utils/formatDate";
+import formatPrice from "../utils/formatPrice";
 
 function CheckDebitNote() {
   const {
@@ -85,7 +88,8 @@ function CheckDebitNote() {
           a.download = `nota_de_débito-${company.company_name}-${newDebitNote.buyer_name}.pdf`;
           document.body.appendChild(a);
           a.click();
-          a.remove();
+          document.body.removeChild(a);
+          window.open(url, "_blank");
           window.URL.revokeObjectURL(url);
           resetDebitNote();
           navigate("/listDocs");
@@ -113,13 +117,15 @@ function CheckDebitNote() {
       <h2>Datos de la nota</h2>
       <section>
         <p>
-          <strong>Tipo de nota:</strong> {debitNote.header.type_debitNote}
+          <strong>Tipo de nota:</strong> {debitNote.header.type_debit_note}
         </p>
         <p>
-          <strong>Punto de venta:</strong> {debitNote.header.point_sale}
+          <strong>Punto de venta:</strong>{" "}
+          {formatPointSale(debitNote.header.point_sale)}
         </p>
         <p>
-          <strong>Fecha de emisión:</strong> {debitNote.header.issue_date}
+          <strong>Fecha de emisión:</strong>{" "}
+          {formatDate(debitNote.header.issue_date)}
         </p>
         <p>
           <strong>Condición de venta:</strong> {debitNote.header.sale_condition}
@@ -159,10 +165,10 @@ function CheckDebitNote() {
               <tr key={index}>
                 <td>{row.amount || ""}</td>
                 <td>{row.product}</td>
-                <td>{row.unit_price || ""}</td>
+                <td>{formatPrice(row.unit_price) || ""}</td>
                 <td>
                   {row.unit_price && row.amount
-                    ? row.unit_price * row.amount
+                    ? formatPrice(row.unit_price * row.amount)
                     : ""}
                 </td>
               </tr>
@@ -178,19 +184,29 @@ function CheckDebitNote() {
         <p>
           <strong>Subtotal:</strong>{" "}
           {"$" +
-            details.reduce((acc, row) => acc + row.amount * row.unit_price, 0)}
+            formatPrice(
+              details.reduce((acc, row) => acc + row.amount * row.unit_price, 0)
+            )}
         </p>
         <p>
           <strong>IVA:</strong>{" "}
           {"$" +
-            details.reduce((acc, row) => acc + row.amount * row.unit_price, 0) *
-              0.21}
+            formatPrice(
+              details.reduce(
+                (acc, row) => acc + row.amount * row.unit_price,
+                0
+              ) * 0.21
+            )}
         </p>
         <p>
           <strong>Total:</strong>{" "}
           {"$" +
-            details.reduce((acc, row) => acc + row.amount * row.unit_price, 0) *
-              1.21}
+            formatPrice(
+              details.reduce(
+                (acc, row) => acc + row.amount * row.unit_price,
+                0
+              ) * 1.21
+            )}
         </p>
       </section>
       {error.form && <p style={{ color: "red" }}>{error.form.message}</p>}

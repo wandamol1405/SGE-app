@@ -4,7 +4,7 @@ import { useDebitNote } from "../context/DebitNoteContext";
 import Input from "../components/input";
 import NextButton from "../components/nextButton";
 import CreateInvoiceContainer from "../components/createInvoice";
-import TableContainer from "../components/tableContainer";
+import TableInputContainer from "../components/tableInputContainer";
 import BackButton from "../components/backButton";
 import AddButton from "../components/addButton";
 
@@ -48,7 +48,7 @@ function CreateDebitNoteDetails() {
     <CreateInvoiceContainer>
       <h1>Crear nota de débito: Paso 3</h1>
       <p>Complete el detalle de la nota</p>
-      <TableContainer>
+      <TableInputContainer>
         <thead>
           <tr>
             <th>Cantidad</th>
@@ -92,7 +92,7 @@ function CreateDebitNoteDetails() {
             </tr>
           ))}
         </tbody>
-      </TableContainer>
+      </TableInputContainer>
       <div>
         <AddButton onClick={addRow}>Agregar fila</AddButton>
         <AddButton onClick={removeRow}>Eliminar fila</AddButton>

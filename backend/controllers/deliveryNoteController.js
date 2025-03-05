@@ -39,10 +39,11 @@ const addDeliveryNote = async (req, res) => {
   try {
     let { details, ...deliveryNote } = req.body;
     const companyId = deliveryNote.id_company;
+    const deliveryNoteType = deliveryNote.type_delivery_note;
 
     // Obtener el último número de factura para la compañía
     const deliveryNoteCounter = await DeliveryNoteCounter.findOne({
-      where: { id_company: companyId },
+      where: { id_company: companyId, delivery_note_type: deliveryNoteType },
     });
     const deliveryNoteNumber = deliveryNoteCounter.last_delivery_note_number
       ? deliveryNoteCounter.last_delivery_note_number + 1
@@ -67,11 +68,17 @@ const addDeliveryNote = async (req, res) => {
     if (deliveryNoteCounter) {
       await DeliveryNoteCounter.update(
         { last_delivery_note_number: deliveryNoteNumber },
-        { where: { id_company: companyId } }
+        {
+          where: {
+            id_company: companyId,
+            delivery_note_type: deliveryNoteType,
+          },
+        }
       );
     } else {
       await DeliveryNoteCounter.create({
         id_company: companyId,
+        delivery_note_type: deliveryNoteType,
         last_delivery_note_number: deliveryNoteNumber,
       });
     }
@@ -91,7 +98,10 @@ const generateDeliveryNotePDF = async (req, res) => {
   const stream = fs.createWriteStream(filePath);
 
   const deliveryNoteCounter = await DeliveryNoteCounter.findOne({
-    where: { id_company: deliveryNoteData.company.id_user },
+    where: {
+      id_company: deliveryNoteData.company.id_user,
+      delivery_note_type: deliveryNoteData.type_delivery_note,
+    },
   });
 
   doc.pipe(stream);
@@ -106,13 +116,17 @@ const generateDeliveryNotePDF = async (req, res) => {
   doc.text(`Punto de venta: ${formatPointSale(deliveryNoteData.point_sale)}`, {
     align: "right",
   });
-  doc.text(`Número de remito: ${formatDocNumber(deliveryNoteCounter)}`, {
+  doc.text(
+    `Número de remito: ${formatDocNumber(
+      deliveryNoteCounter.last_delivery_note_number
+    )}`,
+    {
+      align: "right",
+    }
+  );
+  doc.text(`Fecha de emisión: ${formatDate(deliveryNoteData.issue_date)}`, {
     align: "right",
   });
-  const date = new Date(deliveryNoteData.issue_date).toLocaleDateString(
-    "es-AR"
-  );
-  doc.text(`Fecha de emisión: ${formatDate(date)}`, { align: "right" });
   doc.text(`Condición de venta: ${deliveryNoteData.sale_condition}`, {
     align: "right",
   });
@@ -134,13 +148,12 @@ const generateDeliveryNotePDF = async (req, res) => {
   doc.font("Helvetica").text(`${deliveryNoteData.company.IVA_condition}`);
   doc.font("Helvetica-Bold").text("Ingresos brutos: ", { continued: true });
   doc.font("Helvetica").text(`${deliveryNoteData.company.gross_revenue}`);
-  const startDate = new Date(
-    deliveryNoteData.company.start_date
-  ).toLocaleDateString("es-AR");
   doc.font("Helvetica-Bold").text("Fecha de inicio de actividades:", {
     continued: true,
   });
-  doc.font("Helvetica").text(`${startDate}`);
+  doc
+    .font("Helvetica")
+    .text(`${formatDate(deliveryNoteData.company.start_date)}`);
   doc.moveDown(1);
 
   // Line separator
@@ -167,7 +180,7 @@ const generateDeliveryNotePDF = async (req, res) => {
   // Table header
   doc.fontSize(10).font("Helvetica-Bold");
   doc.text("Descripción", 50, currentY);
-  doc.text("Cantidad", 500, currentY);
+  doc.text("Cantidad", 450, currentY);
   doc.moveDown(0.5);
 
   // Line separator
@@ -179,7 +192,7 @@ const generateDeliveryNotePDF = async (req, res) => {
   (deliveryNoteData.details || []).forEach((detail) => {
     // Definir posiciones centrales según un ancho de página estándar
     const productX = 50;
-    const amountX = 500;
+    const amountX = 450;
 
     const currentY = doc.y;
 

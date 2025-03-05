@@ -8,6 +8,7 @@ const PDFDocument = require("pdfkit");
 const formatDate = require("../utils/formatDate");
 const formatDocNumber = require("../utils/formatDocNumber");
 const formatPointSale = require("../utils/formatPointSale");
+const formatPrice = require("../utils/formatPrice");
 
 const getInvoices = async (req, res) => {
   const invoices = await Invoice.findAll({
@@ -48,10 +49,11 @@ const addInvoice = async (req, res) => {
   try {
     let { details, ...invoice } = req.body; // Separar details del resto de los datos de la factura
     const companyId = invoice.id_company;
+    const invoiceType = invoice.type_invoice;
 
     // Obtener el último número de factura para la compañía
     const invoiceCounter = await InvoiceCounter.findOne({
-      where: { company_id: companyId },
+      where: { company_id: companyId, invoice_type: invoiceType },
     });
     const invoiceNumber = invoiceCounter.last_invoice_number
       ? invoiceCounter.last_invoice_number + 1
@@ -75,11 +77,12 @@ const addInvoice = async (req, res) => {
     if (invoiceCounter) {
       await InvoiceCounter.update(
         { last_invoice_number: invoiceNumber },
-        { where: { company_id: companyId } }
+        { where: { company_id: companyId, invoice_type: invoiceType } }
       );
     } else {
       await InvoiceCounter.create({
         company_id: companyId,
+        invoice_type: invoiceType,
         last_invoice_number: invoiceNumber,
       });
     }
@@ -100,7 +103,10 @@ const generateInvoicePDF = async (req, res) => {
   const showIVA = invoiceData.type_invoice === "Factura A";
 
   const invoiceCounter = await InvoiceCounter.findOne({
-    where: { company_id: invoiceData.company.id_user },
+    where: {
+      company_id: invoiceData.company.id_user,
+      invoice_type: invoiceData.type_invoice,
+    },
   });
 
   if (!invoiceCounter) {
@@ -120,11 +126,15 @@ const generateInvoicePDF = async (req, res) => {
   doc.text(`Punto de venta: ${formatPointSale(invoiceData.point_sale)}`, {
     align: "right",
   });
-  doc.text(`Número de factura: ${formatDocNumber(invoiceCounter)}`, {
+  doc.text(
+    `Número de factura: ${formatDocNumber(invoiceCounter.last_invoice_number)}`,
+    {
+      align: "right",
+    }
+  );
+  doc.text(`Fecha de emisión: ${formatDate(invoiceData.issue_date)}`, {
     align: "right",
   });
-  const date = new Date(invoiceData.issue_date).toLocaleDateString("es-AR");
-  doc.text(`Fecha de emisión: ${formatDate(date)}`, { align: "right" });
   doc.text(`Condición de venta: ${invoiceData.sale_condition}`, {
     align: "right",
   });
@@ -146,13 +156,10 @@ const generateInvoicePDF = async (req, res) => {
   doc.font("Helvetica").text(`${invoiceData.company.IVA_condition}`);
   doc.font("Helvetica-Bold").text("Ingresos brutos: ", { continued: true });
   doc.font("Helvetica").text(`${invoiceData.company.gross_revenue}`);
-  const startDate = new Date(invoiceData.company.start_date).toLocaleDateString(
-    "es-AR"
-  );
   doc.font("Helvetica-Bold").text("Fecha de inicio de actividades:", {
     continued: true,
   });
-  doc.font("Helvetica").text(`${startDate}`);
+  doc.font("Helvetica").text(`${invoiceData.company.start_date}`);
   doc.moveDown(1);
 
   // Line separator
@@ -180,8 +187,8 @@ const generateInvoicePDF = async (req, res) => {
   doc.fontSize(10).font("Helvetica-Bold");
   doc.text("Descripción", 50, currentY);
   doc.text("Cantidad", 300, currentY);
-  doc.text("Precio Unitario", 400, currentY);
-  doc.text("Subtotal", 500, currentY);
+  doc.text("Precio Unitario", 350, currentY);
+  doc.text("Subtotal", 450, currentY);
   doc.moveDown(0.5);
 
   // Line separator
@@ -200,13 +207,13 @@ const generateInvoicePDF = async (req, res) => {
     // Definir posiciones centrales según un ancho de página estándar
     const productX = 50;
     const amountX = 300;
-    const priceX = 400;
-    const subtotalX = 500;
+    const priceX = 350;
+    const subtotalX = 450;
 
     doc.text(detail.product, productX, currentY);
     doc.text(detail.amount.toString(), amountX, currentY);
-    doc.text(`$${salePrice}`, priceX, currentY);
-    doc.text(`$${subtotal}`, subtotalX, currentY);
+    doc.text(`$${formatPrice(salePrice)}`, priceX, currentY);
+    doc.text(`$${formatPrice(subtotal)}`, subtotalX, currentY);
 
     doc.moveDown(0.5);
   });
@@ -219,19 +226,23 @@ const generateInvoicePDF = async (req, res) => {
   doc.fontSize(12).font("Helvetica-Bold");
 
   if (showIVA) {
-    doc.text(`Subtotal: $${invoiceData.subtotal}`, 450, doc.y, {
+    doc.text(`Subtotal: $${formatPrice(invoiceData.subtotal)}`, 400, doc.y, {
       align: "right",
     });
-    doc.text(`IVA: $${invoiceData.IVA_total}`, 450, doc.y, {
+    doc.text(`IVA: $${formatPrice(invoiceData.IVA_total)}`, 400, doc.y, {
       align: "right",
     });
     doc
       .fontSize(14)
-      .text(`Total: $${invoiceData.total}`, 450, doc.y, { align: "right" });
+      .text(`Total: $${formatPrice(invoiceData.total)}`, 400, doc.y, {
+        align: "right",
+      });
   } else {
     doc
       .fontSize(14)
-      .text(`Total: $${invoiceData.total}`, 450, doc.y, { align: "right" });
+      .text(`Total: $${formatPrice(invoiceData.total)}`, 400, doc.y, {
+        align: "right",
+      });
     doc.moveDown(0.5);
     doc
       .fontSize(10)
@@ -244,9 +255,14 @@ const generateInvoicePDF = async (req, res) => {
           align: "left",
         }
       );
-    doc.text(`IVA Contenido: $${invoiceData.IVA_total}`, 50, doc.y, {
-      align: "left",
-    });
+    doc.text(
+      `IVA Contenido: $${formatPrice(invoiceData.IVA_total)}`,
+      50,
+      doc.y,
+      {
+        align: "left",
+      }
+    );
   }
 
   // Footer
