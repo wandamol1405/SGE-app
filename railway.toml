@@ -1,3 +1,0 @@
-[service]
-project = "sge-app"
-path = "backend"
