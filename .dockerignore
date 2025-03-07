@@ -1,3 +1,4 @@
 node_modules/
-frontend/
-.git/
+*.log
+*.git/
+*.gitignore
