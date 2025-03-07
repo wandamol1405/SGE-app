@@ -1,3 +1,0 @@
-[service]
-build = "cd .. && cd backend && npm install"
-start = "cd .. && cd backend && npm start"
