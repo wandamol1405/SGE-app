@@ -1,26 +1,23 @@
-# Usa una imagen base de Node.js
-FROM node:16
+# Usamos una imagen base de Node.js
+FROM node:18
 
-# Establece el directorio de trabajo en /app
+# Establecemos el directorio de trabajo
 WORKDIR /app
 
-# Copia el package.json y package-lock.json al contenedor
-COPY package*.json ./backend/
-
-# Establece el directorio de trabajo en el directorio 'backend'
-WORKDIR /app/backend
-
-# Instala las dependencias del backend
-RUN npm install
-
-# Copia el resto del contenido del repositorio al contenedor
+# Copiamos todo el contenido del repositorio
 COPY . .
 
-# Verifica si la carpeta 'backend' está en el contenedor
-RUN ls -la /app
+# Verificamos si la carpeta backend está dentro del contenedor
+RUN ls -la /app/backend
 
-# Expone el puerto (ajusta si es necesario)
+# Establecemos el directorio de trabajo a /app/backend
+WORKDIR /app/backend
+
+# Instalamos las dependencias de backend
+RUN npm install
+
+# Exponemos el puerto que usará la app
 EXPOSE 3000
 
-# Comando para iniciar la app
+# Comando para iniciar la aplicación
 CMD ["npm", "start"]
