@@ -4,17 +4,17 @@ FROM node:16
 # Establece el directorio de trabajo en /app
 WORKDIR /app
 
-# Copia todos los archivos al contenedor
+# Copia todo el contenido del repositorio al contenedor
 COPY . .
 
-# Establece el directorio de trabajo en backend
+# Establece el directorio de trabajo en el directorio 'backend'
 WORKDIR /app/backend
 
 # Instala las dependencias del backend
 RUN npm install
 
-# Exponer el puerto si es necesario (por defecto 3000)
+# Expone el puerto (ajusta si es necesario)
 EXPOSE 3000
 
-# Ejecuta la aplicación
+# Comando para iniciar la app
 CMD ["npm", "start"]
