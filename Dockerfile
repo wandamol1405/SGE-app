@@ -7,6 +7,9 @@ WORKDIR /app
 # Copia todo el contenido del repositorio al contenedor
 COPY . .
 
+# Verifica si la carpeta 'backend' está en el contenedor
+RUN ls -la /app
+
 # Establece el directorio de trabajo en el directorio 'backend'
 WORKDIR /app/backend
 
