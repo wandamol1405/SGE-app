@@ -4,5 +4,5 @@ nixPkgs = ["nodejs"]
 [phases.build]
 cmds = ["cd backend && npm install"]
 
-[phases.start]
-cmds = ["cd backend && node index.js"]
+[start]
+cmd = "cd backend && npm start"
