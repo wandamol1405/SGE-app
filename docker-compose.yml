@@ -1,0 +1,23 @@
+version: "3.8" # Define la versión de Compose a usar
+
+services:
+  backend:
+    build:
+      context: ./backend # Ruta a la carpeta del backend
+    ports:
+      - "3000:3000" # Exponer el puerto del backend
+    networks:
+      - sge-network # Definir la red para que los servicios puedan comunicarse entre sí
+
+  frontend:
+    build:
+      context: ./frontend # Ruta a la carpeta del frontend
+    ports:
+      - "3001:3000" # Exponer el puerto del frontend en un puerto diferente
+    networks:
+      - sge-network # Mismo nombre de red para comunicación entre frontend y backend
+
+# Definir las redes para que los contenedores se comuniquen entre sí
+networks:
+  sge-network:
+    driver: bridge
