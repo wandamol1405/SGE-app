@@ -11,13 +11,16 @@
   },
   "dependencies": {
     "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
     "jspdf": "^3.0.0",
+    "jspdf-autotable": "^5.0.2",
     "pdfkit": "^0.16.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-helmet": "^6.1.0",
     "react-router-dom": "^7.1.2",
     "sge-app": "file:",
+    "styled-components": "^5.3.3",
     "zustand": "^5.0.3"
   },
   "devDependencies": {

@@ -15,6 +15,16 @@ const FooterContainer = styled.footer`
   flex-direction: column;
   justify-content: center;
 
+  a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 5px;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
   @media (max-width: 768px) {
     min-height: 25vh;
     font-size: 1rem;

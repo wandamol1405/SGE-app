@@ -8,12 +8,7 @@ export function useDebitNote() {
 
 export function DebitNoteProvider({ children }) {
   const initialState = {
-    header: {
-      type_debit_note: "",
-      point_sale: "",
-      issue_date: "",
-      sale_condition: "",
-    }, // Datos de la factura (cabecera)
+    header: {}, // Datos de la factura (cabecera)
     client: {}, // Datos del cliente
     details: [], // Detalles de los productos/servicios
   };

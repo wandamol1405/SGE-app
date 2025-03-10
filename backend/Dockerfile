@@ -18,3 +18,4 @@ EXPOSE 5000
 
 # Define el comando para iniciar el backend
 CMD ["npm", "start"]
+

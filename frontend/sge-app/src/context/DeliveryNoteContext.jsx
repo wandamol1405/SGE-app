@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 
-const DeliveryNoteContext = createContext();
+export const DeliveryNoteContext = createContext();
 
 export function useDeliveryNote() {
   return useContext(DeliveryNoteContext);

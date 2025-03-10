@@ -1,23 +1,34 @@
-version: "3.8" # Define la versión de Compose a usar
-
 services:
   backend:
-    build:
-      context: ./backend # Ruta a la carpeta del backend
+    image: your-image-backend
+    container_name: sge-backend
+    build: ./backend
     ports:
-      - "3000:3000" # Exponer el puerto del backend
+      - "3000:3000" # Backend en 3000
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+    depends_on:
+      - db
     networks:
-      - sge-network # Definir la red para que los servicios puedan comunicarse entre sí
+      - sge-network
 
   frontend:
-    build:
-      context: ./frontend # Ruta a la carpeta del frontend
+    image: your-image-frontend
+    container_name: sge-frontend
+    build: ./frontend/sge-app
     ports:
-      - "3001:3000" # Exponer el puerto del frontend en un puerto diferente
+      - "5173:5173" # Frontend en 5173
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - backend
     networks:
-      - sge-network # Mismo nombre de red para comunicación entre frontend y backend
+      - sge-network
 
-# Definir las redes para que los contenedores se comuniquen entre sí
 networks:
   sge-network:
     driver: bridge

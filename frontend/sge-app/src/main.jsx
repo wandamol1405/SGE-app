@@ -7,7 +7,7 @@ import { InvoiceProvider } from "./context/InvoiceContext";
 import { BuyOrderProvider } from "./context/BuyOrderContext";
 import { DebitNoteProvider } from "./context/DebitNoteContext";
 import { CreditNoteProvider } from "./context/CreditNoteContext";
-import { DeliveryNoteProvider } from "./context/deliveryNoteContext";
+import { DeliveryNoteProvider } from "./context/DeliveryNoteContext";
 import { ChequeProvider } from "./context/ChequeContext";
 import { PromissoryNoteProvider } from "./context/PromissoryNoteContext";
 
