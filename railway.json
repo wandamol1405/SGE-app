@@ -1,0 +1,12 @@
+{
+  "services": {
+    "backend": {
+      "build": "./backend",
+      "start": "node server.js"
+    },
+    "frontend": {
+      "build": "./frontend",
+      "start": "nginx -g 'daemon off;'"
+    }
+  }
+}

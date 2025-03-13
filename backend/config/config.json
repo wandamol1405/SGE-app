@@ -17,8 +17,8 @@
     "username": "root",
     "password": "DQDgVfJSXKqyoAaBiIuKdLVVkDikliNh",
     "database": "sge_app",
-    "host": "shuttle.proxy.rlwy.net",
-    "port": 31229,
+    "host": "mysql.railway.internal",
+    "port": 3306,
     "dialect": "mysql"
   }
 }
