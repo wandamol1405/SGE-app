@@ -6,13 +6,7 @@ services:
     ports:
       - "3000:3000" # Backend en 3000
     environment:
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_NAME=${DB_NAME}
-    depends_on:
-      - db
+      NODE_ENV: production
     networks:
       - sge-network
 
@@ -21,9 +15,7 @@ services:
     container_name: sge-frontend
     build: ./frontend/sge-app
     ports:
-      - "5173:5173" # Frontend en 5173
-    environment:
-      - NODE_ENV=production
+      - "80:80" # El frontend estará disponible en el puerto 80
     depends_on:
       - backend
     networks:

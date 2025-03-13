@@ -39,6 +39,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "PromissoryNote",
+      tableName: "promissorynotes",
     }
   );
   return PromissoryNote;

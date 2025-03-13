@@ -25,5 +25,7 @@ COPY --from=build /app/dist /usr/share/nginx/html
 # Expone el puerto donde corre el frontend
 EXPOSE 80
 
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 # Ejecuta Nginx
 CMD ["nginx", "-g", "daemon off;"]
