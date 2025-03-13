@@ -14,11 +14,13 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": "DQDgVfJSXKqyoAaBiIuKdLVVkDikliNh",
-    "database": "sge_app",
-    "host": "mysql.railway.internal",
-    "port": 3306,
-    "dialect": "mysql"
+    "use_env_variable": "DATABASE_URL",
+    "dialect": "mysql",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
   }
 }

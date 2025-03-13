@@ -1,6 +1,11 @@
 const express = require("express");
 const app = express();
+const env = process.env.NODE_ENV || "production";
 const PORT = process.env.PORT || 3000;
+const config = require("./config/config")[env];
+const Sequelize = new Sequelize(
+  config.use_env_variable ? process.env[config.use_env_variable] : config
+);
 const session = require("express-session");
 const usersRouter = require("./routes/usersRoutes");
 const invoiceRouter = require("./routes/invoiceRoutes");
