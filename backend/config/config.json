@@ -14,13 +14,14 @@
     "dialect": "mysql"
   },
   "production": {
-    "use_env_variable": "DATABASE_URL",
+    "username": "root",
+    "password": "DQDgVfJSXKqyoAaBiIuKdLVVkDikliNh",
+    "database": "railway",
+    "host": "mysql.railway.internal",
+    "port": 3306,
     "dialect": "mysql",
     "dialectOptions": {
-      "ssl": {
-        "require": true,
-        "rejectUnauthorized": false
-      }
+      "connectTimeout": 60000
     }
   }
 }
