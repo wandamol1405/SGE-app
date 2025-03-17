@@ -17,8 +17,8 @@
     "username": "root",
     "password": "DQDgVfJSXKqyoAaBiIuKdLVVkDikliNh",
     "database": "railway",
-    "host": "mysql.railway.internal",
-    "port": 3306,
+    "host": "shuttle.proxy.rlwy.net",
+    "port": 31229,
     "dialect": "mysql",
     "dialectOptions": {
       "connectTimeout": 60000
