@@ -5,6 +5,7 @@ import Select from "../components/select";
 import NextButton from "../components/nextButton";
 import CreateInvoiceContainer from "../components/createInvoice";
 import BackButton from "../components/backButton";
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3000";
 
 function AddAccount() {
   const [account, setAccount] = useState({
@@ -46,7 +47,7 @@ function AddAccount() {
       }
 
       if (account.name && account.type) {
-        const response = await fetch("http://localhost:3000/account", {
+        const response = await fetch(`${API_URL}/account`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

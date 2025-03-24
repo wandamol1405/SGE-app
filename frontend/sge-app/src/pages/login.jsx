@@ -6,6 +6,7 @@ import LogButton from "../components/logButton";
 import Title from "../components/title";
 import useLogin from "../hooks/useLogin";
 import { useAuth } from "../context/AuthContext";
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3000";
 
 const LoginContainer = styled.div`
   display: flex;
@@ -86,7 +87,7 @@ function Login() {
 
     try {
       const userLogin = { email: email, password: password };
-      const response = await fetch("http://localhost:3000/users/login", {
+      const response = await fetch(`${API_URL}/users/login`, {
         method: "post",
         body: JSON.stringify(userLogin),
         headers: {
@@ -113,7 +114,7 @@ function Login() {
   const handleLogout = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/users/logout", {
+      const response = await fetch(`${API_URL}/users/logout`, {
         method: "post",
       });
       if (!response.ok) {
