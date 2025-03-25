@@ -6,7 +6,8 @@ import LogButton from "../components/logButton";
 import Title from "../components/title";
 import useLogin from "../hooks/useLogin";
 import { useAuth } from "../context/AuthContext";
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3000";
+const API_URL =
+  "http://sge-app-production.up.railway.app/" || "http://localhost:3000";
 
 const LoginContainer = styled.div`
   display: flex;
