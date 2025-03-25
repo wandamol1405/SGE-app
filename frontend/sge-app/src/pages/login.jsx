@@ -7,7 +7,7 @@ import Title from "../components/title";
 import useLogin from "../hooks/useLogin";
 import { useAuth } from "../context/AuthContext";
 const API_URL =
-  "http://sge-app-production.up.railway.app" || "http://localhost:3000";
+  "https://sge-app-production.up.railway.app" || "http://localhost:3000";
 
 const LoginContainer = styled.div`
   display: flex;
