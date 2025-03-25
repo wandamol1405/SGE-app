@@ -7,6 +7,8 @@ import Input from "../components/input";
 import formatDate from "../utils/formatDate";
 import formatDocNumber from "../utils/formatDocNumber";
 import formatPointSale from "../utils/formatPointSale";
+const API_URL =
+  "https://sge-app-production.up.railway.app" || "http://localhost:3000";
 
 function ListDeliveryNoteByUser() {
   const [deliveryNotes, setDeliveryNotes] = useState([]);
@@ -14,7 +16,7 @@ function ListDeliveryNoteByUser() {
 
   useEffect(() => {
     async function getDeliveryNotes() {
-      const response = await fetch("http://localhost:3000/deliveryNote");
+      const response = await fetch(`${API_URL}/deliveryNote`);
       const data = await response.json();
       setDeliveryNotes(data.deliveryNotes);
     }

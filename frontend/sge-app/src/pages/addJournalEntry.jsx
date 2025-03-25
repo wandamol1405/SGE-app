@@ -7,6 +7,8 @@ import BackButton from "../components/backButton";
 import TableInputContainer from "../components/tableInputContainer";
 import AddButton from "../components/addButton";
 import styled from "styled-components";
+const API_URL =
+  "https://sge-app-production.up.railway.app" || "http://localhost:3000";
 
 const JournalEntryContainer = styled.div`
   display: flex;
@@ -115,7 +117,7 @@ const AddJournalEntry = () => {
 
   useEffect(() => {
     async function getCompany() {
-      const result = await fetch("http://localhost:3000/users/find/" + user);
+      const result = await fetch(`${API_URL}/users/find/${user}`);
       const response = await result.json();
       setCompany(response.user);
     }
@@ -125,7 +127,7 @@ const AddJournalEntry = () => {
   // Cargar cuentas contables
   useEffect(() => {
     async function fetchAccounts() {
-      const response = await fetch("http://localhost:3000/account");
+      const response = await fetch(`${API_URL}/account`);
       const data = await response.json();
       setAccounts(data.accounts);
     }

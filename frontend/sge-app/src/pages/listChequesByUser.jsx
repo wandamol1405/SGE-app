@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import BackButton from "../components/backButton";
 import formatDate from "../utils/formatDate";
 import Input from "../components/input";
+const API_URL =
+  "https://sge-app-production.up.railway.app" || "http://localhost:3000";
 
 function ListChequesByUser() {
   const [cheques, setCheques] = useState([]);
@@ -11,7 +13,7 @@ function ListChequesByUser() {
 
   useEffect(() => {
     async function getCheques() {
-      const response = await fetch("http://localhost:3000/cheque");
+      const response = await fetch(`${API_URL}/cheque`);
       const data = await response.json();
       setCheques(data.cheques);
     }

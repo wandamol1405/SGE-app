@@ -16,7 +16,7 @@ const LoginContainer = styled.div`
   border-radius: 15px;
   align-items: center;
   padding: 4rem;
-  width: 50%;
+  width: 60%;
   font-family: "Libre Franklin", sans-serif;
   gap: 1rem;
   margin: 0 auto;

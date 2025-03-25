@@ -7,6 +7,8 @@ import useLogin from "../hooks/useLogin";
 import BackButton from "../components/backButton";
 import formatDate from "../utils/formatDate";
 import formatPrice from "../utils/formatPrice";
+const API_URL =
+  "https://sge-app-production.up.railway.app" || "http://localhost:3000";
 
 function CheckOrder() {
   const {
@@ -28,7 +30,7 @@ function CheckOrder() {
 
   useEffect(() => {
     async function getCompany() {
-      const result = await fetch("http://localhost:3000/users/find/" + user);
+      const result = await fetch(`${API_URL}/users/find/${user}`);
       const response = await result.json();
       setCompany(response.user);
     }
@@ -54,7 +56,7 @@ function CheckOrder() {
           0
         ),
       };
-      const response = await fetch("http://localhost:3000/buyOrder", {
+      const response = await fetch(`${API_URL}/buyOrder`, {
         method: "post",
         headers: {
           "Content-Type": "application/json",
@@ -63,16 +65,13 @@ function CheckOrder() {
       });
       if (response.ok) {
         newOrder.company = company;
-        const responsePDF = await fetch(
-          "http://localhost:3000/buyOrder/generate-pdf",
-          {
-            method: "post",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newOrder),
-          }
-        );
+        const responsePDF = await fetch(`${API_URL}/buyOrder/generate-pdf`, {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newOrder),
+        });
         if (responsePDF.ok) {
           const blob = await responsePDF.blob();
           const url = window.URL.createObjectURL(blob);

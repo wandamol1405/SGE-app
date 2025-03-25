@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import useLogin from "../hooks/useLogin";
 import BackButton from "../components/backButton";
+const API_URL =
+  "https://sge-app-production.up.railway.app" || "http://localhost:3000";
 
 const HomeContainer = styled.div`
   display: flex;
@@ -80,7 +82,7 @@ function Home() {
 
   useEffect(() => {
     async function getUser() {
-      const result = await fetch("http://localhost:3000/users/find/" + user);
+      const result = await fetch(`${API_URL}/users/find/${user}`);
       const response = await result.json();
       setCompanyName(response.user.company_name);
       setIsAdmin(response.user.is_admin);

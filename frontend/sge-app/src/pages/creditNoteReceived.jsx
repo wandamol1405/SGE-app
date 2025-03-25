@@ -6,6 +6,8 @@ import Select from "../components/select";
 import NextButton from "../components/nextButton";
 import CreateInvoiceContainer from "../components/createInvoice";
 import BackButton from "../components/backButton";
+const API_URL =
+  "https://sge-app-production.up.railway.app" || "http://localhost:3000";
 
 function CreditNoteReceived() {
   const [type_credit_note, setTypeCreditNote] = useState("");
@@ -33,7 +35,7 @@ function CreditNoteReceived() {
 
   useEffect(() => {
     async function getCompany() {
-      const result = await fetch("http://localhost:3000/users/find/" + user);
+      const result = await fetch(`${API_URL}/users/find/${user}`);
       const response = await result.json();
       setCompany(response.user);
     }
@@ -83,16 +85,13 @@ function CreditNoteReceived() {
         IVA,
         total,
       };
-      const response = await fetch(
-        "http://localhost:3000/creditNoteReceived/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ newCreditNote }),
-        }
-      );
+      const response = await fetch(`${API_URL}/creditNoteReceived/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ newCreditNote }),
+      });
       if (response.ok) {
         resetCreditNote();
         alert("Nota de crédito registrada con éxito");

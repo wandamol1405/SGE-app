@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import Input from "../components/input";
 import LogButton from "../components/logButton";
 import Select from "../components/select";
+const API_URL =
+  "https://sge-app-production.up.railway.app" || "http://localhost:3000";
 
 const RegisterContainer = styled.div`
   display: flex;
@@ -133,7 +135,7 @@ export default function Register() {
         is_admin: false,
       };
 
-      const response = await fetch("http://localhost:3000/users/register", {
+      const response = await fetch(`${API_URL}/users/register`, {
         method: "post",
         body: JSON.stringify(newCompany),
         headers: {

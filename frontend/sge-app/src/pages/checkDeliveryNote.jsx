@@ -8,6 +8,8 @@ import BackButton from "../components/backButton";
 import formatPointSale from "../utils/formatPointSale";
 import formatDate from "../utils/formatDate";
 import formatPrice from "../utils/formatPrice";
+const API_URL =
+  "https://sge-app-production.up.railway.app" || "http://localhost:3000";
 
 function CheckDeliveryNote() {
   const {
@@ -29,7 +31,7 @@ function CheckDeliveryNote() {
 
   useEffect(() => {
     async function getCompany() {
-      const result = await fetch("http://localhost:3000/users/find/" + user);
+      const result = await fetch(`${API_URL}/users/find/${user}`);
       const response = await result.json();
       setCompany(response.user);
     }
@@ -63,7 +65,7 @@ function CheckDeliveryNote() {
           details.reduce((acc, row) => acc + row.amount * row.unit_price, 0) *
           1.21,
       };
-      const response = await fetch("http://localhost:3000/deliveryNote", {
+      const response = await fetch(`${API_URL}/deliveryNote`, {
         method: "post",
         headers: {
           "Content-Type": "application/json",
@@ -73,7 +75,7 @@ function CheckDeliveryNote() {
       if (response.ok) {
         newDeliveryNote.company = company;
         const responsePDF = await fetch(
-          "http://localhost:3000/deliveryNote/generate-pdf",
+          `${API_URL}/deliveryNote/generate-pdf`,
           {
             method: "post",
             headers: {

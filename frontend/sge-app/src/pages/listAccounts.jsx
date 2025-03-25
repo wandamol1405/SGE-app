@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import CheckContainer from "../components/checkContainer";
 import { useNavigate, Link } from "react-router-dom";
 import BackButton from "../components/backButton";
+const API_URL =
+  "https://sge-app-production.up.railway.app" || "http://localhost:3000";
 
 function ListDocs() {
   const [accounts, setAccounts] = useState([]);
@@ -9,7 +11,7 @@ function ListDocs() {
 
   useEffect(() => {
     async function getAccounts() {
-      const result = await fetch(`http://localhost:3000/account/`, {
+      const result = await fetch(`${API_URL}/account/`, {
         method: "GET",
       });
       const response = await result.json();

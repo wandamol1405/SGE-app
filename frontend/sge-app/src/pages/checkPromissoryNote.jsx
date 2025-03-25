@@ -7,6 +7,8 @@ import { useNavigate, Link } from "react-router-dom";
 import BackButton from "../components/backButton";
 import formatDate from "../utils/formatDate";
 import formatPrice from "../utils/formatPrice";
+const API_URL =
+  "https://sge-app-production.up.railway.app" || "http://localhost:3000";
 
 function CheckPromissoryNote() {
   const { promissoryNote = { data: {} }, resetPromissoryNote } =
@@ -18,9 +20,11 @@ function CheckPromissoryNote() {
 
   useEffect(() => {
     async function getCompany() {
-      const result = await fetch("http://localhost:3000/users/find/" + user);
-      const response = await result.json();
-      setCompany(response.user);
+      if (user) {
+        const result = await fetch(`${API_URL}/users/find/${user}`);
+        const response = await result.json();
+        setCompany(response.user);
+      }
     }
     getCompany();
   }, [user]);
@@ -39,7 +43,7 @@ function CheckPromissoryNote() {
         pay_place: promissoryNote.data.pay_place,
         receiver_name: promissoryNote.data.receiver_name,
       };
-      const response = await fetch("http://localhost:3000/promissoryNote", {
+      const response = await fetch(`${API_URL}/promissoryNote`, {
         method: "post",
         headers: {
           "Content-Type": "application/json",
@@ -48,7 +52,7 @@ function CheckPromissoryNote() {
       });
       if (response.ok) {
         const responsePDF = await fetch(
-          "http://localhost:3000/promissoryNote/generate-pdf",
+          `${API_URL}/promissoryNote/generate-pdf`,
           {
             method: "post",
             headers: {

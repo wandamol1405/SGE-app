@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import BackButton from "../components/backButton";
 import useLogin from "../hooks/useLogin";
 import formatDate from "../utils/formatDate";
+const API_URL =
+  "https://sge-app-production.up.railway.app" || "http://localhost:3000";
 
 function ListJournalEntries() {
   const [journalEntries, setJournalEntries] = useState([]);
@@ -13,7 +15,7 @@ function ListJournalEntries() {
 
   useEffect(() => {
     async function getCompany() {
-      const result = await fetch("http://localhost:3000/users/find/" + user);
+      const result = await fetch(`${API_URL}/users/find/${user}`);
       const response = await result.json();
       setCompany(response.user);
     }
@@ -22,24 +24,26 @@ function ListJournalEntries() {
 
   useEffect(() => {
     async function getJournalEntries() {
-      const result = await fetch(
-        `http://localhost:3000/journalEntry/find/` + company.id_user,
-        {
-          method: "GET",
-        }
-      );
-      const response = await result.json();
-      console.log(response);
-      const sortedData = response.journalEntries.map((entry) => ({
-        ...entry,
-        accountingEntries: entry.accountingEntries.sort(
-          (a, b) => a.id_acc_entry - b.id_acc_entry
-        ),
-      }));
+      if (company.id_user) {
+        const result = await fetch(
+          `${API_URL}/journalEntry/find/${company.id_user}`,
+          {
+            method: "GET",
+          }
+        );
+        const response = await result.json();
+        console.log(response);
+        const sortedData = response.journalEntries.map((entry) => ({
+          ...entry,
+          accountingEntries: entry.accountingEntries.sort(
+            (a, b) => a.id_acc_entry - b.id_acc_entry
+          ),
+        }));
 
-      console.log(sortedData);
+        console.log(sortedData);
 
-      setJournalEntries(sortedData || []);
+        setJournalEntries(sortedData || []);
+      }
     }
     getJournalEntries();
   }, [company]);

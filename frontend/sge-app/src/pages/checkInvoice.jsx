@@ -8,6 +8,8 @@ import BackButton from "../components/backButton";
 import formatPointSale from "../utils/formatPointSale";
 import formatDate from "../utils/formatDate";
 import formatPrice from "../utils/formatPrice";
+const API_URL =
+  "https://sge-app-production.up.railway.app" || "http://localhost:3000";
 
 function CheckInvoice() {
   const { invoice = { header: {}, client: {}, details: [] }, resetInvoice } =
@@ -27,7 +29,7 @@ function CheckInvoice() {
 
   useEffect(() => {
     async function getCompany() {
-      const result = await fetch("http://localhost:3000/users/find/" + user);
+      const result = await fetch(`${API_URL}/users/find/${user}`);
       const response = await result.json();
       setCompany(response.user);
     }

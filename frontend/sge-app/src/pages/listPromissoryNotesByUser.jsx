@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import BackButton from "../components/backButton";
 import Input from "../components/input";
 import formatDate from "../utils/formatDate";
+const API_URL =
+  "https://sge-app-production.up.railway.app" || "http://localhost:3000";
 
 function ListPromissoryNotesByUser() {
   const [promissoryNotes, setPromissoryNotes] = useState([]);
@@ -11,7 +13,7 @@ function ListPromissoryNotesByUser() {
 
   useEffect(() => {
     async function getPromissoryNotes() {
-      const response = await fetch("http://localhost:3000/promissoryNote");
+      const response = await fetch(`${API_URL}/promissoryNote`);
       const data = await response.json();
       setPromissoryNotes(data.promissoryNotes);
     }

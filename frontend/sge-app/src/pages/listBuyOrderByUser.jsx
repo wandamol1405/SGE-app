@@ -6,6 +6,8 @@ import TableContainer from "../components/tableContainer";
 import formatDate from "../utils/formatDate";
 import Input from "../components/input";
 import formatDocNumber from "../utils/formatDocNumber";
+const API_URL =
+  "https://sge-app-production.up.railway.app" || "http://localhost:3000";
 
 function ListBuyOrderByUser() {
   const [buyOrders, setBuyOrders] = useState([]);
@@ -13,7 +15,7 @@ function ListBuyOrderByUser() {
 
   useEffect(() => {
     async function getBuyOrder() {
-      const response = await fetch("http://localhost:3000/buyOrder");
+      const response = await fetch(`${API_URL}/buyOrder`);
       const data = await response.json();
       setBuyOrders(data.buyOrders);
     }

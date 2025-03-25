@@ -7,6 +7,8 @@ import { useNavigate, Link } from "react-router-dom";
 import BackButton from "../components/backButton";
 import formatPrice from "../utils/formatPrice";
 import formatDate from "../utils/formatDate";
+const API_URL =
+  "https://sge-app-production.up.railway.app" || "http://localhost:3000";
 
 function CheckCheque() {
   const { cheque = { data: {} }, resetCheque } = useCheque() || {};
@@ -17,7 +19,7 @@ function CheckCheque() {
 
   useEffect(() => {
     async function getCompany() {
-      const result = await fetch("http://localhost:3000/users/find/" + user);
+      const result = await fetch(`${API_URL}/users/find/${user}`);
       const response = await result.json();
       setCompany(response.user);
     }
@@ -42,7 +44,7 @@ function CheckCheque() {
         account_number: cheque.data.account_number,
         id_company: company.id_user,
       };
-      const response = await fetch("http://localhost:3000/cheque", {
+      const response = await fetch(`${API_URL}/cheque`, {
         method: "post",
         headers: {
           "Content-Type": "application/json",
@@ -50,16 +52,13 @@ function CheckCheque() {
         body: JSON.stringify(newCheque),
       });
       if (response.ok) {
-        const responsePDF = await fetch(
-          "http://localhost:3000/cheque/generate-pdf",
-          {
-            method: "post",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newCheque),
-          }
-        );
+        const responsePDF = await fetch(`${API_URL}/cheque/generate-pdf`, {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newCheque),
+        });
         if (responsePDF.ok) {
           const blob = await responsePDF.blob();
           const url = window.URL.createObjectURL(blob);

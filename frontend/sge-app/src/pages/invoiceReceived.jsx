@@ -6,6 +6,8 @@ import Select from "../components/select";
 import NextButton from "../components/nextButton";
 import CreateInvoiceContainer from "../components/createInvoice";
 import BackButton from "../components/backButton";
+const API_URL =
+  "https://sge-app-production.up.railway.app" || "http://localhost:3000";
 
 function InvoiceReceived() {
   const [type_invoice, setTypeInvoice] = useState("");
@@ -33,7 +35,7 @@ function InvoiceReceived() {
 
   useEffect(() => {
     async function getCompany() {
-      const result = await fetch("http://localhost:3000/users/find/" + user);
+      const result = await fetch(`${API_URL}/users/find/${user}`);
       const response = await result.json();
       setCompany(response.user);
     }
@@ -83,7 +85,7 @@ function InvoiceReceived() {
         IVA: IVA,
         total: total,
       };
-      const response = await fetch("http://localhost:3000/invoiceReceived", {
+      const response = await fetch(`${API_URL}/invoiceReceived`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

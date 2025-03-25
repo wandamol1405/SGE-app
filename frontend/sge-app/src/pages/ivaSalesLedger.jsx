@@ -12,6 +12,8 @@ import formatDocNumber from "../utils/formatDocNumber";
 import formatPointSale from "../utils/formatPointSale";
 import InputDate from "../components/inputDate";
 import formatPrice from "../utils/formatPrice";
+const API_URL =
+  "https://sge-app-production.up.railway.app" || "http://localhost:3000";
 
 function IvaSalesLedger() {
   const [docs, setDocs] = useState([]);
@@ -25,7 +27,7 @@ function IvaSalesLedger() {
 
   useEffect(() => {
     async function getCompany() {
-      const result = await fetch("http://localhost:3000/users/find/" + user);
+      const result = await fetch(`${API_URL}/users/find/${user}`);
       const response = await result.json();
       setCompany(response.user);
     }
@@ -36,7 +38,7 @@ function IvaSalesLedger() {
     async function fetchDocs() {
       try {
         const response = await fetch(
-          `http://localhost:3000/ivaLedger/sales/from/${from}/to/${to}/id_company/${company.id_user}`
+          `${API_URL}/ivaLedger/sales/from/${from}/to/${to}/id_company/${company.id_user}`
         );
         const data = await response.json();
         const sortedDocs = data.docs.sort(

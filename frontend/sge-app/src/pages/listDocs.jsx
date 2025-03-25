@@ -6,6 +6,8 @@ import BackButton from "../components/backButton";
 import formatDate from "../utils/formatDate";
 import formatDocNumber from "../utils/formatDocNumber";
 import formatPrice from "../utils/formatPrice";
+const API_URL =
+  "https://sge-app-production.up.railway.app" || "http://localhost:3000";
 
 function ListDocs() {
   const [company, setCompany] = useState({});
@@ -20,7 +22,7 @@ function ListDocs() {
 
   useEffect(() => {
     async function getCompany() {
-      const result = await fetch("http://localhost:3000/users/find/" + user);
+      const result = await fetch(`${API_URL}/users/find/${user}`);
       const response = await result.json();
       setCompany(response.user);
     }
@@ -31,7 +33,7 @@ function ListDocs() {
     async function getDocuments() {
       try {
         const result = await fetch(
-          `http://localhost:3000/documents/find/${company.id_user}`
+          `${API_URL}/documents/find/${company.id_user}`
         );
         const response = await result.json();
         const documents = response.documents;

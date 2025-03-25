@@ -5,7 +5,8 @@ import Select from "../components/select";
 import NextButton from "../components/nextButton";
 import CreateInvoiceContainer from "../components/createInvoice";
 import BackButton from "../components/backButton";
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3000";
+const API_URL =
+  "https://sge-app-production.up.railway.app" || "http://localhost:3000";
 
 function AddAccount() {
   const [account, setAccount] = useState({
