@@ -88,7 +88,7 @@ function Login() {
 
     try {
       const userLogin = { email: email, password: password };
-      const response = await fetch("/users/login", {
+      const response = await fetch("/api/users/login", {
         method: "post",
         body: JSON.stringify(userLogin),
         headers: {
@@ -115,7 +115,7 @@ function Login() {
   const handleLogout = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("/users/logout", {
+      const response = await fetch("/api/users/logout", {
         method: "post",
       });
       if (!response.ok) {
