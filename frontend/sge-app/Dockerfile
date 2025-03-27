@@ -16,8 +16,11 @@ RUN npm ci
 # Copia el código fuente del frontend
 COPY . .
 
+RUN ls -l /app
+RUN ls -l /app/src
+
 # Construye el proyecto para producción
-RUN npm run build
+RUN sh -c "npm run build"
 
 # Usa una imagen base de Nginx para servir el contenido estático
 FROM nginx:alpine
