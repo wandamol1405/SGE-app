@@ -11,7 +11,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Instala las dependencias de Node.js
-RUN npm install
+RUN npm ci
 
 # Copia el código fuente del frontend
 COPY . .
