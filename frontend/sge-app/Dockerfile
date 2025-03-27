@@ -1,6 +1,9 @@
 # Usa una imagen base de Node.js para construir el proyecto
 FROM node:18 AS build
 
+ENV PORT 80
+ENV NODE_ENV production
+
 # Crea un directorio de trabajo en el contenedor
 WORKDIR /app
 
