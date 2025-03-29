@@ -61,7 +61,7 @@ function CheckInvoice() {
           details.reduce((acc, row) => acc + row.amount * row.sale_price, 0) *
           1.21,
       };
-      const response = await fetch("http://localhost:3000/invoice", {
+      const response = await fetch(`${API_URL}/invoice`, {
         method: "post",
         headers: {
           "Content-Type": "application/json",
