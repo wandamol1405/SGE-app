@@ -70,16 +70,13 @@ function CheckInvoice() {
       });
       if (response.ok) {
         newInvoice.company = company;
-        const responsePDF = await fetch(
-          "http://localhost:3000/invoice/generate-pdf",
-          {
-            method: "post",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newInvoice),
-          }
-        );
+        const responsePDF = await fetch(`${API_URL}/invoice/generate-pdf`, {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newInvoice),
+        });
         if (responsePDF.ok) {
           const blob = await responsePDF.blob();
           const url = window.URL.createObjectURL(blob);
