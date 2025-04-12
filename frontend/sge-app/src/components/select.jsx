@@ -4,7 +4,7 @@ const Select = styled.select`
   background-color: #fffdec;
   color: #5a6c57;
   border: none;
-  width: 40vw;
+  width: 50vw;
   border-radius: 10px;
   padding: 10px 20px;
   font-size: 20px;

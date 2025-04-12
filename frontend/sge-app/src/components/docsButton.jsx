@@ -8,8 +8,8 @@ const DocsButton = styled.button`
   border-radius: 10px;
   padding: 10px 20px;
   font-size: 25px;
-  width: 40vw;
-  height: 10vh;
+  width: 50vw;
+  height: 15vh;
   align-self: center;
   cursor: pointer;
   &:hover {

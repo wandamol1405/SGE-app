@@ -16,11 +16,11 @@ const LoginContainer = styled.div`
   border-radius: 15px;
   align-items: center;
   padding: 4rem;
-  width: 60%;
+  width: 80%;
   font-family: "Libre Franklin", sans-serif;
   gap: 1rem;
   margin: 0 auto;
-  margin-top: 5rem;
+  margin-top: 3rem;
   margin-bottom: 5rem;
 
   h1 {
@@ -41,6 +41,7 @@ const LoginContainer = styled.div`
     text-align: center;
   }
   @media (min-width: 1080px) {
+    width: 60%;
     h1 {
       font-size: 2.5rem;
     }

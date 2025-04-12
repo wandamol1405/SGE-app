@@ -7,7 +7,7 @@ const LogButton = styled.button`
   border-radius: 20px;
   padding: 10px 20px;
   font-size: 1rem;
-  width: 20vw;
+  width: 25vw;
   align-self: center;
   cursor: pointer;
   font-family: "Libre Franklin", sans-serif;

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "../components/input";
 import LogButton from "../components/logButton";
 import Select from "../components/select";
+import BackButton from "../components/backButton";
 const API_URL =
   "https://sge-app-production.up.railway.app" || "http://localhost:3000";
 
@@ -14,16 +15,16 @@ const RegisterContainer = styled.div`
   border-radius: 15px;
   align-items: center;
   padding: 4rem;
-  width: 50%;
+  width: 80%;
   font-family: "Libre Franklin", sans-serif;
   gap: 1rem;
   margin: 0 auto;
-  margin-top: 5rem;
+  margin-top: 3rem;
   margin-bottom: 5rem;
 
   h1 {
     color: #fff;
-    font-size: 2.5rem;
+    font-size: 2rem;
     padding: 1rem;
     text-align: center;
   }
@@ -39,6 +40,15 @@ const RegisterContainer = styled.div`
     font-size: 1.5rem;
     padding: 1rem;
     text-align: center;
+  }
+  @media (min-width: 1080px) {
+    width: 60%;
+    h1 {
+      font-size: 2.5rem;
+    }
+    p {
+      font-size: 1.5rem;
+    }
   }
 `;
 
@@ -237,6 +247,9 @@ export default function Register() {
           onChange={(e) => setPassword(e.target.value)}
         />
         <LogButton type="submit">Registrarse</LogButton>
+        <Link to="/login">
+          <BackButton>Volver</BackButton>
+        </Link>
       </form>
     </RegisterContainer>
   );

@@ -4,8 +4,8 @@ const Account = require("../models").Account;
 
 const getJournalEntries = async (req, res) => {
   try {
-    const JournalEntries = await JournalEntry.findAll();
-    res.json({ msg: "Journal Entry list", JournalEntries });
+    const journalEntries = await JournalEntry.findAll();
+    res.json({ msg: "Journal Entry list", journalEntries });
   } catch (error) {
     console.error("Error al obtener los asientos:", error);
     res.status(500).json({ error: "Error al obtener los asientos." });
@@ -48,6 +48,10 @@ const addJournalEntry = async (req, res) => {
 
     // Crear el asiento contable
     const newJournalEntry = await JournalEntry.create(journalEntry);
+
+    if (!newJournalEntry || !newJournalEntry.id_entry) {
+      throw new Error("Failed to create Journal Entry or missing id_entry.");
+    }
 
     accountingEntries = accountingEntries || [];
     for (const accountingEntry of accountingEntries) {

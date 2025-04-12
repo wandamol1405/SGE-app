@@ -7,11 +7,11 @@ const CreateDocsContainer = styled.div`
   border-radius: 15px;
   align-items: center;
   padding: 4rem;
-  width: 60%;
+  width: 70%;
   font-family: "Libre Franklin", sans-serif;
   gap: 1.5rem;
   margin: 0 auto;
-  margin-top: 5rem;
+  margin-top: 3rem;
   margin-bottom: 5rem;
 
   p {

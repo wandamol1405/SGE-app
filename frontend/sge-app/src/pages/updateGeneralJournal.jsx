@@ -10,11 +10,11 @@ const UpdateGJContainer = styled.div`
   border-radius: 15px;
   align-items: center;
   padding: 8rem;
-  width: 60%;
+  width: 70%;
   font-family: "Libre Franklin", sans-serif;
-  gap: 2rem;
+  gap: 1rem;
   margin: 0 auto;
-  margin-top: 5rem;
+  margin-top: 3rem;
   margin-bottom: 5rem;
 
   p {
@@ -33,8 +33,8 @@ const DocsButton = styled.button`
   border-radius: 10px;
   padding: 10px 30px;
   font-size: 25px;
-  width: 40vw;
-  height: 10vh;
+  width: 50vw;
+  height: 20vh;
   align-self: center;
   cursor: pointer;
   &:hover {

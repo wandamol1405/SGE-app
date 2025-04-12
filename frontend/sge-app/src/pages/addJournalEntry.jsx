@@ -17,11 +17,11 @@ const JournalEntryContainer = styled.div`
   border-radius: 15px;
   align-items: center;
   padding: 4rem;
-  width: 85vw;
+  width: 100vw;
   font-family: "Libre Franklin", sans-serif;
   gap: 1.5rem;
   margin: 0 auto;
-  margin-top: 5rem;
+  margin-top: 3rem;
   margin-bottom: 5rem;
 
   h1 {
@@ -207,7 +207,7 @@ const AddJournalEntry = () => {
     };
 
     const saveEntry = async () => {
-      const response = await fetch("http://localhost:3000/journalEntry", {
+      const response = await fetch(`${API_URL}/journalEntry`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -339,7 +339,7 @@ const AddJournalEntry = () => {
           Volver
         </BackButton>
 
-        <NextButton onClick={saveJournalEntry}>Guardar Asiento</NextButton>
+        <NextButton onClick={saveJournalEntry}>Guardar asiento</NextButton>
       </div>
     </JournalEntryContainer>
   );

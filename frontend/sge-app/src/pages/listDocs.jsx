@@ -113,7 +113,7 @@ function ListDocs() {
                     <td>{formatDate(buyOrder.issue_date)}</td>
                     <td>{formatDate(buyOrder.delivery_date)}</td>
                     <td>{buyOrder.supplier_name}</td>
-                    <td>${formatPrice(buyOrder.total_amount)}</td>
+                    <td>${formatPrice(buyOrder.total)}</td>
                   </tr>
                 );
               })}
