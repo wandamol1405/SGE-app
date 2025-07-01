@@ -117,7 +117,7 @@ export default function Register() {
       setErrors((prev) => ({
         ...prev,
         gross_revenue: {
-          message: "Ingrese un número de Ingresos Brutos válido",
+          message: "Ingrese un número de Ingresos Brutos válido (14 dígitos)",
         },
       }));
       errorFound = true;
