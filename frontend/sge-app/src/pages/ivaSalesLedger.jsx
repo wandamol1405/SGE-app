@@ -261,13 +261,13 @@ function IvaSalesLedger() {
         </TableContainer>
       </section>
       <div>
+        <Link to="/home">
+          <BackButton> Volver </BackButton>
+        </Link>
         <Link>
           <NextButton type="button" onClick={generatePDF}>
             Imprimir
           </NextButton>
-        </Link>
-        <Link to="/home">
-          <BackButton> Volver </BackButton>
         </Link>
       </div>
     </CheckContainer>

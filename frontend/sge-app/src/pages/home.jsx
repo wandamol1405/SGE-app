@@ -57,7 +57,7 @@ const HomeButton = styled.button`
   border-radius: 20px;
   font-size: 1.3rem;
   width: 70vw;
-  height: 15vh;
+  height: 20vh;
   align-self: center;
   cursor: pointer;
   font-family: "Libre Franklin", sans-serif;

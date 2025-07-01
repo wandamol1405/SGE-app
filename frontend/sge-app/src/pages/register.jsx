@@ -113,7 +113,7 @@ export default function Register() {
       }));
     }
 
-    if (gross_revenue.length !== 9) {
+    if (gross_revenue.length !== 14) {
       setErrors((prev) => ({
         ...prev,
         gross_revenue: {

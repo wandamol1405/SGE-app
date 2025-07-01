@@ -159,7 +159,7 @@ const generateInvoicePDF = async (req, res) => {
   doc.font("Helvetica-Bold").text("Fecha de inicio de actividades:", {
     continued: true,
   });
-  doc.font("Helvetica").text(`${invoiceData.company.start_date}`);
+  doc.font("Helvetica").text(`${formatDate(invoiceData.company.start_date)}`);
   doc.moveDown(1);
 
   // Line separator
