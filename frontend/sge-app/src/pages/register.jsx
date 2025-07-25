@@ -113,11 +113,11 @@ export default function Register() {
       }));
     }
 
-    if (gross_revenue.length !== 14) {
+    if (gross_revenue.length !== 9) {
       setErrors((prev) => ({
         ...prev,
         gross_revenue: {
-          message: "Ingrese un número de Ingresos Brutos válido (14 dígitos)",
+          message: "Ingrese un número de Ingresos Brutos válido (9 dígitos)",
         },
       }));
       errorFound = true;
