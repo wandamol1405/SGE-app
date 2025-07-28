@@ -34,8 +34,4 @@ Base de datos: MySQL
 Otros: Express / Sequelize
 
 ## Version 1.0
-Puede acceder a la página mediante el siguiente link: https://dynamic-blessing-production.up.railway.app/login
-
 Actualmente está en fase de prueba con los alumnos y, por lo tanto, en constante evolución.
-
-#
