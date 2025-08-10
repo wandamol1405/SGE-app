@@ -41,7 +41,7 @@ function ListBuyOrderByUser() {
             <section>
               <p>
                 <strong>Número de órden de compra:</strong>{" "}
-                {formatDocNumber(buyOrder.num_buy_order)}
+                {formatDocNumber(buyOrder.order_number)}
               </p>
               <p>
                 <strong>Fecha:</strong> {formatDate(buyOrder.issue_date)}

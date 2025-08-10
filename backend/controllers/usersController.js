@@ -72,6 +72,10 @@ const addUser = async (req, res) => {
         credit_note_type: "Nota de Crédito C",
         last_credit_note_number: 0,
       });
+      await CreditNoteCounter.create({
+        id_company: createdUser.id_company,
+        last_buy_order_number: 0,
+      });
     }
 
     // Responder con éxito
