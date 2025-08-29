@@ -100,6 +100,19 @@ export default function Register() {
       }));
     }
 
+    if (password.length < 6) {
+      setErrors((prev) => ({
+        ...prev,
+        password: { message: "La contraseña debe tener al menos 6 caracteres" },
+      }));
+      errorFound = true;
+    } else {
+      setErrors((prev) => ({
+        ...prev,
+        cuit: null,
+      }));
+    }
+
     if (cuit.length !== 11) {
       setErrors((prev) => ({
         ...prev,

@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
           key: "id",
         },
       },
+      credit_note_type: DataTypes.STRING,
       last_credit_note_number: DataTypes.INTEGER,
     },
     {
