@@ -21,20 +21,20 @@ const addUser = async (req, res) => {
       await InvoiceCounter.create({
         company_id: createdUser.id_user,
         invoice_type: "Factura A",
-        last_invoice_numer: 0,
+        last_invoice_number: 0,
       });
       await InvoiceCounter.create({
         company_id: createdUser.id_user,
         invoice_type: "Factura B",
-        last_invoice_numer: 0,
+        last_invoice_number: 0,
       });
       await InvoiceCounter.create({
         company_id: createdUser.id_user,
         invoice_type: "Factura C",
-        last_invoice_numer: 0,
+        last_invoice_number: 0,
       });
       await BuyOrderCounter.create({
-        id_company: createdUser.id_user,
+        company_id: createdUser.id_user,
         last_buy_order_number: 0,
       });
       await DeliveryNoteCounter.create({
@@ -76,10 +76,6 @@ const addUser = async (req, res) => {
         id_company: createdUser.id_user,
         credit_note_type: "Nota de Crédito C",
         last_credit_note_number: 0,
-      });
-      await CreditNoteCounter.create({
-        id_company: createdUser.id_user,
-        last_buy_order_number: 0,
       });
     }
 
