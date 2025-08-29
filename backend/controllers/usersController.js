@@ -1,6 +1,11 @@
 const { get } = require("../routes/usersRoutes");
 
 const User = require("../models").User;
+const InvoiceCounter = require("../models").InvoiceCounter;
+const BuyOrderCounter = require("../models").BuyOrderCounter;
+const DeliveryNoteCounter = require("../models").DeliveryNoteCounter;
+const DebitNoteCounter = require("../models").DebitNoteCounter;
+const CreditNoteCounter = require("../models").CreditNoteCounter;
 
 const getUsers = async (req, res) => {
   const users = await User.findAll();
