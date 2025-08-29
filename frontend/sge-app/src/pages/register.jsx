@@ -253,6 +253,9 @@ export default function Register() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
+        {errors.password && (
+          <p style={{ fontSize: "1.2rem" }}>{errors.password.message}</p>
+        )}
         <Input
           type="password"
           placeholder="Contraseña"
