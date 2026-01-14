@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   InvoiceCounter.init(
     {
       company_id: DataTypes.INTEGER,
+      invoice_type: DataTypes.STRING,
       last_invoice_number: DataTypes.INTEGER,
     },
     {
