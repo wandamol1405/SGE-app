@@ -38,43 +38,43 @@ function ListDebitNotesByUser() {
         onChange={(e) => setFilter(e.target.value)}
       />
       <ul>
-        {filteredDebitNotes.map((debitNotes) => {
+        {filteredDebitNotes.map((debitNote) => {
           return (
-            <section key={debitNotes.num_debitNotes}>
+            <section key={debitNote.num_debit_note}>
               <p>
                 <strong>Punto de venta: </strong>
-                {formatPointSale(debitNotes.point_sale)}
+                {formatPointSale(debitNote.point_sale)}
               </p>
               <p>
                 <strong>Número de nota de débito:</strong>{" "}
-                {formatDocNumber(debitNotes.num_debitNotes)}
+                {formatDocNumber(debitNote.num_debit_note)}
               </p>
               <p>
-                <strong>Fecha:</strong> {formatDate(debitNotes.issue_date)}
+                <strong>Fecha:</strong> {formatDate(debitNote.issue_date)}
               </p>
               <p>
-                <strong>Empresa:</strong> {debitNotes.User.company_name}
+                <strong>Empresa:</strong> {debitNote.User.company_name}
               </p>
               <p>
                 <strong>Tipo de nota de débito:</strong>{" "}
-                {debitNotes.type_debit_note}
+                {debitNote.type_debit_note}
               </p>
               <p>
-                <strong>Condición de venta:</strong> {debitNotes.sale_condition}
+                <strong>Condición de venta:</strong> {debitNote.sale_condition}
               </p>
               <p>
-                <strong>Comprador:</strong> {debitNotes.buyer_name}
+                <strong>Comprador:</strong> {debitNote.buyer_name}
               </p>
               <p>
-                <strong>CUIT del comprador:</strong> {debitNotes.buyer_cuit}
+                <strong>CUIT del comprador:</strong> {debitNote.buyer_cuit}
               </p>
               <p>
                 <strong>Dirección del comprador:</strong>{" "}
-                {debitNotes.buyer_address}
+                {debitNote.buyer_address}
               </p>
               <p>
                 <strong>Condición ante el IVA del comprador:</strong>{" "}
-                {debitNotes.buyer_IVA_condition}
+                {debitNote.buyer_IVA_condition}
               </p>
               <TableContainer>
                 <tr>
@@ -83,7 +83,7 @@ function ListDebitNotesByUser() {
                   <th>Precio unitario</th>
                   <th>Precio total</th>
                 </tr>
-                {debitNotes.details.map((detail, index) => (
+                {debitNote.details.map((detail, index) => (
                   <tr key={index}>
                     <td>{detail.product}</td>
                     <td>{detail.amount}</td>
@@ -93,13 +93,13 @@ function ListDebitNotesByUser() {
                 ))}
               </TableContainer>
               <p>
-                <strong>Subtotal:</strong> ${debitNotes.subtotal}
+                <strong>Subtotal:</strong> ${debitNote.subtotal}
               </p>
               <p>
-                <strong>Total IVA:</strong> ${debitNotes.IVA_total}
+                <strong>Total IVA:</strong> ${debitNote.IVA_total}
               </p>
               <p>
-                <strong>Total:</strong> ${debitNotes.total}
+                <strong>Total:</strong> ${debitNote.total}
               </p>
             </section>
           );
