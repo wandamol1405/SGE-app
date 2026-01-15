@@ -6,7 +6,7 @@ function Terms() {
   return (
     <CreateDocsContainer>
     <h1 style={{color:'#2c3e50', borderBottom: '2px solid #3498db', paddingBottom: '10px'}}>Términos y Condiciones de Uso</h1>
-    <p>Bienvenido al <strong>Simulador Contable Educativo</strong>. Al acceder y utilizar esta plataforma, el usuario (alumno o docente) acepta cumplir con los siguientes términos:</p>
+    <div>Bienvenido al <strong>Simulador Contable Educativo</strong>. Al acceder y utilizar esta plataforma, el usuario (alumno o docente) acepta cumplir con los siguientes términos:</div>
 
     <div style={{backgroundColor:'#fcf8e3', padding:'15px', borderLeft:'5px solid #8a6d3b', fontWeight:'bold', margin: '20px 0' }}>
         AVISO IMPORTANTE: Esta es una herramienta de uso exclusivamente DIDÁCTICO. Los documentos generados NO TIENEN VALIDEZ LEGAL ni fiscal ante ningún organismo gubernamental.
