@@ -4,7 +4,7 @@ import CreateDocsContainer from "../components/createDocs";
 
 function Terms() {
   return (
-    <body>
+    <body style={{ fontFamily: "'Libre Franklin', sans-serif", padding: "2rem", backgroundColor: "#f5f5f5" }}>
     <h1>Términos y Condiciones de Uso</h1>
     <p>Bienvenido al <strong>Simulador Contable Educativo</strong>. Al acceder y utilizar esta plataforma, el usuario (alumno o docente) acepta cumplir con los siguientes términos:</p>
 
