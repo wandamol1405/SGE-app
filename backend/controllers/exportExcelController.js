@@ -25,7 +25,7 @@ const exportDataToExcel = async (req, res) => {
         facturasRow.font = { bold: true };
         invoices.filter(inv => inv.id_company === user.id_user)
             .forEach(inv => {
-                constworksheet.addRow(["Número", "Tipo de Factura", "Punto de Venta", "Fecha de Emisión", "Nombre del Comprador", "Condición IVA del Comprador", "Subtotal", "IVA Total", "Total"]);
+                worksheet.addRow(["Número", "Tipo de Factura", "Punto de Venta", "Fecha de Emisión", "Nombre del Comprador", "Condición IVA del Comprador", "Subtotal", "IVA Total", "Total"]);
                 worksheet.addRow([inv.num_invoice, inv.type_invoice, inv.point_sale, inv.issue_date, inv.buyer_name, inv.buyer_IVA_condition, inv.subtotal, inv.IVA_total, inv.total]);
             });
         worksheet.addRow([]);
