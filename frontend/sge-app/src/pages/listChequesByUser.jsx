@@ -15,9 +15,11 @@ function ListChequesByUser() {
     async function getCheques() {
       const response = await fetch(`${API_URL}/cheque`);
       const data = await response.json();
+      print(data);
       setCheques(data.cheques);
     }
     getCheques();
+
   }, []);
 
   const filteredCheques = cheques.filter((cheque) =>
