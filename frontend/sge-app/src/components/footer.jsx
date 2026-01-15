@@ -46,8 +46,7 @@ function Footer() {
       </p>
       <nav>
         <a href="/terminos">Términos y Condiciones</a> |
-        <a href="/privacidad">Política de Privacidad</a> |
-        <a href="/contacto">Contáctanos</a>
+        <a href="mailto:wandamol14@gmail.com">Contáctanos</a>
       </nav>
       <p>
         Desarrollado para estudiantes de Economía de la Escuela IPEM N° 135.
