@@ -8,7 +8,7 @@ const DeliveryNotes = require("../models").DeliveryNotes;
 const Cheques = require("../models").Cheques;
 const PromissoryNotes = require("../models").PromissoryNotes;
 
-const exportExcel = async (req, res) => {
+const exportDataToExcel = async (req, res) => {
     const users = await Users.findAll();
     const invoices = await Invoices.findAll();
     const buyOrders = await BuyOrders.findAll();
@@ -68,4 +68,4 @@ const exportExcel = async (req, res) => {
     await workbook.xlsx.write(res);
     res.end();
 };
-    module.exports = { exportExcel };
+    module.exports = { exportDataToExcel };
