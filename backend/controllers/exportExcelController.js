@@ -1,22 +1,22 @@
-const Users = require("../models").Users;
+const User = require("../models").User;
 const ExcelJS = require("exceljs");
-const Invoices = require("../models").Invoices;
-const BuyOrders = require("../models").BuyOrders;
-const CreditNotes = require("../models").CreditNotes;
-const DebitNotes = require("../models").DebitNotes;
-const DeliveryNotes = require("../models").DeliveryNotes;
-const Cheques = require("../models").Cheques;
-const PromissoryNotes = require("../models").PromissoryNotes;
+const Invoice = require("../models").Invoice;
+const BuyOrder = require("../models").BuyOrder;
+const CreditNote = require("../models").CreditNote;
+const DebitNote = require("../models").DebitNote;
+const DeliveryNote = require("../models").DeliveryNote;
+const Cheque = require("../models").Cheque;
+const PromissoryNote = require("../models").PromissoryNote;
 
 const exportDataToExcel = async (req, res) => {
-    const users = await Users.findAll();
-    const invoices = await Invoices.findAll();
-    const buyOrders = await BuyOrders.findAll();
-    const creditNotes = await CreditNotes.findAll();
-    const debitNotes = await DebitNotes.findAll();
-    const deliveryNotes = await DeliveryNotes.findAll();
-    const cheques = await Cheques.findAll();
-    const promissoryNotes = await PromissoryNotes.findAll();
+    const users = await User.findAll();
+    const invoices = await Invoice.findAll();
+    const buyOrders = await BuyOrder.findAll();
+    const creditNotes = await CreditNote.findAll();
+    const debitNotes = await DebitNote.findAll();
+    const deliveryNotes = await DeliveryNote.findAll();
+    const cheques = await Cheque.findAll();
+    const promissoryNotes = await PromissoryNote.findAll();
 
     const workbook = new ExcelJS.Workbook();
     users.forEach(user => {
