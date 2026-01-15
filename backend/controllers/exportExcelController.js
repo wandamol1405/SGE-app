@@ -1,7 +1,14 @@
-import { Users, Invoices, BuyOrders, CreditNotes, DebitNotes, DeliveryNotes, Cheques, PromissoryNotes } from "../models";
-import ExcelJS from "exceljs";
+const Users = require("../models").Users;
+const ExcelJS = require("exceljs");
+const Invoices = require("../models").Invoices;
+const BuyOrders = require("../models").BuyOrders;
+const CreditNotes = require("../models").CreditNotes;
+const DebitNotes = require("../models").DebitNotes;
+const DeliveryNotes = require("../models").DeliveryNotes;
+const Cheques = require("../models").Cheques;
+const PromissoryNotes = require("../models").PromissoryNotes;
 
-const exportExcel = async (res) => {
+const exportExcel = async (req, res) => {
     const users = await Users.findAll();
     const invoices = await Invoices.findAll();
     const buyOrders = await BuyOrders.findAll();
@@ -61,4 +68,4 @@ const exportExcel = async (res) => {
     await workbook.xlsx.write(res);
     res.end();
 };
-export { exportExcel };
+    module.exports = { exportExcel };
