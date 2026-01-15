@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       id_company: {
         type: DataTypes.INTEGER,
-        references: { model: "User", key: "id_user" },
+        references: { model: "Users", key: "id" },
       },
       cheque_num: DataTypes.INTEGER,
       bank_name: DataTypes.STRING,
