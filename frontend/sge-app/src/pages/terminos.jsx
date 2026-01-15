@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import BackButton from "../components/backButton";
 import CreateDocsContainer from "../components/createDocs";
 
-function SelectDocs() {
+function Terms() {
   return (
     <CreateDocsContainer>
     <h1>Términos y Condiciones de Uso</h1>
@@ -57,4 +57,4 @@ function SelectDocs() {
   );
 }
 
-export default SelectDocs;
+export default Terms;

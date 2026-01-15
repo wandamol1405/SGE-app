@@ -448,6 +448,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/terminos" element={<Terms />} />
       </Routes>
       <Footer />
     </>
