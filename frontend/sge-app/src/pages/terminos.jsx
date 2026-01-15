@@ -13,7 +13,7 @@ function Terms() {
     </div>
 
     <h2 style={{color: '#2980b9', marginTop: '25px'}}>1. Naturaleza de la Plataforma</h2>
-    <p>El Simulador es una herramienta pedagógica diseñada para la práctica de procesos contables, emisión de documentos comerciales y gestión empresarial ficticia. No constituye un software de facturación real ni un sistema de gestión contable oficial.</p>
+    <div>El Simulador es una herramienta pedagógica diseñada para la práctica de procesos contables, emisión de documentos comerciales y gestión empresarial ficticia. No constituye un software de facturación real ni un sistema de gestión contable oficial.</div>
 
     <h2 style={{color: '#2980b9', marginTop: '25px'}}>2. Creación de Empresas y Usuarios</h2>
     <ul>
@@ -23,17 +23,17 @@ function Terms() {
     </ul>
 
     <h2 style={{color: '#2980b9', marginTop: '25px'}}>3. Documentos Comerciales Emitidos</h2>
-    <p>Respecto a las facturas, remitos, recibos y demás documentos generados por el sistema:</p>
+    <div>Respecto a las facturas, remitos, recibos y demás documentos generados por el sistema:</div>
     <ul>
         <li><strong>Invalidez Fiscal:</strong> Ningún documento tiene valor legal. Queda expresamente prohibido intentar presentar estos comprobantes ante autoridades tributarias o terceros como documentos reales.</li>
         <li><strong>Responsabilidad del Contenido:</strong> El usuario es el único responsable del contenido insertado en los campos de texto de dichos documentos.</li>
     </ul>
 
     <h2 style={{color: '#2980b9', marginTop: '25px'}}>4. Propiedad Intelectual</h2>
-    <p>El código fuente, la lógica de cálculo, el diseño gráfico y la estructura de la base de datos son propiedad de Maria Wanda Molina. Su reproducción total o parcial fuera del entorno educativo permitido está prohibida.</p>
+    <div>El código fuente, la lógica de cálculo, el diseño gráfico y la estructura de la base de datos son propiedad de Maria Wanda Molina. Su reproducción total o parcial fuera del entorno educativo permitido está prohibida.</div>
 
     <h2 style={{color: '#2980b9', marginTop: '25px'}}>5. Limitación de Responsabilidad</h2>
-    <p>El desarrollador no se hace responsable por:</p>
+    <div>El desarrollador no se hace responsable por:</div>
     <ul>
         <li>Cálculos erróneos derivados de una mala configuración del usuario.</li>
         <li>Pérdida de datos por fallos en el servidor o manipulación indebida.</li>
@@ -41,14 +41,14 @@ function Terms() {
     </ul>
 
     <h2 style={{color: '#2980b9', marginTop: '25px'}}>6. Privacidad y Datos</h2>
-    <p>Los datos ingresados en la simulación (nombres ficticios, montos, transacciones) se utilizan exclusivamente para fines de evaluación docente. No serán compartidos con terceros ni utilizados con fines comerciales.</p>
+    <div>Los datos ingresados en la simulación (nombres ficticios, montos, transacciones) se utilizan exclusivamente para fines de evaluación docente. No serán compartidos con terceros ni utilizados con fines comerciales.</div>
 
     <h2 style={{color: '#2980b9', marginTop: '25px'}}>7. Modificaciones</h2>
-    <p>Nos reservamos el derecho de modificar estos términos para adaptarlos a nuevas funciones pedagógicas o normativas educativas sin previo aviso.</p>
+    <div>Nos reservamos el derecho de modificar estos términos para adaptarlos a nuevas funciones pedagógicas o normativas educativas sin previo aviso.</div> 
 
     <div class="footer">
-        <p>Última actualización: 14 de enero de 2026</p>
-        <p><em>Al continuar utilizando este simulador, confirmas que has leído y aceptado estas condiciones.</em></p>
+        <div>Última actualización: 14 de enero de 2026</div>
+        <div><em>Al continuar utilizando este simulador, confirmas que has leído y aceptado estas condiciones.</em></div>
     </div>
       <Link to="/home">
         <BackButton>Volver al inicio</BackButton>
