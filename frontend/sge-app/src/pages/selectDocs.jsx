@@ -48,7 +48,7 @@ function SelectDocs() {
         <Link to="/listPromissoryNotesByUser">
           <DocsButton>Pagaré</DocsButton>
         </Link>
-          <DocsButton onClick={handleSubmit} style={{ backgroundColor: "green", color: "white" }}>Descargar excel</DocsButton>
+          <DocsButton onClick={handleSubmit} style={{ backgroundColor: "green", color: "white" }}>Descargar Excel</DocsButton>
       </DocsButtonContainer>
       <Link to="/home">
         <BackButton>Volver al inicio</BackButton>

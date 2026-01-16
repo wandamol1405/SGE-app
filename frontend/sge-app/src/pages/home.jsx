@@ -29,7 +29,7 @@ const HomeContainer = styled.div`
   h3 {
     color: #fff;
     font-size: 1.5rem;
-    padding: 0.5rem;
+    padding: 0.3rem;
   }
   p {
     color: #fff;
