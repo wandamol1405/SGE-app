@@ -21,13 +21,13 @@ const HomeContainer = styled.div`
     text-align: center; /* Align the title to the center */
   }
   h2 {
-    color: #525b44;
-    font-size: 1.8rem;
+    color: #fff;
+    font-size: 1.9rem;
     padding: 1rem;
     text-align: center;
   }
   h3 {
-    color: #525b44;
+    color: #fff;
     font-size: 1.5rem;
     padding: 0.5rem;
   }
