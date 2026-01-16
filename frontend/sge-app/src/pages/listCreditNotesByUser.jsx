@@ -18,7 +18,7 @@ function ListCreditNoteByUser() {
     async function getCreditNotes() {
       const response = await fetch(`${API_URL}/creditNote`);
       const data = await response.json();
-      print(data);
+      console.log(data);
       setCreditNotes(data.creditNotes);
     }
     getCreditNotes();
