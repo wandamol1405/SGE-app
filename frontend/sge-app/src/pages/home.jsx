@@ -20,6 +20,12 @@ const HomeContainer = styled.div`
     padding: 1.5rem;
     text-align: center; /* Align the title to the center */
   }
+  h2 {
+    color: #525b44;
+    font-size: 1.8rem;
+    padding: 1rem;
+    text-align: center;
+  }
   p {
     color: #fff;
     font-size: 1.5rem;
@@ -93,7 +99,10 @@ function Home() {
   return (
     <HomeContainer>
       <div className="welcome">
-        <h1>Bienvenido {company_name}</h1>
+        <h1>Bienvenid@ {company_name}</h1>
+      </div>
+      <div>
+        <h2>Documentos comerciales</h2>
       </div>
       <ButtonsContainer>
         <Link to="/createDocs">
@@ -105,6 +114,11 @@ function Home() {
         <Link to="/registerReceivedDocs">
           <HomeButton>Registrar documentos comerciales recibidos</HomeButton>
         </Link>
+        </ButtonsContainer>
+      <div>
+        <h2>Libros contables</h2>
+      </div>
+        <ButtonsContainer>
         <Link to="/updateGeneralJournal">
           <HomeButton>Editar Libro Diario</HomeButton>
         </Link>
@@ -118,6 +132,11 @@ function Home() {
             Libro de IVA <strong>Compras</strong>
           </HomeButton>
         </Link>
+        </ButtonsContainer>
+      <div>
+        <h2>Herramientas del administrador</h2>
+      </div>
+        <ButtonsContainer>
         {isAdmin && (
           <>
             <Link to="/updateAccounts">

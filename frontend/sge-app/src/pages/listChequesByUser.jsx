@@ -37,7 +37,7 @@ function ListChequesByUser() {
       <ul>
         {filteredCheques.map((cheque) => {
           return (
-            <section key={cheque.num_cheque}>
+            <section key={cheque.cheque_num}>
               <p>
                 <strong>Número de cheque:</strong> {cheque.cheque_num}
               </p>
