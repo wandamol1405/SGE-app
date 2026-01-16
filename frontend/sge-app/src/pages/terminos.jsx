@@ -19,11 +19,14 @@ const TermsContainer = styled(CreateDocsContainer)`
 
   ul {
     margin-left: 20px;
+    font-size: 1.1rem;
+    line-height: 1.6;
     margin-bottom: 15px;
   }
 
   li {
     margin-bottom: 10px;
+    font-size: 1.1rem;
     color: #525b44;
   }
 
