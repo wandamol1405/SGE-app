@@ -6,13 +6,25 @@ import styled from "styled-components";
 const TermsContainer = styled(CreateDocsContainer)`
   h1 {
     color:  #86a788;
+    font-size: 2rem;
     border-bottom: 2px solid #86a790;
     padding-bottom: 10px;
   }
   
   h2 {
-    color: #525b44; 
+    color: #525b44;
+    font-size: 1.5rem; 
     margin-top: 20px;
+  }
+
+  ul {
+    margin-left: 20px;
+    margin-bottom: 15px;
+  }
+
+  li {
+    margin-bottom: 10px;
+    color: #525b44;
   }
 
   div {
