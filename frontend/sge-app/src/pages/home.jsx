@@ -66,8 +66,8 @@ const SectionContainer = styled.div`
   flex-direction: column;
   align-items: center;
   margin-bottom: 2rem;
-  background-color: #9eb38b;
-  border-radius: 10px;
+  background-color: #a8b49d;
+  border-radius: 1rem;
   padding: 1rem;
 `;
 
