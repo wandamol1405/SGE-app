@@ -26,6 +26,11 @@ const HomeContainer = styled.div`
     padding: 1rem;
     text-align: center;
   }
+  h3 {
+    color: #525b44;
+    font-size: 1.5rem;
+    padding: 0.5rem;
+  }
   p {
     color: #fff;
     font-size: 1.5rem;
@@ -54,6 +59,15 @@ const ButtonsContainer = styled.div`
   align-items: center;
   margin-top: 2rem;
   width: 100%;
+`;
+
+const SectionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+  background-color: #f5f5f5;
+  padding: 1rem;
 `;
 
 const HomeButton = styled.button`
@@ -101,23 +115,36 @@ function Home() {
       <div className="welcome">
         <h1>Bienvenid@ {company_name}</h1>
       </div>
-      <div>
+      <SectionContainer>
         <h2>Documentos comerciales</h2>
-      </div>
       <ButtonsContainer>
+        <div>
+          <h3>Documentos emitidos</h3>
+        </div>
+        <ButtonsContainer>
         <Link to="/createDocs">
           <HomeButton>Emitir documento comercial</HomeButton>
         </Link>
         <Link to="/listDocs">
           <HomeButton>Ver documentos comerciales emitidos</HomeButton>
         </Link>
+        </ButtonsContainer>
+        <div>
+          <h3>Documentos recibidos</h3>
+        </div>
+        <ButtonsContainer>
         <Link to="/registerReceivedDocs">
           <HomeButton>Registrar documentos comerciales recibidos</HomeButton>
         </Link>
+        <Link to="/viewReceivedDocs">
+          <HomeButton>Ver documentos comerciales recibidos</HomeButton>
+        </Link>
         </ButtonsContainer>
-      <div>
+        </ButtonsContainer>
+        </SectionContainer>
+      <SectionContainer>
         <h2>Libros contables</h2>
-      </div>
+      
         <ButtonsContainer>
         <Link to="/updateGeneralJournal">
           <HomeButton>Editar Libro Diario</HomeButton>
@@ -133,9 +160,9 @@ function Home() {
           </HomeButton>
         </Link>
         </ButtonsContainer>
-      <div>
+        </SectionContainer>
+      <SectionContainer>
         <h2>Herramientas del administrador</h2>
-      </div>
         <ButtonsContainer>
         {isAdmin && (
           <>
@@ -150,6 +177,7 @@ function Home() {
           </>
         )}
       </ButtonsContainer>
+      </SectionContainer>
       <ButtonsContainer>
         <Link to="/login">
           <BackButton onClick={logout}>Cerrar sesión</BackButton>

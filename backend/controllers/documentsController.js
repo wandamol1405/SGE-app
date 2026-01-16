@@ -5,6 +5,9 @@ const DebitNote = require("../models").DebitNote;
 const BuyOrder = require("../models").BuyOrder;
 const Cheque = require("../models").Cheque;
 const PromissoryNote = require("../models").PromissoryNote;
+const InvoiceReceived = require("../models").InvoiceReceived;
+const CreditNoteReceived = require("../models").CreditNoteReceived;
+const DebitNoteReceived = require("../models").DebitNoteReceived;
 
 const getDocuments = async (req, res) => {
   const userId = req.params.userId;
@@ -35,4 +38,19 @@ const getDocuments = async (req, res) => {
   res.json({ documents });
 };
 
-module.exports = { getDocuments };
+const receivedDocuments = async (req, res) => {
+  const userId = req.params.userId;
+  const invoices = await InvoiceReceived.findAll({ where: { id_company: userId } });
+  const creditNotes = await CreditNoteReceived.findAll({
+    where: { id_company: userId },
+  });
+  const debitNotes = await DebitNoteReceived.findAll({ where: { id_company: userId } });
+  const documents = {
+    invoices,
+    creditNotes,
+    debitNotes,
+  };
+  res.json({ documents });;
+}
+
+module.exports = { getDocuments, receivedDocuments };
