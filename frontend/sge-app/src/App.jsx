@@ -55,6 +55,7 @@ import DebitNoteReceived from "./pages/debitNoteReceived";
 import CreditNoteReceived from "./pages/creditNoteReceived";
 import IvaPurchasesLedger from "./pages/ivaPurchasesLedger";
 import Terms from "./pages/terminos";
+import ListReceivedDocs from "./pages/viewReceivedDocs";
 
 function App() {
   return (
@@ -452,11 +453,18 @@ function App() {
         <Route
           path="/terminos"
           element={
-            <ProtectedRoute>
               <Terms />
-            </ProtectedRoute>
           }
         />
+        <Route
+        path="/viewReceivedDocs"
+        element={
+          <ProtectedRoute>
+            <ListReceivedDocs />
+          </ProtectedRoute>
+        }
+          >
+        </Route>
       </Routes>
       <Footer />
     </>
