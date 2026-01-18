@@ -98,7 +98,7 @@ const generateJournalEntriesPDF = async (req, res) => {
   for (const entry of journalEntries) {
     doc.fontSize(12).font("Helvetica-Bold");
     doc.text(`Fecha: ${formatDate(entry.date)}`, 50);
-    doc.text(`Asiento N°: ${countEntries++}`, 300);
+    doc.text(`Asiento N°: ${countEntries++}`);
     doc.moveDown(0.5);
     doc.font("Helvetica");
     doc.text(`Descripción: ${entry.description}`);
