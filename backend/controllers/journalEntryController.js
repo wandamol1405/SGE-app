@@ -98,7 +98,7 @@ const generateJournalEntriesPDF = async (req, res) => {
   for (const entry of journalEntries) {
     doc.fontSize(12).font("Helvetica-Bold");
     doc.text(`Fecha: ${formatDate(entry.date)}`, 50);
-    doc.text(`Asiento N°: ${countEntries++}`, 400);
+    doc.text(`Asiento N°: ${countEntries++}`, 300);
     doc.moveDown(0.5);
     doc.font("Helvetica");
     doc.text(`Descripción: ${entry.description}`);
@@ -126,6 +126,11 @@ const generateJournalEntriesPDF = async (req, res) => {
     accountingEntries.forEach((accEntry) => {
       const account = accounts.find((acc) => acc.id_account === accEntry.id_account);
       const y = doc.y;
+      console.log({
+        rawDebit: accEntry.debit,
+        type: typeof accEntry.debit,
+      });
+
       doc.text(accEntry.id_account, 50, y);
       doc.text(account?.name || "Desconocida", 100, y);
       doc.text(accEntry.debit ? formatPrice(accEntry.debit) : "", 360, y, { width: 80, align: "right" });
@@ -148,7 +153,7 @@ const generateJournalEntriesPDF = async (req, res) => {
 
     doc.moveDown(1.5);
     doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
-    doc.moveDown(1);
+    doc.moveDown(2);
   }
   doc.end();
   stream.on("finish", () => {
