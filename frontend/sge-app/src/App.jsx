@@ -56,6 +56,7 @@ import CreditNoteReceived from "./pages/creditNoteReceived";
 import IvaPurchasesLedger from "./pages/ivaPurchasesLedger";
 import Terms from "./pages/terminos";
 import ListReceivedDocs from "./pages/viewReceivedDocs";
+import JournalEntryUsers from "./pages/journalEntryUsers";
 
 function App() {
   return (
@@ -461,6 +462,15 @@ function App() {
         element={
           <ProtectedRoute>
             <ListReceivedDocs />
+          </ProtectedRoute>
+        }
+          >
+        </Route>
+        <Route
+        path="/journalEntryUsers"
+        element={
+          <ProtectedRoute>
+            <JournalEntryUsers />
           </ProtectedRoute>
         }
           >

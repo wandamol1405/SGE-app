@@ -175,6 +175,11 @@ function Home() {
                 Ver documentos comerciales de cada empresa
               </HomeButton>
             </Link>
+            <Link to="/journalEntryUsers">
+              <HomeButton>
+                Ver libros diarios de cada empresa
+              </HomeButton>
+            </Link>
           </>
         )}
       </ButtonsContainer>

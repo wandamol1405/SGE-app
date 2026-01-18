@@ -1,6 +1,10 @@
 const JournalEntry = require("../models").JournalEntry;
 const AccountingEntry = require("../models").AccountingEntry;
 const Account = require("../models").Account;
+const User = require("../models").User;
+const path = require("path");
+const fs = require("fs");
+const PDFDocument = require("pdfkit");
 
 const getJournalEntries = async (req, res) => {
   try {
@@ -68,8 +72,45 @@ const addJournalEntry = async (req, res) => {
   }
 };
 
+const generateJournalEntriesPDF = async (req, res) => {
+  const user = req.params.user;
+  const doc = new PDFDocument({size: "A4", margin: 50});
+  const filePath = path.join(__dirname, "journalEntries.pdf");
+  const stream = fs.createWriteStream(filePath);
+
+  doc.pipe(stream);
+
+  try {
+    const company = await User.findOne({ where: { id_user: user } });
+    if (!company) {
+      throw new Error("Compañía no encontrada.");
+    }
+    const journalEntries = await JournalEntry.findAll({
+      where: { id_company: company.id_user },
+      include: [{ model: AccountingEntry, as: "accountingEntries" }],
+      order: [["id_entry", "ASC"]],
+    });
+    doc.fontSize(20).text(`Libros Diarios - ${company.company_name}`, { align: "center" });
+    doc.moveDown(1);
+    journalEntries.forEach((entry) => {
+      doc.fontSize(14).text(`Asiento ID: ${entry.id_entry} - Fecha: ${entry.entry_date}`);
+      doc.moveDown(0.5);
+      entry.accountingEntries.forEach((accEntry) => {
+        doc.fontSize(12).text(`Cuenta ID: ${accEntry.id_account} - Débito: ${accEntry.debit} - Crédito: ${accEntry.credit}`);
+      });
+      doc.moveDown(1);
+    });
+
+    doc.end();
+  } catch (error) {
+    console.error("Error al generar el PDF de libros diarios:", error);
+    res.status(500).json({ error: "Error al generar el PDF de libros diarios." });
+  }
+};
+
 module.exports = {
   getJournalEntries,
   getJournalEntriesByCompany,
   addJournalEntry,
+  generateJournalEntriesPDF,
 };
