@@ -23,12 +23,13 @@ function JournalEntryUsers() {
     const handleSubmit = async (user, e) => {
         e.preventDefault();
         try {
+          const userData = { id_user: user.id_user, company_name: user.company_name };
         const response = await fetch(`${API_URL}/journalEntry/pdf/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(user),
+          body: JSON.stringify(userData),
         });
         if(response.ok){
           const blob = await response.blob();
