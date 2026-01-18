@@ -16,7 +16,7 @@ const {
 } = require("../middlewares/userValidator");
 const usersRouter = express.Router();
 
-usersRouter.get("/", validatorAdmin, getUsers);
+usersRouter.get("/", getUsers);
 usersRouter.post(
   "/register",
   validatorRegister,
