@@ -22,7 +22,7 @@ function JournalEntryUsers() {
 
     const handleSubmit = async (user, e) => {
         e.preventDefault();
-        const response = await fetch(`${API_URL}/journalEntries/pdf/${user}`, { method: 'GET' });
+        const response = await fetch(`${API_URL}/journalEntries/pdf/${user.id_user}`, { method: 'GET' });
         const blob = await response.blob();
         const url = window.URL.createObjectURL(new Blob([blob]));
         const link = document.createElement('a');
@@ -39,7 +39,7 @@ function JournalEntryUsers() {
       <DocsButtonContainer>
         {users.map((user) => (
             <DocsButton key={user.id_user} onClick={(e) => handleSubmit(user.company_name, e)}>
-                Asientos contables de {user.username}
+                Asientos contables de {user.company_name}
             </DocsButton>
         ))}
       </DocsButtonContainer>
