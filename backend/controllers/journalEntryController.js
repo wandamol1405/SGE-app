@@ -73,9 +73,9 @@ const addJournalEntry = async (req, res) => {
 };
 
 const generateJournalEntriesPDF = async (req, res) => {
-  const {user} = req.body;
-  const doc = new PDFDocument({size: "A4", margin: 50});
-  const filePath = path.join(__dirname, `journalEntries-${user}.pdf`);
+  const { user } = req.body;
+  const doc = new PDFDocument({ size: "A4", margin: 50 });
+  const filePath = path.join(__dirname, `journalEntries-${user.id_user}.pdf`);
   const stream = fs.createWriteStream(filePath);
 
   doc.pipe(stream);
@@ -86,6 +86,7 @@ const generateJournalEntriesPDF = async (req, res) => {
       include: [{ model: AccountingEntry, as: "accountingEntries" }],
       order: [["id_entry", "ASC"]],
     });
+    const company = await User.findByPk(user.id_user);
     doc.fontSize(20).text(`Libros Diarios - ${company.company_name}`, { align: "center" });
     doc.moveDown(1);
     journalEntries.forEach((entry) => {
