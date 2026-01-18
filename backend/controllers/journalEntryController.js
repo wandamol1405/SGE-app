@@ -76,7 +76,9 @@ const generateJournalEntriesPDF = async (req, res) => {
   const user = req.body;
   const doc = new PDFDocument({ size: "A4", margin: 50 });
   const filePath = path.join(__dirname, `journalEntries-${user.id_user}.pdf`);
-  const stream = fs.createWriteStream(filePath);
+  const stream = fs.createWriteStream(filePath);+
+
+  console.log(user);
 
   const journalEntries = await JournalEntry.findAll({
     where: { id_company: user.id_user },
