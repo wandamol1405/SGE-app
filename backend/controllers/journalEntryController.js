@@ -84,10 +84,14 @@ const generateJournalEntriesPDF = async (req, res) => {
     where: { id_company: user.id_user },
   });
 
+  const accounts = await Account.findAll({});
+
   
   if (!journalEntries || journalEntries.length === 0) {
     return res.status(404).json({ error: "No journal entries found for this user." });
   }
+
+  console.log(journalEntries);
   doc.pipe(stream);
 
   // Header
@@ -105,7 +109,7 @@ const generateJournalEntriesPDF = async (req, res) => {
 
     accountingEntries.forEach((accEntry) => {
       doc.text(
-        `Cuenta ID: ${accEntry.id_acc_entry} - Débito: ${accEntry.debit} - Crédito: ${accEntry.credit}`
+        `Cuenta ID: ${accounts.find(account => account.id_account === accEntry.id_account)?.name || 'Desconocida'} - Débito: ${accEntry.debit} - Crédito: ${accEntry.credit}`
       );
     });
     doc.moveDown(1);
