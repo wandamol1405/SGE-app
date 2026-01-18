@@ -22,12 +22,18 @@ function JournalEntryUsers() {
 
     const handleSubmit = async (user, e) => {
         e.preventDefault();
-        const response = await fetch(`${API_URL}/journalEntries/pdf/${user.id_user}`, { method: 'GET' });
+        const response = await fetch(`${API_URL}/journalEntries/pdf`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ user }),
+        });
         const blob = await response.blob();
         const url = window.URL.createObjectURL(new Blob([blob]));
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', `JournalEntries-${user}.pdf`);
+        link.setAttribute('download', `JournalEntries-${user.company_name}.pdf`);
         document.body.appendChild(link);
         link.click();
         link.parentNode.removeChild(link);
@@ -38,8 +44,8 @@ function JournalEntryUsers() {
       <p>Descargue los asientos contables por usuario</p>
       <DocsButtonContainer>
         {users.map((user) => (
-            <DocsButton key={user.id_user} onClick={(e) => handleSubmit(user.company_name, e)}>
-                Asientos contables de {user.company_name}
+            <DocsButton key={user.id_user} onClick={(e) => handleSubmit(user, e)}>
+                {user.company_name}
             </DocsButton>
         ))}
       </DocsButtonContainer>

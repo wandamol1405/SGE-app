@@ -73,20 +73,16 @@ const addJournalEntry = async (req, res) => {
 };
 
 const generateJournalEntriesPDF = async (req, res) => {
-  const user = req.params.user;
+  const {user} = req.body;
   const doc = new PDFDocument({size: "A4", margin: 50});
-  const filePath = path.join(__dirname, "journalEntries.pdf");
+  const filePath = path.join(__dirname, `journalEntries-${user}.pdf`);
   const stream = fs.createWriteStream(filePath);
 
   doc.pipe(stream);
 
   try {
-    const company = await User.findOne({ where: { id_user: user } });
-    if (!company) {
-      throw new Error("Compañía no encontrada.");
-    }
     const journalEntries = await JournalEntry.findAll({
-      where: { id_company: company.id_user },
+      where: { id_company: user.id_user },
       include: [{ model: AccountingEntry, as: "accountingEntries" }],
       order: [["id_entry", "ASC"]],
     });
