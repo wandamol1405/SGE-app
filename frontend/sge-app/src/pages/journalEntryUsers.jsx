@@ -22,22 +22,30 @@ function JournalEntryUsers() {
 
     const handleSubmit = async (user, e) => {
         e.preventDefault();
-        const response = await fetch(`${API_URL}/journalEntry/pdf`, {
+        try {
+        const response = await fetch(`${API_URL}/journalEntry/pdf/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ user }),
+          body: JSON.stringify(user),
         });
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(new Blob([blob]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', `JournalEntries-${user.company_name}.pdf`);
-        document.body.appendChild(link);
-        link.click();
-        link.parentNode.removeChild(link);
+        if(response.ok){
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(new Blob([blob]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', `JournalEntries-${user.company_name}.pdf`);
+          document.body.appendChild(link);
+          link.click();
+          link.parentNode.removeChild(link);
+        } else {
+          console.error("Error al generar el PDF");
+        }
+     } catch (error) {
+        console.error("Error en la solicitud:", error);
      }
+  }
 
   return (
     <CreateDocsContainer>
