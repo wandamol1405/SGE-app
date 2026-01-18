@@ -12,8 +12,9 @@ function JournalEntryUsers() {
 
     useEffect(() => {
         async function fetchUsers() {
-            const response = await fetch(`${API_URL}/users`);
+            const response = await fetch(`${API_URL}/users/`);
             const data = await response.json();
+            console.log(data);
             setUsers(data.users);
         }
         fetchUsers();
