@@ -126,18 +126,15 @@ const generateJournalEntriesPDF = async (req, res) => {
     accountingEntries.forEach((accEntry) => {
       const account = accounts.find((acc) => acc.id_account === accEntry.id_account);
       const y = doc.y;
-      console.log({
-        rawDebit: accEntry.debit,
-        type: typeof accEntry.debit,
-      });
 
       doc.text(accEntry.id_account, 50, y);
       doc.text(account?.name || "Desconocida", 100, y);
       doc.text(accEntry.debit ? formatPrice(accEntry.debit) : "", 360, y, { width: 80, align: "right" });
       doc.text(accEntry.credit ? formatPrice(accEntry.credit) : "", 460, y, { width: 80, align: "right" });
 
-      totalDebit += accEntry.debit || 0;
-      totalCredit += accEntry.credit || 0;
+      totalDebit += Number(accEntry.debit) || 0;
+      totalCredit += Number(accEntry.credit) || 0;
+
 
       doc.moveDown(0.5);
     });
