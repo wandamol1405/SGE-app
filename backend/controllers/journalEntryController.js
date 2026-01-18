@@ -81,6 +81,8 @@ const generateJournalEntriesPDF = async (req, res) => {
   const journalEntries = await JournalEntry.findAll({
     where: { id_company: user.id_user },
   });
+
+  console.log(journalEntries);
   
   if (!journalEntries || journalEntries.length === 0) {
     return res.status(404).json({ error: "No journal entries found for this user." });

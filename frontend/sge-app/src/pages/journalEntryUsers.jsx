@@ -22,7 +22,6 @@ function JournalEntryUsers() {
 
     const handleSubmit = async (user, e) => {
         e.preventDefault();
-        console.log(user);
         const response = await fetch(`${API_URL}/journalEntries/pdf`, {
           method: 'POST',
           headers: {
