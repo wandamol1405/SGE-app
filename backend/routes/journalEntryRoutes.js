@@ -10,6 +10,6 @@ const {
 journalEntryRouter.get("/", getJournalEntries);
 journalEntryRouter.post("/", addJournalEntry);
 journalEntryRouter.get("/find/:id_company", getJournalEntriesByCompany);
-journalEntryRouter.get("/pdf/:user", generateJournalEntriesPDF);
+journalEntryRouter.post("/pdf", generateJournalEntriesPDF);
 
 module.exports = journalEntryRouter;
