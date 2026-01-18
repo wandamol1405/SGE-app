@@ -6,8 +6,7 @@ const path = require("path");
 const fs = require("fs");
 const PDFDocument = require("pdfkit");
 const formatDate = require("../utils/formatDate");
-const { count } = require("console");
-const { start } = require("repl");
+const formatPrice = require("../utils/formatPrice");
 
 const getJournalEntries = async (req, res) => {
   try {
@@ -129,8 +128,8 @@ const generateJournalEntriesPDF = async (req, res) => {
       const y = doc.y;
       doc.text(accEntry.id_account, 50, y);
       doc.text(account?.name || "Desconocida", 100, y);
-      doc.text(accEntry.debit ? accEntry.debit.toFixed(2) : "", 360, y, { width: 80, align: "right" });
-      doc.text(accEntry.credit ? accEntry.credit.toFixed(2) : "", 460, y, { width: 80, align: "right" });
+      doc.text(accEntry.debit ? formatPrice(accEntry.debit) : "", 360, y, { width: 80, align: "right" });
+      doc.text(accEntry.credit ? formatPrice(accEntry.credit) : "", 460, y, { width: 80, align: "right" });
 
       totalDebit += accEntry.debit || 0;
       totalCredit += accEntry.credit || 0;
@@ -144,8 +143,8 @@ const generateJournalEntriesPDF = async (req, res) => {
 
     doc.font("Helvetica-Bold");
     doc.text("Totales:", 100, doc.y);
-    doc.text(totalDebit.toFixed(2), 360, doc.y-12, { width: 80, align: "right" });
-    doc.text(totalCredit.toFixed(2), 460, doc.y-12, { width: 80, align: "right" });
+    doc.text(formatPrice(totalDebit), 360, doc.y-12, { width: 80, align: "right" });
+    doc.text(formatPrice(totalCredit), 460, doc.y-12, { width: 80, align: "right" });
 
     doc.moveDown(1.5);
     doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
