@@ -70,8 +70,8 @@ const validatorLoginUser = async (req, res, next) => {
 };
 
 const validatorAdmin = (req, res, next) => {
-  const user = req.session.email;
-  if (user != "admin") {
+  const user = req.user;
+  if (user.is_admin) {
     return res.status(400).json({ errors: "Unauthorized" });
   }
 };
